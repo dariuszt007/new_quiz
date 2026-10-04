@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>teacher.html - Panel nauczyciela B+++ Teacher PRO custom class</title>
+  <title>teacher.html - Panel nauczyciela</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -25,7 +25,7 @@
       min-height:100vh;
     }
     .container{
-      max-width:1540px;
+      max-width:1500px;
       margin:0 auto;
       padding:20px;
     }
@@ -55,9 +55,7 @@
       gap:16px;
     }
     @media (min-width:1150px){
-      .grid{
-        grid-template-columns:1fr 1fr;
-      }
+      .grid{ grid-template-columns:1fr 1fr; }
     }
     .card{
       background:rgba(17,24,39,.94);
@@ -66,7 +64,7 @@
       padding:16px;
       box-shadow:0 8px 20px rgba(0,0,0,.24);
     }
-    h1,h2,h3{margin-top:0}
+    h2{margin-top:0}
     label{
       display:block;
       margin-bottom:8px;
@@ -93,9 +91,7 @@
       margin-top:12px;
     }
     @media (min-width:760px){
-      .row{
-        grid-template-columns:1fr 1fr;
-      }
+      .row{ grid-template-columns:1fr 1fr; }
     }
     .row-3{
       display:grid;
@@ -104,9 +100,7 @@
       margin-top:12px;
     }
     @media (min-width:980px){
-      .row-3{
-        grid-template-columns:1fr 1fr 1fr;
-      }
+      .row-3{ grid-template-columns:1fr 1fr 1fr; }
     }
     .actions{
       display:flex;
@@ -144,14 +138,6 @@
       min-height:340px;
       font-family:Consolas, monospace;
     }
-    .note{
-      margin-top:12px;
-      padding:12px;
-      border-radius:12px;
-      background:rgba(245,158,11,.10);
-      border:1px solid rgba(245,158,11,.20);
-      color:#fde68a;
-    }
     .set-list{
       display:grid;
       gap:10px;
@@ -172,9 +158,7 @@
       margin-bottom:10px;
     }
     @media (max-width:1200px){
-      .set-header{
-        grid-template-columns:1fr;
-      }
+      .set-header{ grid-template-columns:1fr; }
     }
     .pair-box{
       background:rgba(255,255,255,.03);
@@ -198,20 +182,7 @@
       color:#cbd5e1;
       font-size:14px;
     }
-    .pair-input{
-      min-width:220px;
-    }
-    .pill{
-      display:inline-block;
-      background:rgba(56,189,248,.12);
-      color:#bae6fd;
-      border:1px solid rgba(56,189,248,.25);
-      border-radius:999px;
-      padding:4px 10px;
-      font-size:12px;
-      margin-right:8px;
-      margin-bottom:8px;
-    }
+    .pair-input{ min-width:220px; }
     .filter-bar{
       display:grid;
       grid-template-columns:1fr 1fr 1fr;
@@ -219,11 +190,8 @@
       margin-top:12px;
     }
     @media (max-width:900px){
-      .filter-bar{
-        grid-template-columns:1fr;
-      }
+      .filter-bar{ grid-template-columns:1fr; }
     }
-
     .login-overlay{
       position:fixed;
       inset:0;
@@ -248,17 +216,14 @@
       color:#fca5a5;
       font-weight:bold;
     }
-
-    #teacherPanel{
-      display:none;
-    }
+    #teacherPanel{ display:none; }
   </style>
 </head>
 <body>
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
       <h2>Wejście do panelu nauczyciela</h2>
-      <div class="small">Aby wejść do panelu, wpisz hasło.</div>
+      <div class="small">Wpisz hasło, aby otworzyć panel.</div>
 
       <div style="margin-top:14px;">
         <label for="teacherPassword">Hasło</label>
@@ -280,8 +245,8 @@
     <div class="container">
       <div class="topbar">
         <div>
-          <div class="title">Panel nauczyciela B+++ Teacher PRO custom class</div>
-          <div class="small">Każdy zestaw może mieć własny tryb: układanie z wyrazów albo z liter.</div>
+          <div class="title">Panel nauczyciela</div>
+          <div class="small">Każdy zestaw może działać w trybie wyrazów albo liter.</div>
         </div>
         <a href="index.html">Otwórz grę studenta</a>
       </div>
@@ -511,6 +476,7 @@ How are you? = Jak się masz?"></textarea>
 
       <div class="card" style="margin-top:16px;">
         <h2>4. Zestawy tłumaczeń</h2>
+
         <div class="actions">
           <button class="success" id="addEmptySetBtn">Dodaj pusty zestaw</button>
           <button class="secondary" id="sortSetsBtn">Sortuj zestawy A-Z</button>
@@ -568,25 +534,27 @@ How are you? = Jak się masz?"></textarea>
 
     const demoSets = [
       {
-        id: "english_polish_words",
-        name: "English Polski wyrazy",
+        id: "animals_words",
+        name: "Animals - wyrazy",
         classLabel: "5A",
-        theme: "school",
+        theme: "animals",
         buildMode: "words",
         pairs: [
-          { source: "I like apples.", target: "Lubię jabłka." },
-          { source: "She is my friend.", target: "Ona jest moją przyjaciółką." }
+          { source: "Cat", target: "Kot" },
+          { source: "Dog", target: "Pies" },
+          { source: "Bird", target: "Ptak" }
         ]
       },
       {
-        id: "english_polish_letters",
-        name: "English Polski litery",
+        id: "animals_letters",
+        name: "Animals - litery",
         classLabel: "5A",
         theme: "animals",
         buildMode: "letters",
         pairs: [
           { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" }
+          { source: "Dog", target: "Pies" },
+          { source: "Bird", target: "Ptak" }
         ]
       }
     ];
