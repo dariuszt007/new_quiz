@@ -1,0 +1,59 @@
+{
+  "title": "Tłumaczenie zdań EN-PL",
+  "settings": {
+    "difficulty": "medium",
+    "defaultClassLabel": "5A",
+    "spawnRate": 1100,
+    "timerSeconds": 45,
+    "maxMistakes": 5,
+    "randomOrder": false,
+    "autoNextSeconds": 3,
+    "soundEnabled": true,
+    "studentNameMode": true,
+    "showSetPicker": true,
+    "allowHint": true,
+    "allowSolution": false,
+    "showTranslationInstruction": true,
+    "sourceLanguageLabel": "English",
+    "targetLanguageLabel": "Polski",
+    "distractorCount": 4,
+    "punctuationMode": "auto"
+  },
+  "sets": [
+    {
+      "id": "animals_words",
+      "name": "Animals - wyrazy",
+      "classLabel": "5A",
+      "theme": "animals",
+      "buildMode": "words",
+      "pairs": [
+        { "source": "Cat", "target": "Kot" },
+        { "source": "Dog", "target": "Pies" },
+        { "source": "Bird", "target": "Ptak" }
+      ]
+    },
+    {
+      "id": "animals_letters",
+      "name": "Animals - litery",
+      "classLabel": "5A",
+      "theme": "animals",
+      "buildMode": "letters",
+      "pairs": [
+        { "source": "Cat", "target": "Kot" },
+        { "source": "Dog", "target": "Pies" },
+        { "source": "Bird", "target": "Ptak" }
+      ]
+    },
+    {
+      "id": "daily_words",
+      "name": "Daily life - wyrazy",
+      "classLabel": "6A",
+      "theme": "daily life",
+      "buildMode": "words",
+      "pairs": [
+        { "source": "I like apples.", "target": "Lubię jabłka." },
+        { "source": "She is my friend.", "target": "Ona jest moją przyjaciółką." }
+      ]
+    }
+  ]
+}
