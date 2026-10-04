@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gra dla studentów - wersja B+++ Teacher PRO custom class</title>
+  <title>Gra dla studentów</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -122,7 +122,7 @@
 
     .word-token{
       position:absolute;
-      min-width:56px;
+      min-width:52px;
       max-width:260px;
       padding:10px 14px;
       border-radius:14px;
@@ -140,7 +140,6 @@
       white-space:nowrap;
       border:2px solid rgba(255,255,255,.5);
     }
-
     .word-token:hover{ transform:scale(1.04); }
     .token-c1{ background:var(--token1); }
     .token-c2{ background:var(--token2); }
@@ -164,8 +163,9 @@
       background:rgba(255,255,255,.03);
       padding:12px;
       border-radius:12px;
-      min-height:74px;
+      min-height:90px;
     }
+
     .source-box{
       margin-top:10px;
       padding:12px;
@@ -176,27 +176,31 @@
       font-size:20px;
       font-weight:bold;
     }
+
     .correct-word{
       color:var(--success);
       font-weight:bold;
-      margin-right:6px;
     }
     .hint-word{
       color:#fde68a;
       font-weight:bold;
       border-bottom:2px dotted #f59e0b;
-      padding:0 3px;
-      margin-right:6px;
+      padding:0 2px;
     }
     .missing-word{
       color:#64748b;
       border-bottom:2px dashed #475569;
-      padding:0 6px;
-      margin-right:6px;
+      padding:0 4px;
       display:inline-block;
-      min-width:26px;
+      min-width:18px;
       text-align:center;
+      margin-right:2px;
     }
+    .space-gap{
+      display:inline-block;
+      width:14px;
+    }
+
     .message{
       min-height:28px;
       font-size:16px;
@@ -206,11 +210,13 @@
     .err{color:var(--danger)}
     .info{color:var(--accent)}
     .warn{color:#fde68a}
+
     .small{
       color:var(--muted);
       font-size:14px;
       line-height:1.5;
     }
+
     .score{
       display:grid;
       grid-template-columns:repeat(4,1fr);
@@ -483,29 +489,31 @@
       },
       sets: [
         {
-          id: "default_words",
-          name: "Domyślny wyrazy",
+          id: "animals_words",
+          name: "Animals - wyrazy",
           classLabel: "5A",
-          theme: "general",
+          theme: "animals",
           buildMode: "words",
           pairs: [
-            { source: "I like apples.", target: "Lubię jabłka." }
+            { source: "Cat", target: "Kot" },
+            { source: "Dog", target: "Pies" }
           ]
         },
         {
-          id: "default_letters",
-          name: "Domyślny litery",
+          id: "animals_letters",
+          name: "Animals - litery",
           classLabel: "5A",
-          theme: "general",
+          theme: "animals",
           buildMode: "letters",
           pairs: [
-            { source: "Cat", target: "Kot" }
+            { source: "Cat", target: "Kot" },
+            { source: "Dog", target: "Pies" }
           ]
         }
       ]
     };
 
-    const REPORTS_KEY = "translation_words_reports_b_teacher_pro_custom_class";
+    const REPORTS_KEY = "translation_reports_stable_final";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -594,7 +602,7 @@
         if(!response.ok) throw new Error("Nie udało się pobrać sentences.json");
 
         const data = await response.json();
-        if(!data || !Array.isArray(data.sets)) throw new Error("Niepoprawny format pliku JSON");
+        if(!data || !Array.isArray(data.sets)) throw new Error("Niepoprawny format JSON");
 
         const cleanedSets = data.sets
           .map(set => ({
@@ -700,8 +708,8 @@
       message.className = "message " + type;
     }
 
-    function isPunctuation(token){
-      return PUNCTUATION.includes(token);
+    function isPunctuation(ch){
+      return PUNCTUATION.includes(ch);
     }
 
     function tokenizeWords(sentence){
@@ -709,24 +717,32 @@
       return parts ? parts : [];
     }
 
-    function tokenizeLetters(sentence){
-      const raw = String(sentence).split("");
-      return raw.filter(ch => ch !== " ");
+    function tokenizeLettersDetailed(sentence){
+      return String(sentence).split("").map(ch => {
+        if(ch === " ") return { kind: "space", value: " " };
+        if(isPunctuation(ch)) return { kind: "punct", value: ch };
+        return { kind: "letter", value: ch };
+      });
     }
 
     function getTargetTokens(sentence, buildMode){
-      if(buildMode === "letters") return tokenizeLetters(sentence);
-      return tokenizeWords(sentence);
+      if(buildMode === "letters"){
+        return tokenizeLettersDetailed(sentence);
+      }
+      return tokenizeWords(sentence).map(token => ({
+        kind: isPunctuation(token) ? "punct" : "word",
+        value: token
+      }));
     }
 
-    function getDisplayTokens(tokens){
+    function getClickableTokens(tokens){
       if(activeSet?.buildMode === "letters"){
-        return tokens.slice();
+        return tokens.filter(t => t.kind === "letter");
       }
       if(config.settings.punctuationMode === "tiles"){
         return tokens.slice();
       }
-      return tokens.filter(token => !isPunctuation(token));
+      return tokens.filter(t => t.kind !== "punct");
     }
 
     function updateScore(){
@@ -759,12 +775,9 @@
 
       sourceLabel.textContent = "Zdanie źródłowe (" + config.settings.sourceLanguageLabel + ")";
       targetLabel.textContent = "Tłumaczenie (" + config.settings.targetLanguageLabel + ")";
-
-      if(activeSet?.buildMode === "letters"){
-        instructionText.textContent = "Przeczytaj zdanie źródłowe i układaj tłumaczenie z kolejnych liter.";
-      } else {
-        instructionText.textContent = "Przeczytaj zdanie źródłowe i układaj tłumaczenie z kolejnych wyrazów.";
-      }
+      instructionText.textContent = activeSet?.buildMode === "letters"
+        ? "Przeczytaj zdanie źródłowe i układaj tłumaczenie z kolejnych liter."
+        : "Przeczytaj zdanie źródłowe i układaj tłumaczenie z kolejnych wyrazów.";
     }
 
     function translateDifficulty(value){
@@ -799,25 +812,32 @@
       let html = "";
 
       currentTokens.forEach((token, index) => {
-        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto" && isPunctuation(token)){
+        if(token.kind === "space"){
+          html += `<span class="space-gap"></span>`;
+          return;
+        }
+
+        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto" && token.kind === "punct"){
           if(index < currentTokenIndex || index === currentTokenIndex){
-            html += `<span class="correct-word">${escapeHtml(token)}</span>`;
+            html += `<span class="correct-word">${escapeHtml(token.value)}</span>`;
+          } else {
+            html += `<span>${escapeHtml(token.value)}</span>`;
           }
           return;
         }
 
         if(index < currentTokenIndex){
-          html += `<span class="correct-word">${escapeHtml(token)}</span>`;
+          html += `<span class="correct-word">${escapeHtml(token.value)}</span>`;
         } else if(index === hintTokenIndex){
-          html += `<span class="hint-word">${escapeHtml(token)}</span>`;
+          html += `<span class="hint-word">${escapeHtml(token.value)}</span>`;
         } else {
-          html += `<span class="missing-word">_</span>`;
+          html += `<span class="missing-word">${token.kind === "punct" ? escapeHtml(token.value) : "_"}</span>`;
         }
       });
 
       progressDisplay.innerHTML = html;
 
-      const displayTokens = getDisplayTokens(currentTokens);
+      const displayTokens = getClickableTokens(currentTokens);
       const total = displayTokens.length;
       const done = getSolvedDisplayTokenCount();
       const percent = total === 0 ? 100 : Math.round((done / total) * 100);
@@ -834,8 +854,13 @@
     function getSolvedDisplayTokenCount(){
       let count = 0;
       for(let i = 0; i < currentTokenIndex; i++){
-        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto" && isPunctuation(currentTokens[i])) continue;
-        count++;
+        const token = currentTokens[i];
+        if(activeSet?.buildMode === "letters"){
+          if(token.kind === "letter") count++;
+        } else {
+          if(config.settings.punctuationMode === "auto" && token.kind === "punct") continue;
+          count++;
+        }
       }
       return count;
     }
@@ -862,7 +887,7 @@
       const localPool = [];
       const globalPool = [];
       const currentTarget = new Set(
-        currentTokens.filter(token => !isPunctuation(token)).map(token => String(token).trim()).filter(Boolean)
+        currentTokens.filter(t => t.kind === "word").map(t => String(t.value).trim()).filter(Boolean)
       );
 
       if(activeSet){
@@ -894,107 +919,69 @@
       };
     }
 
-    function buildLetterDistractorPool(){
-      const localPool = [];
-      const globalPool = [];
-      const currentTarget = new Set(currentTokens.map(t => String(t).trim()).filter(Boolean));
-
-      if(activeSet){
-        activeSet.pairs.forEach(pair => {
-          tokenizeLetters(pair.target).forEach(letter => {
-            const clean = String(letter).trim();
-            if(clean && !currentTarget.has(clean)) localPool.push(clean);
-          });
-        });
-      }
-
-      allSets.forEach(set => {
-        if(set.buildMode !== "letters") return;
-        set.pairs.forEach(pair => {
-          tokenizeLetters(pair.target).forEach(letter => {
-            const clean = String(letter).trim();
-            if(clean && !currentTarget.has(clean)) globalPool.push(clean);
-          });
-        });
-      });
-
-      return {
-        local: [...new Set(localPool)],
-        global: [...new Set(globalPool)]
-      };
-    }
-
     function getDistractorToken(){
       if(activeSet?.buildMode === "letters"){
-        const pools = buildLetterDistractorPool();
-
-        if(pools.local.length > 0){
-          return pools.local[Math.floor(Math.random() * pools.local.length)];
-        }
-        if(pools.global.length > 0){
-          return pools.global[Math.floor(Math.random() * pools.global.length)];
-        }
-
-        const fallback = LETTER_DISTRACTORS.filter(ch => !currentTokens.includes(ch));
-        if(fallback.length > 0){
-          return fallback[Math.floor(Math.random() * fallback.length)];
-        }
-
-        return "x";
+        const currentLetter = currentTokens[currentTokenIndex]?.value || "";
+        const pool = LETTER_DISTRACTORS.filter(ch => ch.toLowerCase() !== String(currentLetter).toLowerCase());
+        if(pool.length === 0) return "x";
+        return pool[Math.floor(Math.random() * pool.length)];
       }
 
       const pools = buildWordDistractorPool();
-
       if(pools.local.length > 0){
         return pools.local[Math.floor(Math.random() * pools.local.length)];
       }
       if(pools.global.length > 0){
         return pools.global[Math.floor(Math.random() * pools.global.length)];
       }
-
-      return currentTokens.find(token => !isPunctuation(token)) || "test";
+      return "test";
     }
 
-    function getExpectedTokenSkippingAutoPunctuation(){
-      while(
-        currentTokenIndex < currentTokens.length &&
-        activeSet?.buildMode !== "letters" &&
-        config.settings.punctuationMode === "auto" &&
-        isPunctuation(currentTokens[currentTokenIndex])
-      ){
-        currentTokenIndex++;
+    function getExpectedTokenSkippingNonClickable(){
+      while(currentTokenIndex < currentTokens.length){
+        const token = currentTokens[currentTokenIndex];
+
+        if(activeSet?.buildMode === "letters"){
+          if(token.kind === "space" || token.kind === "punct"){
+            currentTokenIndex++;
+            continue;
+          }
+          break;
+        } else {
+          if(config.settings.punctuationMode === "auto" && token.kind === "punct"){
+            currentTokenIndex++;
+            continue;
+          }
+          break;
+        }
       }
+
       return currentTokens[currentTokenIndex];
     }
 
     function spawnTokenBatch(){
       if(gameFinished || paused) return;
 
-      const expected = getExpectedTokenSkippingAutoPunctuation();
+      const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
-      const itemsToSpawn = [expected];
+      const itemsToSpawn = [expected.value];
       const distractorTarget = Math.max(1, config.settings.distractorCount);
 
-      while(itemsToSpawn.length < distractorTarget + 1){
-        let distractor;
-
-        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "tiles" && Math.random() < 0.15){
-          distractor = PUNCTUATION[Math.floor(Math.random() * PUNCTUATION.length)];
-        } else {
-          distractor = getDistractorToken();
-        }
-
+      let guard = 0;
+      while(itemsToSpawn.length < distractorTarget + 1 && guard < 50){
+        const distractor = getDistractorToken();
         if(!itemsToSpawn.includes(distractor)){
           itemsToSpawn.push(distractor);
         }
+        guard++;
       }
 
       shuffleArray(itemsToSpawn);
 
       itemsToSpawn.forEach((word, idx) => {
         const width = gameArea.clientWidth;
-        const tokenWidthEstimate = Math.min(260, Math.max(56, word.length * 14 + 24));
+        const tokenWidthEstimate = Math.min(260, Math.max(52, String(word).length * 14 + 24));
         const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
         const speed = getTokenSpeed();
 
@@ -1040,21 +1027,17 @@
       const token = fallingTokens.find(t => t.id === id);
       if(!token) return;
 
-      const expected = getExpectedTokenSkippingAutoPunctuation();
+      const expected = getExpectedTokenSkippingNonClickable();
+      if(!expected) return;
 
-      if(token.word === expected){
+      if(token.word === expected.value){
         correctCount++;
         currentTokenIndex++;
         hintTokenIndex = -1;
         removeAllTokensWithValue(token.word);
         updateScore();
 
-        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto"){
-          while(currentTokenIndex < currentTokens.length && isPunctuation(currentTokens[currentTokenIndex])){
-            currentTokenIndex++;
-          }
-        }
-
+        getExpectedTokenSkippingNonClickable();
         renderProgress();
 
         if(currentTokenIndex >= currentTokens.length){
@@ -1083,11 +1066,9 @@
         for(let i = fallingTokens.length - 1; i >= 0; i--){
           const token = fallingTokens[i];
           token.y += token.speed;
-
           if(token.element){
             token.element.style.top = token.y + "px";
           }
-
           if(token.y > height){
             removeToken(token.id);
           }
@@ -1194,11 +1175,7 @@
       hintTokenIndex = -1;
       currentSentenceHadMistake = false;
 
-      if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto"){
-        while(currentTokenIndex < currentTokens.length && isPunctuation(currentTokens[currentTokenIndex])){
-          currentTokenIndex++;
-        }
-      }
+      getExpectedTokenSkippingNonClickable();
 
       sourceSentenceBox.textContent = currentPair.source;
       gameFinished = false;
@@ -1251,6 +1228,7 @@
         setMessage("Pokazywanie rozwiązania jest wyłączone.", "err");
         return;
       }
+
       currentSentenceHadMistake = true;
       currentTokenIndex = currentTokens.length;
       renderProgress();
@@ -1319,6 +1297,7 @@
     function renderReportHistory(){
       const items = loadReportHistory();
       historyList.innerHTML = "";
+
       if(items.length === 0){
         historyList.innerHTML = '<div class="history-item">Brak zapisanych raportów.</div>';
         return;
@@ -1445,7 +1424,7 @@
 
       if(loadedFromFile){
         setMessage("Wczytano dane z sentences.json.", "ok");
-      }else{
+      } else {
         setMessage("Nie udało się wczytać sentences.json. Użyto danych awaryjnych.", "err");
       }
 
