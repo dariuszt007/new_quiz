@@ -208,7 +208,7 @@
 
     .progress{
       font-size:24px;
-      line-height:2.1;
+      line-height:2.2;
       word-break:break-word;
       background:rgba(255,255,255,.03);
       padding:12px;
@@ -243,13 +243,20 @@
       transition:width .2s ease;
     }
 
-    .correct-word{color:var(--success);font-weight:bold}
+    .correct-word{
+      color:var(--success);
+      font-weight:bold;
+    }
+
     .hint-word{
       color:#fde68a;
       font-weight:bold;
       border-bottom:2px dotted #f59e0b;
       padding:0 2px;
+      background:rgba(245,158,11,.08);
+      border-radius:4px;
     }
+
     .missing-word{
       color:#64748b;
       border-bottom:2px dashed #475569;
@@ -259,7 +266,16 @@
       text-align:center;
       margin-right:2px;
     }
-    .space-gap{display:inline-block;width:14px}
+
+    .word-gap{
+      display:inline-block;
+      width:12px;
+    }
+
+    .space-gap{
+      display:inline-block;
+      width:14px;
+    }
 
     .message{
       min-height:28px;
@@ -1047,7 +1063,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_1";
+    const REPORTS_KEY = "translation_reports_student_5_2";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1142,6 +1158,7 @@
     let hintTokenIndex = -1;
     let focusMode = false;
     let panelsHidden = false;
+    let lastSpawnSide = "center";
 
     let correctCount = 0;
     let wrongCount = 0;
@@ -1388,12 +1405,26 @@
           return;
         }
 
-        if(activeSet?.buildMode !== "letters" && config.settings.punctuationMode === "auto" && token.kind === "punct"){
-          if(index < currentTokenIndex || index === currentTokenIndex){
-            html += `<span class="correct-word">${escapeHtml(token.value)}</span>`;
-          } else {
-            html += `<span>${escapeHtml(token.value)}</span>`;
+        if(activeSet?.buildMode !== "letters"){
+          if(token.kind === "punct"){
+            if(index < currentTokenIndex || index === currentTokenIndex){
+              html += `<span class="correct-word">${escapeHtml(token.value)}</span>`;
+            } else {
+              html += `<span>${escapeHtml(token.value)}</span>`;
+            }
+            html += `<span class="word-gap"></span>`;
+            return;
           }
+
+          if(index < currentTokenIndex){
+            html += `<span class="correct-word">${escapeHtml(token.value)}</span>`;
+          } else if(index === hintTokenIndex){
+            html += `<span class="hint-word">${escapeHtml(token.value)}</span>`;
+          } else {
+            html += `<span class="missing-word">_____</span>`;
+          }
+
+          html += `<span class="word-gap"></span>`;
           return;
         }
 
@@ -1428,7 +1459,7 @@
         if(activeSet?.buildMode === "letters"){
           if(token.kind === "letter") count++;
         } else {
-          if(config.settings.punctuationMode === "auto" && token.kind === "punct") continue;
+          if(token.kind === "punct") continue;
           count++;
         }
       }
@@ -1443,18 +1474,57 @@
       return !(aEnd + gap < bStart || aStart > bEnd + gap);
     }
 
-    function getChaoticSpawnPosition(tokenWidth, placedRects = []){
-      const areaWidth = gameArea.clientWidth;
+    function pickHorizontalZone(){
+      const zones = ["left", "center", "right"];
+      const filtered = zones.filter(z => z !== lastSpawnSide);
+      const choice = filtered[Math.floor(Math.random() * filtered.length)];
+      lastSpawnSide = choice;
+      return choice;
+    }
+
+    function getZoneBounds(areaWidth, tokenWidth, zone){
       const minX = 8;
       const maxX = Math.max(minX, areaWidth - tokenWidth - 8);
+      const third = areaWidth / 3;
 
-      for(let attempt = 0; attempt < 90; attempt++){
-        const x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-        const y = -55 - Math.floor(Math.random() * 140);
+      if(zone === "left"){
+        return {
+          min: minX,
+          max: Math.max(minX, Math.min(maxX, Math.floor(third - tokenWidth * 0.15)))
+        };
+      }
+      if(zone === "right"){
+        return {
+          min: Math.max(minX, Math.floor(third * 2 - tokenWidth * 0.15)),
+          max: maxX
+        };
+      }
+      return {
+        min: Math.max(minX, Math.floor(third - tokenWidth * 0.25)),
+        max: Math.max(minX, Math.min(maxX, Math.floor(third * 2 - tokenWidth * 0.75)))
+      };
+    }
+
+    function getRandomXInBounds(bounds){
+      const min = Math.min(bounds.min, bounds.max);
+      const max = Math.max(bounds.min, bounds.max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getChaoticSpawnPosition(tokenWidth, placedRects = [], preferredZone = null){
+      const areaWidth = gameArea.clientWidth;
+      const zone = preferredZone || pickHorizontalZone();
+      const zoneBounds = getZoneBounds(areaWidth, tokenWidth, zone);
+      const fallbackBounds = { min: 8, max: Math.max(8, areaWidth - tokenWidth - 8) };
+
+      for(let attempt = 0; attempt < 100; attempt++){
+        const bounds = attempt < 65 ? zoneBounds : fallbackBounds;
+        const x = getRandomXInBounds(bounds);
+        const y = -55 - Math.floor(Math.random() * 150);
 
         const tooClose = placedRects.some(rect => {
           const overlapX = rangesOverlap(x, x + tokenWidth, rect.x, rect.x + rect.w, 18);
-          const overlapY = rangesOverlap(y, y + 58, rect.y, rect.y + rect.h, 26);
+          const overlapY = rangesOverlap(y, y + 58, rect.y, rect.y + rect.h, 30);
           return overlapX && overlapY;
         });
 
@@ -1464,19 +1534,21 @@
       }
 
       return {
-        x: Math.floor(Math.random() * (maxX - minX + 1)) + minX,
-        y: -55 - Math.floor(Math.random() * 140)
+        x: getRandomXInBounds(fallbackBounds),
+        y: -55 - Math.floor(Math.random() * 150)
       };
     }
 
-    function getChaoticRespawnPosition(tokenWidth, index, placedRects = []){
+    function getChaoticRespawnPosition(tokenWidth, index, placedRects = [], preferredZone = null){
       const areaWidth = gameArea.clientWidth;
-      const minX = 8;
-      const maxX = Math.max(minX, areaWidth - tokenWidth - 8);
+      const zone = preferredZone || pickHorizontalZone();
+      const zoneBounds = getZoneBounds(areaWidth, tokenWidth, zone);
+      const fallbackBounds = { min: 8, max: Math.max(8, areaWidth - tokenWidth - 8) };
 
-      for(let attempt = 0; attempt < 90; attempt++){
-        const x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-        const y = 14 + index * 18 + Math.floor(Math.random() * 18);
+      for(let attempt = 0; attempt < 100; attempt++){
+        const bounds = attempt < 65 ? zoneBounds : fallbackBounds;
+        const x = getRandomXInBounds(bounds);
+        const y = 14 + index * 18 + Math.floor(Math.random() * 14);
 
         const tooClose = placedRects.some(rect => {
           const overlapX = rangesOverlap(x, x + tokenWidth, rect.x, rect.x + rect.w, 18);
@@ -1490,7 +1562,7 @@
       }
 
       return {
-        x: Math.floor(Math.random() * (maxX - minX + 1)) + minX,
+        x: getRandomXInBounds(fallbackBounds),
         y: 14 + index * 20
       };
     }
@@ -1603,7 +1675,7 @@
           }
           break;
         } else {
-          if(config.settings.punctuationMode === "auto" && token.kind === "punct"){
+          if(token.kind === "punct"){
             currentTokenIndex++;
             continue;
           }
@@ -1638,10 +1710,13 @@
       shuffleArray(itemsToSpawn);
 
       const placedRects = [];
+      const zones = ["left", "center", "right"];
+      shuffleArray(zones);
 
-      itemsToSpawn.forEach((word) => {
+      itemsToSpawn.forEach((word, index) => {
         const tokenWidthEstimate = estimateTokenWidth(word);
-        const pos = getChaoticSpawnPosition(tokenWidthEstimate, placedRects);
+        const zone = zones[index % zones.length];
+        const pos = getChaoticSpawnPosition(tokenWidthEstimate, placedRects, zone);
         const speed = getTokenSpeed();
 
         placedRects.push({
@@ -1677,10 +1752,13 @@
       }
 
       const placedRects = [];
+      const zones = ["left", "center", "right"];
+      shuffleArray(zones);
 
       uniqueWords.forEach((word, idx) => {
         const tokenWidthEstimate = estimateTokenWidth(word);
-        const pos = getChaoticRespawnPosition(tokenWidthEstimate, idx, placedRects);
+        const zone = zones[idx % zones.length];
+        const pos = getChaoticRespawnPosition(tokenWidthEstimate, idx, placedRects, zone);
         const speed = getTokenSpeed();
 
         placedRects.push({
