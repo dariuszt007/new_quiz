@@ -1187,7 +1187,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6";
+    const REPORTS_KEY = "translation_reports_student_5_6A_FIX_2";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1224,7 +1224,6 @@
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
     const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
-    const focusToolbar = document.getElementById("focusToolbar");
     const focusNextBtn = document.getElementById("focusNextBtn");
     const focusPauseBtn = document.getElementById("focusPauseBtn");
     const focusHintBtn = document.getElementById("focusHintBtn");
@@ -1430,6 +1429,18 @@
     function setMessage(text, type = "info"){
       message.textContent = text;
       message.className = "message " + type;
+    }
+
+    function updatePreStartControls(){
+      const preStart = !gameStarted;
+
+      roundStartBtn.style.display = preStart ? "flex" : "none";
+      nextBtn.style.display = preStart ? "none" : "flex";
+      toggleBtn.style.display = preStart ? "none" : "flex";
+      hintBtn.style.display = preStart ? "none" : (config && config.settings.allowHint ? "flex" : "none");
+      focusBtn.style.display = preStart ? "none" : "flex";
+      togglePanelsBtn.style.display = preStart ? "none" : "flex";
+      backToSetsBtn.style.display = "flex";
     }
 
     function isPunctuation(ch){ return PUNCTUATION.includes(ch); }
@@ -1981,17 +1992,29 @@
 
     function unlockGameStart(){
       if(gameStarted) return;
+
       gameStarted = true;
       paused = false;
-      roundStartBtn.style.display = "none";
+
+      updatePreStartControls();
+
       startOverlayMessage.classList.remove("show");
       sourceSentenceBox.classList.remove("hidden-source");
       progressDisplay.classList.remove("hidden-progress");
-      toggleFocusMode(true);
-      setPausedState(false);
+
       setMessage(t("round_started_msg"), "ok");
-      startGameLoops();
-      spawnTokenBatch();
+      setPausedState(false);
+
+      toggleFocusMode(true);
+
+      clearTokens();
+      stopLoops();
+
+      setTimeout(() => {
+        if(!gameStarted) return;
+        startGameLoops();
+        spawnTokenBatch();
+      }, 80);
     }
 
     function saveWrongSentenceIfNeeded(reason = ""){
@@ -2072,6 +2095,7 @@
 
       renderProgress();
       updateTopInfo();
+      updatePreStartControls();
 
       if(gameStarted){
         sourceSentenceBox.classList.remove("hidden-source");
@@ -2302,7 +2326,8 @@
       wrongSentences = [];
       sentenceResults = [];
       gameStarted = false;
-      roundStartBtn.style.display = "flex";
+
+      updatePreStartControls();
 
       chooseActiveSet();
       buildOrder();
@@ -2338,11 +2363,11 @@
       hideCelebrationScreen();
       startScreen.style.display = "flex";
       gameStarted = false;
-      roundStartBtn.style.display = "flex";
       sourceSentenceBox.classList.add("hidden-source");
       progressDisplay.classList.add("hidden-progress");
       startOverlayMessage.classList.add("show");
       toggleFocusMode(false);
+      updatePreStartControls();
       setMessage(t("returned_to_sets"), "info");
     }
 
@@ -2427,6 +2452,7 @@
       fillDatasetSelectByClass();
       updateScore();
       updateTopInfo();
+      updatePreStartControls();
 
       if(loadedFromFile){
         setMessage(t("current_data_loaded"), "ok");
