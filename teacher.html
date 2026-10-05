@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>teacher.html - Panel nauczyciela C</title>
+  <title>teacher.html - Panel nauczyciela C+</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -276,8 +276,8 @@
     <div class="container">
       <div class="topbar">
         <div>
-          <div class="title">Panel nauczyciela C</div>
-          <div class="small">Każdy zestaw może dziedziczyć globalne ustawienia mylących kafelków albo używać własnych.</div>
+          <div class="title">Panel nauczyciela C+</div>
+          <div class="small">Opcja „Tylko litery” jest dostępna wyłącznie dla zestawów w trybie Litery.</div>
         </div>
         <a href="index.html">Otwórz grę studenta</a>
       </div>
@@ -451,8 +451,11 @@
             - <strong>Domyślna liczba mylących kafelków</strong> określa, ile niepoprawnych elementów może pojawić się obok poprawnego.<br>
             - <strong>Domyślny rodzaj mylących kafelków</strong> określa, skąd gra bierze błędne elementy:
             <br>&nbsp;&nbsp;• <strong>Automatycznie</strong> - gra sama dobiera najlepszy wariant.
-            <br>&nbsp;&nbsp;• <strong>Tylko litery</strong> - użyteczne głównie przy trybie <strong>Litery</strong>.
+            <br>&nbsp;&nbsp;• <strong>Tylko litery</strong> - najlepsze dla trybu <strong>Litery</strong>.
             <br>&nbsp;&nbsp;• <strong>Tylko z materiału</strong> - mylące kafelki pochodzą wyłącznie z materiału danego zestawu.
+          </div>
+          <div class="warn-box">
+            Dla zestawów w trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> nie jest używana jako ustawienie własne zestawu.
           </div>
         </div>
 
@@ -521,6 +524,9 @@
 
           <div class="note-box" id="newSetBehaviorInfo">
             Ten zestaw ma obecnie wybrane <strong>Dziedzicz globalne</strong>, więc użyje globalnej liczby i globalnego rodzaju mylących kafelków.
+          </div>
+          <div class="warn-box" id="newSetModeInfo">
+            W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana.
           </div>
 
           <label for="newSetPairs" style="margin-top:12px;">Pary zdań</label>
@@ -674,6 +680,7 @@ How are you? = Jak się masz?"></textarea>
     const newSetDistractorCount = document.getElementById("newSetDistractorCount");
     const newSetDistractorMode = document.getElementById("newSetDistractorMode");
     const newSetBehaviorInfo = document.getElementById("newSetBehaviorInfo");
+    const newSetModeInfo = document.getElementById("newSetModeInfo");
 
     const addSetBtn = document.getElementById("addSetBtn");
     const clearNewSetBtn = document.getElementById("clearNewSetBtn");
@@ -745,8 +752,26 @@ How are you? = Jak się masz?"></textarea>
       });
     }
 
+    function setModeOptionsForSelect(selectEl, buildMode){
+      const lettersOption = selectEl.querySelector('option[value="lettersOnly"]');
+      if(!lettersOption) return;
+
+      if(buildMode === "words"){
+        lettersOption.disabled = true;
+        if(selectEl.value === "lettersOnly"){
+          selectEl.value = "auto";
+        }
+      } else {
+        lettersOption.disabled = false;
+      }
+    }
+
     function updateNewSetOwnFieldsState(){
       const useOwn = newSetUseOwnDistractors.value === "true";
+      const buildMode = newSetBuildMode.value;
+
+      setModeOptionsForSelect(newSetDistractorMode, buildMode);
+
       newSetDistractorCount.disabled = !useOwn;
       newSetDistractorMode.disabled = !useOwn;
 
@@ -760,6 +785,16 @@ How are you? = Jak się masz?"></textarea>
           "<strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>" +
           "Gra użyje globalnej liczby mylących kafelków oraz globalnego rodzaju mylących kafelków z sekcji ustawień domyślnych.";
         newSetBehaviorInfo.className = "help-box";
+      }
+
+      if(buildMode === "words"){
+        newSetModeInfo.innerHTML =
+          "W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana, ponieważ nie pasuje do układania z wyrazów.";
+        newSetModeInfo.className = "warn-box";
+      } else {
+        newSetModeInfo.innerHTML =
+          "W trybie <strong>Litery</strong> opcja <strong>Tylko litery</strong> jest dostępna i zwykle jest dobrym wyborem.";
+        newSetModeInfo.className = "note-box";
       }
     }
 
@@ -781,6 +816,22 @@ How are you? = Jak się masz?"></textarea>
           <strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>
           Użyje globalnej liczby mylących kafelków: <strong>${Number(defaultDistractorCount.value)}</strong><br>
           Użyje globalnego rodzaju mylących kafelków: <strong>${translateDistractorMode(defaultDistractorMode.value)}</strong>
+        </div>
+      `;
+    }
+
+    function getSetModeInfoHtml(set){
+      if(set.buildMode === "words"){
+        return `
+          <div class="warn-box">
+            Tryb tego zestawu to <strong>Wyrazy</strong>, więc opcja <strong>Tylko litery</strong> jest zablokowana.
+          </div>
+        `;
+      }
+
+      return `
+        <div class="note-box">
+          Tryb tego zestawu to <strong>Litery</strong>, więc opcja <strong>Tylko litery</strong> jest dostępna.
         </div>
       `;
     }
@@ -842,6 +893,7 @@ How are you? = Jak się masz?"></textarea>
         `).join("");
 
         const useOwn = !!set.useOwnDistractors;
+        const disableLettersOnly = set.buildMode === "words";
 
         const box = document.createElement("div");
         box.className = "set-item";
@@ -868,13 +920,14 @@ How are you? = Jak się masz?"></textarea>
             </select>
             <select data-field="distractorMode" data-index="${realIndex}" ${!useOwn ? "disabled" : ""}>
               <option value="auto" ${set.distractorMode === "auto" ? "selected" : ""}>Automatycznie</option>
-              <option value="lettersOnly" ${set.distractorMode === "lettersOnly" ? "selected" : ""}>Tylko litery</option>
+              <option value="lettersOnly" ${set.distractorMode === "lettersOnly" ? "selected" : ""} ${disableLettersOnly ? "disabled" : ""}>Tylko litery</option>
               <option value="material" ${set.distractorMode === "material" ? "selected" : ""}>Tylko z materiału</option>
             </select>
             <button class="danger" data-action="removeSet" data-index="${realIndex}">Usuń</button>
           </div>
 
           ${getSetBehaviorInfoHtml(set)}
+          ${getSetModeInfoHtml(set)}
 
           <div class="pair-box">
             <table>
@@ -920,6 +973,16 @@ How are you? = Jak się masz?"></textarea>
           }
           if(field === "useOwnDistractors"){
             value = value === "true";
+          }
+
+          if(field === "buildMode"){
+            sets[i][field] = value;
+            if(value === "words" && sets[i].distractorMode === "lettersOnly"){
+              sets[i].distractorMode = "auto";
+            }
+            renderSets();
+            updateJsonPreview();
+            return;
           }
 
           sets[i][field] = value;
@@ -1031,6 +1094,10 @@ How are you? = Jak się masz?"></textarea>
     }
 
     function addSet(id, name, classLabel, theme, buildMode, useOwnDistractors, distractorCount, distractorMode, pairs){
+      if(buildMode === "words" && distractorMode === "lettersOnly"){
+        distractorMode = "auto";
+      }
+
       sets.push({
         id: sanitizeId(id),
         name: cleanText(name),
@@ -1072,22 +1139,30 @@ How are you? = Jak się masz?"></textarea>
       defaultDistractorMode.value = s.defaultDistractorMode || "auto";
       punctuationMode.value = s.punctuationMode || "auto";
 
-      sets = Array.isArray(data.sets) ? data.sets.map(set => ({
-        id: sanitizeId(set.id || ""),
-        name: cleanText(set.name || ""),
-        classLabel: cleanText(set.classLabel || ""),
-        theme: cleanText(set.theme || ""),
-        buildMode: set.buildMode === "letters" ? "letters" : "words",
-        useOwnDistractors: set.useOwnDistractors === true,
-        distractorCount: Number(set.distractorCount ?? (s.defaultDistractorCount ?? 4)),
-        distractorMode: set.distractorMode || s.defaultDistractorMode || "auto",
-        pairs: Array.isArray(set.pairs)
-          ? set.pairs.map(pair => ({
-              source: cleanText(pair.source || ""),
-              target: cleanText(pair.target || "")
-            }))
-          : []
-      })) : [];
+      sets = Array.isArray(data.sets) ? data.sets.map(set => {
+        const buildMode = set.buildMode === "letters" ? "letters" : "words";
+        let distractorMode = set.distractorMode || s.defaultDistractorMode || "auto";
+        if(buildMode === "words" && distractorMode === "lettersOnly"){
+          distractorMode = "auto";
+        }
+
+        return {
+          id: sanitizeId(set.id || ""),
+          name: cleanText(set.name || ""),
+          classLabel: cleanText(set.classLabel || ""),
+          theme: cleanText(set.theme || ""),
+          buildMode,
+          useOwnDistractors: set.useOwnDistractors === true,
+          distractorCount: Number(set.distractorCount ?? (s.defaultDistractorCount ?? 4)),
+          distractorMode,
+          pairs: Array.isArray(set.pairs)
+            ? set.pairs.map(pair => ({
+                source: cleanText(pair.source || ""),
+                target: cleanText(pair.target || "")
+              }))
+            : []
+        };
+      }) : [];
 
       renderSets();
       updateJsonPreview();
@@ -1168,8 +1243,12 @@ How are you? = Jak się masz?"></textarea>
       const buildMode = newSetBuildMode.value;
       const useOwnDistractors = newSetUseOwnDistractors.value === "true";
       const distractorCount = newSetDistractorCount.value;
-      const distractorMode = newSetDistractorMode.value;
+      let distractorMode = newSetDistractorMode.value;
       const pairs = parsePairsFromTextarea(newSetPairs.value);
+
+      if(buildMode === "words" && distractorMode === "lettersOnly"){
+        distractorMode = "auto";
+      }
 
       if(!sanitizeId(id) || !cleanText(name)){
         setMessage("Podaj ID i nazwę zestawu.", "err");
@@ -1255,6 +1334,7 @@ How are you? = Jak się masz?"></textarea>
     importBtn.addEventListener("click", () => importFile.click());
 
     newSetUseOwnDistractors.addEventListener("change", updateNewSetOwnFieldsState);
+    newSetBuildMode.addEventListener("change", updateNewSetOwnFieldsState);
 
     importFile.addEventListener("change", async (event) => {
       const file = event.target.files[0];
