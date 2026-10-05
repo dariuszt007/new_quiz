@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>teacher.html - Panel nauczyciela C+</title>
+  <title>Teacher Panel</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -256,16 +256,16 @@
 <body>
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-      <h2>Wejście do panelu nauczyciela</h2>
-      <div class="small">Wpisz hasło, aby otworzyć panel.</div>
+      <h2 data-i18n="login_title">Teacher panel access</h2>
+      <div class="small" data-i18n="login_subtitle">Enter the password to open the panel.</div>
       <div style="margin-top:14px;">
-        <label for="teacherPassword">Hasło</label>
-        <input id="teacherPassword" type="password" placeholder="Wpisz hasło" />
+        <label for="teacherPassword" data-i18n="password">Password</label>
+        <input id="teacherPassword" type="password" />
       </div>
       <div class="actions">
-        <button class="primary" id="loginBtn">Wejdź</button>
+        <button class="primary" id="loginBtn" data-i18n="enter">Enter</button>
         <a href="index.html" style="text-decoration:none;">
-          <button type="button" class="secondary">Wróć do gry</button>
+          <button type="button" class="secondary" data-i18n="back_to_game">Back to game</button>
         </a>
       </div>
       <div class="login-error" id="loginError"></div>
@@ -276,73 +276,73 @@
     <div class="container">
       <div class="topbar">
         <div>
-          <div class="title">Panel nauczyciela C+</div>
-          <div class="small">Opcja „Tylko litery” jest dostępna wyłącznie dla zestawów w trybie Litery.</div>
+          <div class="title" data-i18n="panel_title">Teacher Panel D</div>
+          <div class="small" data-i18n="panel_subtitle">The "Letters only" option is available only for sets in Letters mode.</div>
         </div>
-        <a href="index.html">Otwórz grę studenta</a>
+        <a href="index.html" data-i18n="open_student_game">Open student game</a>
       </div>
 
       <div class="grid">
         <div class="card">
-          <h2>1. Ustawienia globalne (domyślne)</h2>
+          <h2 data-i18n="section1_title">1. Global settings (default)</h2>
 
           <div class="row">
             <div>
-              <label for="gameTitle">Tytuł gry</label>
+              <label for="gameTitle" data-i18n="game_title">Game title</label>
               <input id="gameTitle" type="text" value="Tłumaczenie zdań EN-PL" />
             </div>
             <div>
-              <label for="difficulty">Poziom trudności</label>
+              <label for="difficulty" data-i18n="difficulty">Difficulty</label>
               <select id="difficulty">
-                <option value="easy">Łatwy</option>
-                <option value="medium" selected>Średni</option>
-                <option value="hard">Trudny</option>
+                <option value="easy" data-i18n="easy">Easy</option>
+                <option value="medium" selected data-i18n="medium">Medium</option>
+                <option value="hard" data-i18n="hard">Hard</option>
               </select>
             </div>
           </div>
 
           <div class="row-3">
             <div>
-              <label for="defaultClassLabel">Domyślna klasa / grupa</label>
+              <label for="defaultClassLabel" data-i18n="default_class">Default class / group</label>
               <input id="defaultClassLabel" type="text" value="5A" />
             </div>
             <div>
-              <label for="sourceLanguageLabel">Język źródłowy</label>
+              <label for="sourceLanguageLabel" data-i18n="source_language">Source language</label>
               <input id="sourceLanguageLabel" type="text" value="English" />
             </div>
             <div>
-              <label for="targetLanguageLabel">Język docelowy</label>
+              <label for="targetLanguageLabel" data-i18n="target_language">Target language</label>
               <input id="targetLanguageLabel" type="text" value="Polski" />
             </div>
           </div>
 
           <div class="actions">
-            <button class="warning" id="swapAllLanguagesBtn">Zamień języki we wszystkich zestawach</button>
+            <button class="warning" id="swapAllLanguagesBtn" data-i18n="swap_languages_all">Swap languages in all sets</button>
           </div>
 
           <div class="row-3">
             <div>
-              <label for="spawnRate">Czas pojawiania się kafelków</label>
+              <label for="spawnRate" data-i18n="tile_spawn_time">Tile spawn timing</label>
               <select id="spawnRate">
-                <option value="1500">Wolno</option>
-                <option value="1100" selected>Normalnie</option>
-                <option value="800">Szybko</option>
+                <option value="1500" data-i18n="slow">Slow</option>
+                <option value="1100" selected data-i18n="normal">Normal</option>
+                <option value="800" data-i18n="fast">Fast</option>
               </select>
             </div>
             <div>
-              <label for="timerSeconds">Timer</label>
+              <label for="timerSeconds" data-i18n="timer">Timer</label>
               <select id="timerSeconds">
-                <option value="0">Bez timera</option>
-                <option value="30">30 sekund</option>
-                <option value="45" selected>45 sekund</option>
-                <option value="60">60 sekund</option>
-                <option value="90">90 sekund</option>
+                <option value="0" data-i18n="no_timer">No timer</option>
+                <option value="30" data-i18n="sec_30">30 seconds</option>
+                <option value="45" selected data-i18n="sec_45">45 seconds</option>
+                <option value="60" data-i18n="sec_60">60 seconds</option>
+                <option value="90" data-i18n="sec_90">90 seconds</option>
               </select>
             </div>
             <div>
-              <label for="maxMistakes">Maksymalna liczba błędów</label>
+              <label for="maxMistakes" data-i18n="max_mistakes">Maximum mistakes</label>
               <select id="maxMistakes">
-                <option value="0">Bez limitu</option>
+                <option value="0" data-i18n="no_limit">No limit</option>
                 <option value="3">3</option>
                 <option value="5" selected>5</option>
                 <option value="10">10</option>
@@ -352,25 +352,25 @@
 
           <div class="row-3">
             <div>
-              <label for="randomOrder">Kolejność zdań</label>
+              <label for="randomOrder" data-i18n="sentence_order">Sentence order</label>
               <select id="randomOrder">
-                <option value="false" selected>Po kolei</option>
-                <option value="true">Losowo</option>
+                <option value="false" selected data-i18n="in_order">In order</option>
+                <option value="true" data-i18n="random">Random</option>
               </select>
             </div>
             <div>
-              <label for="autoNextSeconds">Auto dalej</label>
+              <label for="autoNextSeconds" data-i18n="auto_next">Auto next</label>
               <select id="autoNextSeconds">
-                <option value="0">Wyłączone</option>
-                <option value="2">2 sekundy</option>
-                <option value="3" selected>3 sekundy</option>
-                <option value="5">5 sekund</option>
+                <option value="0" data-i18n="disabled">Disabled</option>
+                <option value="2" data-i18n="sec2">2 seconds</option>
+                <option value="3" selected data-i18n="sec3">3 seconds</option>
+                <option value="5" data-i18n="sec5">5 seconds</option>
               </select>
             </div>
             <div>
-              <label for="defaultDistractorCount">Domyślna liczba mylących kafelków</label>
+              <label for="defaultDistractorCount" data-i18n="default_distractor_count">Default distractor count</label>
               <select id="defaultDistractorCount">
-                <option value="0">Brak</option>
+                <option value="0" data-i18n="none">None</option>
                 <option value="2">2</option>
                 <option value="4" selected>4</option>
                 <option value="6">6</option>
@@ -381,128 +381,118 @@
 
           <div class="row-3">
             <div>
-              <label for="defaultDistractorMode">Domyślny rodzaj mylących kafelków</label>
+              <label for="defaultDistractorMode" data-i18n="default_distractor_mode">Default distractor type</label>
               <select id="defaultDistractorMode">
-                <option value="auto" selected>Automatycznie</option>
-                <option value="lettersOnly">Tylko litery</option>
-                <option value="material">Tylko z materiału</option>
+                <option value="auto" selected data-i18n="auto">Automatic</option>
+                <option value="lettersOnly" data-i18n="letters_only">Letters only</option>
+                <option value="material" data-i18n="from_material">Only from material</option>
               </select>
             </div>
             <div>
-              <label for="punctuationMode">Interpunkcja</label>
+              <label for="punctuationMode" data-i18n="punctuation">Punctuation</label>
               <select id="punctuationMode">
-                <option value="auto" selected>Automatycznie</option>
-                <option value="tiles">Jako kafelki</option>
+                <option value="auto" selected data-i18n="automatic">Automatic</option>
+                <option value="tiles" data-i18n="as_tiles">As tiles</option>
               </select>
             </div>
             <div>
-              <label for="studentNameMode">Wymagane imię ucznia</label>
+              <label for="studentNameMode" data-i18n="student_name_required">Student name required</label>
               <select id="studentNameMode">
-                <option value="true" selected>Tak</option>
-                <option value="false">Nie</option>
+                <option value="true" selected data-i18n="yes">Yes</option>
+                <option value="false" data-i18n="no">No</option>
               </select>
             </div>
           </div>
 
           <div class="row-3">
             <div>
-              <label for="showSetPicker">Wybór zestawu na starcie</label>
+              <label for="showSetPicker" data-i18n="show_set_picker">Show set picker at start</label>
               <select id="showSetPicker">
-                <option value="true" selected>Tak</option>
-                <option value="false">Nie</option>
+                <option value="true" selected data-i18n="yes">Yes</option>
+                <option value="false" data-i18n="no">No</option>
               </select>
             </div>
             <div>
-              <label for="allowHint">Podpowiedź</label>
+              <label for="allowHint" data-i18n="hint">Hint</label>
               <select id="allowHint">
-                <option value="true" selected>Tak</option>
-                <option value="false">Nie</option>
+                <option value="true" selected data-i18n="yes">Yes</option>
+                <option value="false" data-i18n="no">No</option>
               </select>
             </div>
             <div>
-              <label for="allowSolution">Pokaż rozwiązanie</label>
+              <label for="allowSolution" data-i18n="show_solution">Show solution</label>
               <select id="allowSolution">
-                <option value="true">Tak</option>
-                <option value="false" selected>Nie</option>
+                <option value="true" data-i18n="yes">Yes</option>
+                <option value="false" selected data-i18n="no">No</option>
               </select>
             </div>
           </div>
 
           <div class="row-3">
             <div>
-              <label for="showTranslationInstruction">Instrukcja tłumaczenia</label>
+              <label for="showTranslationInstruction" data-i18n="translation_instruction">Translation instruction</label>
               <select id="showTranslationInstruction">
-                <option value="true" selected>Tak</option>
-                <option value="false">Nie</option>
+                <option value="true" selected data-i18n="yes">Yes</option>
+                <option value="false" data-i18n="no">No</option>
               </select>
             </div>
             <div>
-              <label for="soundEnabled">Dźwięki</label>
+              <label for="soundEnabled" data-i18n="sound">Sound</label>
               <select id="soundEnabled">
-                <option value="true" selected>Tak</option>
-                <option value="false">Nie</option>
+                <option value="true" selected data-i18n="yes">Yes</option>
+                <option value="false" data-i18n="no">No</option>
               </select>
             </div>
           </div>
 
-          <div class="note-box">
-            <strong>Jak działają ustawienia globalne:</strong><br>
-            - Jeśli zestaw ma wybrane <strong>Dziedzicz globalne</strong>, użyje tych ustawień.<br>
-            - <strong>Domyślna liczba mylących kafelków</strong> określa, ile niepoprawnych elementów może pojawić się obok poprawnego.<br>
-            - <strong>Domyślny rodzaj mylących kafelków</strong> określa, skąd gra bierze błędne elementy:
-            <br>&nbsp;&nbsp;• <strong>Automatycznie</strong> - gra sama dobiera najlepszy wariant.
-            <br>&nbsp;&nbsp;• <strong>Tylko litery</strong> - najlepsze dla trybu <strong>Litery</strong>.
-            <br>&nbsp;&nbsp;• <strong>Tylko z materiału</strong> - mylące kafelki pochodzą wyłącznie z materiału danego zestawu.
-          </div>
-          <div class="warn-box">
-            Dla zestawów w trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> nie jest używana jako ustawienie własne zestawu.
-          </div>
+          <div class="note-box" id="globalInfoBox"></div>
+          <div class="warn-box" id="globalWarnBox"></div>
         </div>
 
         <div class="card">
-          <h2>2. Nowy zestaw</h2>
+          <h2 data-i18n="section2_title">2. New set</h2>
 
           <div class="row">
             <div>
-              <label for="newSetId">ID zestawu</label>
-              <input id="newSetId" type="text" placeholder="Np. class5a" />
+              <label for="newSetId" data-i18n="set_id">Set ID</label>
+              <input id="newSetId" type="text" placeholder="class5a" />
             </div>
             <div>
-              <label for="newSetName">Nazwa zestawu</label>
-              <input id="newSetName" type="text" placeholder="Np. Klasa 5A" />
+              <label for="newSetName" data-i18n="set_name">Set name</label>
+              <input id="newSetName" type="text" />
             </div>
           </div>
 
           <div class="row">
             <div>
-              <label for="newSetClassLabel">Klasa / grupa</label>
-              <input id="newSetClassLabel" type="text" placeholder="Np. 5A" />
+              <label for="newSetClassLabel" data-i18n="class_group">Class / group</label>
+              <input id="newSetClassLabel" type="text" placeholder="5A" />
             </div>
             <div>
-              <label for="newSetTheme">Temat</label>
-              <input id="newSetTheme" type="text" placeholder="Np. animals" />
+              <label for="newSetTheme" data-i18n="theme">Theme</label>
+              <input id="newSetTheme" type="text" placeholder="animals" />
             </div>
           </div>
 
           <div class="row-3">
             <div>
-              <label for="newSetBuildMode">Tryb układania</label>
+              <label for="newSetBuildMode" data-i18n="build_mode">Build mode</label>
               <select id="newSetBuildMode">
-                <option value="words" selected>Układanie z wyrazów</option>
-                <option value="letters">Układanie z liter</option>
+                <option value="words" data-i18n="build_words">Build with words</option>
+                <option value="letters" data-i18n="build_letters">Build with letters</option>
               </select>
             </div>
             <div>
-              <label for="newSetUseOwnDistractors">Ustawienia mylących kafelków</label>
+              <label for="newSetUseOwnDistractors" data-i18n="distractor_settings">Distractor settings</label>
               <select id="newSetUseOwnDistractors">
-                <option value="false" selected>Dziedzicz globalne</option>
-                <option value="true">Użyj własnych</option>
+                <option value="false" selected data-i18n="inherit_global">Inherit global</option>
+                <option value="true" data-i18n="use_own">Use own</option>
               </select>
             </div>
             <div>
-              <label for="newSetDistractorCount">Liczba mylących kafelków</label>
+              <label for="newSetDistractorCount" data-i18n="distractor_count">Distractor count</label>
               <select id="newSetDistractorCount">
-                <option value="0">Brak</option>
+                <option value="0" data-i18n="none">None</option>
                 <option value="2">2</option>
                 <option value="4" selected>4</option>
                 <option value="6">6</option>
@@ -513,76 +503,70 @@
 
           <div class="row">
             <div>
-              <label for="newSetDistractorMode">Rodzaj mylących kafelków</label>
+              <label for="newSetDistractorMode" data-i18n="distractor_type">Distractor type</label>
               <select id="newSetDistractorMode">
-                <option value="auto" selected>Automatycznie</option>
-                <option value="lettersOnly">Tylko litery</option>
-                <option value="material">Tylko z materiału</option>
+                <option value="auto" selected data-i18n="auto">Automatic</option>
+                <option value="lettersOnly" data-i18n="letters_only">Letters only</option>
+                <option value="material" data-i18n="from_material">Only from material</option>
               </select>
             </div>
           </div>
 
-          <div class="note-box" id="newSetBehaviorInfo">
-            Ten zestaw ma obecnie wybrane <strong>Dziedzicz globalne</strong>, więc użyje globalnej liczby i globalnego rodzaju mylących kafelków.
-          </div>
-          <div class="warn-box" id="newSetModeInfo">
-            W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana.
-          </div>
+          <div class="note-box" id="newSetBehaviorInfo"></div>
+          <div class="warn-box" id="newSetModeInfo"></div>
 
-          <label for="newSetPairs" style="margin-top:12px;">Pary zdań</label>
-          <textarea id="newSetPairs" placeholder="Każda linia:
-I like apples. = Lubię jabłka.
-How are you? = Jak się masz?"></textarea>
+          <label for="newSetPairs" style="margin-top:12px;" data-i18n="sentence_pairs">Sentence pairs</label>
+          <textarea id="newSetPairs"></textarea>
 
           <div class="actions">
-            <button class="primary" id="addSetBtn">Dodaj zestaw</button>
-            <button class="danger" id="clearNewSetBtn">Wyczyść pola</button>
+            <button class="primary" id="addSetBtn" data-i18n="add_set">Add set</button>
+            <button class="danger" id="clearNewSetBtn" data-i18n="clear_fields">Clear fields</button>
           </div>
 
-          <div class="message info" id="message">Ładowanie danych...</div>
+          <div class="message info" id="message"></div>
         </div>
       </div>
 
       <div class="card" style="margin-top:16px;">
-        <h2>3. Filtry zestawów</h2>
+        <h2 data-i18n="section3_title">3. Set filters</h2>
         <div class="filter-bar">
           <div>
-            <label for="filterClassLabel">Filtr klasy / grupy</label>
-            <input id="filterClassLabel" type="text" placeholder="Np. 5A" />
+            <label for="filterClassLabel" data-i18n="filter_class">Filter by class / group</label>
+            <input id="filterClassLabel" type="text" placeholder="5A" />
           </div>
           <div>
-            <label for="filterTheme">Filtr tematu</label>
-            <input id="filterTheme" type="text" placeholder="Np. animals" />
+            <label for="filterTheme" data-i18n="filter_theme">Filter by theme</label>
+            <input id="filterTheme" type="text" placeholder="animals" />
           </div>
           <div>
             <label>&nbsp;</label>
-            <button class="secondary" id="clearFiltersBtn" style="width:100%;">Wyczyść filtry</button>
+            <button class="secondary" id="clearFiltersBtn" style="width:100%;" data-i18n="clear_filters">Clear filters</button>
           </div>
         </div>
       </div>
 
       <div class="card" style="margin-top:16px;">
-        <h2>4. Zestawy tłumaczeń</h2>
+        <h2 data-i18n="section4_title">4. Translation sets</h2>
 
         <div class="actions">
-          <button class="success" id="addEmptySetBtn">Dodaj pusty zestaw</button>
-          <button class="secondary" id="sortSetsBtn">Sortuj zestawy A-Z</button>
-          <button class="danger" id="clearSetsBtn">Usuń wszystkie zestawy</button>
+          <button class="success" id="addEmptySetBtn" data-i18n="add_empty_set">Add empty set</button>
+          <button class="secondary" id="sortSetsBtn" data-i18n="sort_sets">Sort sets A-Z</button>
+          <button class="danger" id="clearSetsBtn" data-i18n="remove_all_sets">Remove all sets</button>
         </div>
 
         <div id="setList" class="set-list"></div>
-        <div id="stats" class="small" style="margin-top:10px;">Liczba zestawów: 0</div>
+        <div id="stats" class="small" style="margin-top:10px;"></div>
       </div>
 
       <div class="card" style="margin-top:16px;">
-        <h2>5. Podgląd pliku JSON</h2>
+        <h2 data-i18n="section5_title">5. JSON preview</h2>
         <textarea id="jsonOutput" class="json-output" readonly></textarea>
 
         <div class="actions">
-          <button class="primary" id="previewBtn">Odśwież JSON</button>
-          <button class="success" id="downloadBtn">Pobierz sentences.json</button>
-          <button class="secondary" id="copyBtn">Kopiuj JSON</button>
-          <button class="secondary" id="importBtn">Wczytaj istniejący JSON</button>
+          <button class="primary" id="previewBtn" data-i18n="refresh_json">Refresh JSON</button>
+          <button class="success" id="downloadBtn" data-i18n="download_json">Download sentences.json</button>
+          <button class="secondary" id="copyBtn" data-i18n="copy_json">Copy JSON</button>
+          <button class="secondary" id="importBtn" data-i18n="import_json">Import existing JSON</button>
           <input type="file" id="importFile" accept=".json,application/json" style="display:none" />
         </div>
       </div>
@@ -590,6 +574,514 @@ How are you? = Jak się masz?"></textarea>
   </div>
 
   <script>
+    const I18N = {
+      en: {
+        page_title: "Teacher Panel",
+        login_title: "Teacher panel access",
+        login_subtitle: "Enter the password to open the panel.",
+        password: "Password",
+        enter: "Enter",
+        back_to_game: "Back to game",
+        login_error: "Incorrect password.",
+        panel_title: "Teacher Panel D",
+        panel_subtitle: "The \"Letters only\" option is available only for sets in Letters mode.",
+        open_student_game: "Open student game",
+
+        section1_title: "1. Global settings (default)",
+        game_title: "Game title",
+        difficulty: "Difficulty",
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard",
+        default_class: "Default class / group",
+        source_language: "Source language",
+        target_language: "Target language",
+        swap_languages_all: "Swap languages in all sets",
+        tile_spawn_time: "Tile spawn timing",
+        slow: "Slow",
+        normal: "Normal",
+        fast: "Fast",
+        timer: "Timer",
+        no_timer: "No timer",
+        sec_30: "30 seconds",
+        sec_45: "45 seconds",
+        sec_60: "60 seconds",
+        sec_90: "90 seconds",
+        max_mistakes: "Maximum mistakes",
+        no_limit: "No limit",
+        sentence_order: "Sentence order",
+        in_order: "In order",
+        random: "Random",
+        auto_next: "Auto next",
+        disabled: "Disabled",
+        sec2: "2 seconds",
+        sec3: "3 seconds",
+        sec5: "5 seconds",
+        default_distractor_count: "Default distractor count",
+        none: "None",
+        default_distractor_mode: "Default distractor type",
+        auto: "Automatic",
+        letters_only: "Letters only",
+        from_material: "Only from material",
+        punctuation: "Punctuation",
+        automatic: "Automatic",
+        as_tiles: "As tiles",
+        student_name_required: "Student name required",
+        yes: "Yes",
+        no: "No",
+        show_set_picker: "Show set picker at start",
+        hint: "Hint",
+        show_solution: "Show solution",
+        translation_instruction: "Translation instruction",
+        sound: "Sound",
+
+        section2_title: "2. New set",
+        set_id: "Set ID",
+        set_name: "Set name",
+        class_group: "Class / group",
+        theme: "Theme",
+        build_mode: "Build mode",
+        build_words: "Build with words",
+        build_letters: "Build with letters",
+        distractor_settings: "Distractor settings",
+        inherit_global: "Inherit global",
+        use_own: "Use own",
+        distractor_count: "Distractor count",
+        distractor_type: "Distractor type",
+        sentence_pairs: "Sentence pairs",
+        add_set: "Add set",
+        clear_fields: "Clear fields",
+
+        section3_title: "3. Set filters",
+        filter_class: "Filter by class / group",
+        filter_theme: "Filter by theme",
+        clear_filters: "Clear filters",
+
+        section4_title: "4. Translation sets",
+        add_empty_set: "Add empty set",
+        sort_sets: "Sort sets A-Z",
+        remove_all_sets: "Remove all sets",
+
+        section5_title: "5. JSON preview",
+        refresh_json: "Refresh JSON",
+        download_json: "Download sentences.json",
+        copy_json: "Copy JSON",
+        import_json: "Import existing JSON",
+
+        remove: "Remove",
+        duplicate: "Duplicate",
+        swap_languages: "Swap languages",
+        move_up: "Move up",
+        move_down: "Move down",
+        add_pair: "Add pair",
+        source_sentence: "Source sentence",
+        target_translation: "Target translation",
+        action: "Action",
+        no_pairs: "No sentence pairs.",
+        no_matching_sets: "No sets match the filters.",
+        set_count: "Number of sets",
+
+        global_info:
+          "<strong>How global settings work:</strong><br>" +
+          "- If a set uses <strong>Inherit global</strong>, it will use these settings.<br>" +
+          "- <strong>Default distractor count</strong> controls how many incorrect elements may appear next to the correct one.<br>" +
+          "- <strong>Default distractor type</strong> controls where the incorrect elements come from:" +
+          "<br>&nbsp;&nbsp;• <strong>Automatic</strong> - the game picks the best option automatically." +
+          "<br>&nbsp;&nbsp;• <strong>Letters only</strong> - best for <strong>Letters</strong> mode." +
+          "<br>&nbsp;&nbsp;• <strong>Only from material</strong> - distractors come only from the set material.",
+        global_warn:
+          "For sets in <strong>Words</strong> mode, the <strong>Letters only</strong> option is not used as that set's own setting.",
+
+        newset_inherit_info:
+          "<strong>This set inherits global settings.</strong><br>" +
+          "The game will use the global distractor count and the global distractor type from the default settings section.",
+        newset_own_info:
+          "<strong>This set uses its own settings.</strong><br>" +
+          "The game will use exactly the distractor count and distractor type selected here.",
+        newset_words_mode_info:
+          "In <strong>Words</strong> mode, the <strong>Letters only</strong> option is blocked because it does not match word-based building.",
+        newset_letters_mode_info:
+          "In <strong>Letters</strong> mode, the <strong>Letters only</strong> option is available and is usually a good choice.",
+
+        set_own_info: "This set uses its own settings.",
+        set_inherit_info: "This set inherits global settings.",
+        uses_global_count: "Uses global distractor count",
+        uses_global_type: "Uses global distractor type",
+        set_mode_words_info: "This set uses <strong>Words</strong> mode, so <strong>Letters only</strong> is blocked.",
+        set_mode_letters_info: "This set uses <strong>Letters</strong> mode, so <strong>Letters only</strong> is available.",
+
+        loaded_json_ok: "Current data loaded from sentences.json.",
+        loaded_json_fallback: "Could not load sentences.json. Sample data loaded.",
+        enter_set_id_and_name: "Provide the set ID and set name.",
+        add_at_least_one_pair: "Add at least one valid sentence pair.",
+        set_added: "Set added.",
+        fields_cleared: "Fields cleared.",
+        sets_sorted: "Sets sorted A-Z.",
+        sets_removed: "All sets removed.",
+        languages_swapped_set: "Swapped source and target in the selected set.",
+        languages_swapped_all: "Swapped languages in all sets.",
+        json_refreshed: "JSON preview refreshed.",
+        json_downloaded: "Downloaded sentences.json.",
+        json_copied: "JSON copied to clipboard.",
+        json_imported: "JSON file loaded.",
+        json_import_error: "Could not load JSON file.",
+        add_one_valid_set: "Add at least one valid set."
+      },
+
+      pl: {
+        page_title: "Panel nauczyciela",
+        login_title: "Wejście do panelu nauczyciela",
+        login_subtitle: "Wpisz hasło, aby otworzyć panel.",
+        password: "Hasło",
+        enter: "Wejdź",
+        back_to_game: "Wróć do gry",
+        login_error: "Niepoprawne hasło.",
+        panel_title: "Panel nauczyciela D",
+        panel_subtitle: "Opcja „Tylko litery” jest dostępna wyłącznie dla zestawów w trybie Litery.",
+        open_student_game: "Otwórz grę ucznia",
+
+        section1_title: "1. Ustawienia globalne (domyślne)",
+        game_title: "Tytuł gry",
+        difficulty: "Poziom trudności",
+        easy: "Łatwy",
+        medium: "Średni",
+        hard: "Trudny",
+        default_class: "Domyślna klasa / grupa",
+        source_language: "Język źródłowy",
+        target_language: "Język docelowy",
+        swap_languages_all: "Zamień języki we wszystkich zestawach",
+        tile_spawn_time: "Czas pojawiania się kafelków",
+        slow: "Wolno",
+        normal: "Normalnie",
+        fast: "Szybko",
+        timer: "Timer",
+        no_timer: "Bez timera",
+        sec_30: "30 sekund",
+        sec_45: "45 sekund",
+        sec_60: "60 sekund",
+        sec_90: "90 sekund",
+        max_mistakes: "Maksymalna liczba błędów",
+        no_limit: "Bez limitu",
+        sentence_order: "Kolejność zdań",
+        in_order: "Po kolei",
+        random: "Losowo",
+        auto_next: "Auto dalej",
+        disabled: "Wyłączone",
+        sec2: "2 sekundy",
+        sec3: "3 sekundy",
+        sec5: "5 sekund",
+        default_distractor_count: "Domyślna liczba mylących kafelków",
+        none: "Brak",
+        default_distractor_mode: "Domyślny rodzaj mylących kafelków",
+        auto: "Automatycznie",
+        letters_only: "Tylko litery",
+        from_material: "Tylko z materiału",
+        punctuation: "Interpunkcja",
+        automatic: "Automatycznie",
+        as_tiles: "Jako kafelki",
+        student_name_required: "Wymagane imię ucznia",
+        yes: "Tak",
+        no: "Nie",
+        show_set_picker: "Wybór zestawu na starcie",
+        hint: "Podpowiedź",
+        show_solution: "Pokaż rozwiązanie",
+        translation_instruction: "Instrukcja tłumaczenia",
+        sound: "Dźwięki",
+
+        section2_title: "2. Nowy zestaw",
+        set_id: "ID zestawu",
+        set_name: "Nazwa zestawu",
+        class_group: "Klasa / grupa",
+        theme: "Temat",
+        build_mode: "Tryb układania",
+        build_words: "Układanie z wyrazów",
+        build_letters: "Układanie z liter",
+        distractor_settings: "Ustawienia mylących kafelków",
+        inherit_global: "Dziedzicz globalne",
+        use_own: "Użyj własnych",
+        distractor_count: "Liczba mylących kafelków",
+        distractor_type: "Rodzaj mylących kafelków",
+        sentence_pairs: "Pary zdań",
+        add_set: "Dodaj zestaw",
+        clear_fields: "Wyczyść pola",
+
+        section3_title: "3. Filtry zestawów",
+        filter_class: "Filtr klasy / grupy",
+        filter_theme: "Filtr tematu",
+        clear_filters: "Wyczyść filtry",
+
+        section4_title: "4. Zestawy tłumaczeń",
+        add_empty_set: "Dodaj pusty zestaw",
+        sort_sets: "Sortuj zestawy A-Z",
+        remove_all_sets: "Usuń wszystkie zestawy",
+
+        section5_title: "5. Podgląd pliku JSON",
+        refresh_json: "Odśwież JSON",
+        download_json: "Pobierz sentences.json",
+        copy_json: "Kopiuj JSON",
+        import_json: "Wczytaj istniejący JSON",
+
+        remove: "Usuń",
+        duplicate: "Duplikuj",
+        swap_languages: "Zamień języki",
+        move_up: "Przesuń w górę",
+        move_down: "Przesuń w dół",
+        add_pair: "Dodaj parę",
+        source_sentence: "Zdanie źródłowe",
+        target_translation: "Tłumaczenie docelowe",
+        action: "Akcja",
+        no_pairs: "Brak par zdań.",
+        no_matching_sets: "Brak zestawów pasujących do filtrów.",
+        set_count: "Liczba zestawów",
+
+        global_info:
+          "<strong>Jak działają ustawienia globalne:</strong><br>" +
+          "- Jeśli zestaw ma wybrane <strong>Dziedzicz globalne</strong>, użyje tych ustawień.<br>" +
+          "- <strong>Domyślna liczba mylących kafelków</strong> określa, ile niepoprawnych elementów może pojawić się obok poprawnego.<br>" +
+          "- <strong>Domyślny rodzaj mylących kafelków</strong> określa, skąd gra bierze błędne elementy:" +
+          "<br>&nbsp;&nbsp;• <strong>Automatycznie</strong> - gra sama dobiera najlepszy wariant." +
+          "<br>&nbsp;&nbsp;• <strong>Tylko litery</strong> - najlepsze dla trybu <strong>Litery</strong>." +
+          "<br>&nbsp;&nbsp;• <strong>Tylko z materiału</strong> - mylące kafelki pochodzą wyłącznie z materiału danego zestawu.",
+        global_warn:
+          "Dla zestawów w trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> nie jest używana jako ustawienie własne zestawu.",
+
+        newset_inherit_info:
+          "<strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>" +
+          "Gra użyje globalnej liczby mylących kafelków oraz globalnego rodzaju mylących kafelków z sekcji ustawień domyślnych.",
+        newset_own_info:
+          "<strong>Ten zestaw użyje własnych ustawień.</strong><br>" +
+          "Gra zastosuje dokładnie wybraną tutaj liczbę mylących kafelków i wybrany tutaj rodzaj mylących kafelków.",
+        newset_words_mode_info:
+          "W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana, ponieważ nie pasuje do układania z wyrazów.",
+        newset_letters_mode_info:
+          "W trybie <strong>Litery</strong> opcja <strong>Tylko litery</strong> jest dostępna i zwykle jest dobrym wyborem.",
+
+        set_own_info: "Ten zestaw używa własnych ustawień.",
+        set_inherit_info: "Ten zestaw dziedziczy ustawienia globalne.",
+        uses_global_count: "Użyje globalnej liczby mylących kafelków",
+        uses_global_type: "Użyje globalnego rodzaju mylących kafelków",
+        set_mode_words_info: "Tryb tego zestawu to <strong>Wyrazy</strong>, więc opcja <strong>Tylko litery</strong> jest zablokowana.",
+        set_mode_letters_info: "Tryb tego zestawu to <strong>Litery</strong>, więc opcja <strong>Tylko litery</strong> jest dostępna.",
+
+        loaded_json_ok: "Wczytano aktualne dane z pliku sentences.json.",
+        loaded_json_fallback: "Nie udało się wczytać sentences.json. Załadowano dane przykładowe.",
+        enter_set_id_and_name: "Podaj ID i nazwę zestawu.",
+        add_at_least_one_pair: "Dodaj przynajmniej jedną poprawną parę zdań.",
+        set_added: "Dodano zestaw.",
+        fields_cleared: "Wyczyszczono pola.",
+        sets_sorted: "Posortowano zestawy A-Z.",
+        sets_removed: "Usunięto wszystkie zestawy.",
+        languages_swapped_set: "Zamieniono source i target w wybranym zestawie.",
+        languages_swapped_all: "Zamieniono języki we wszystkich zestawach.",
+        json_refreshed: "Odświeżono podgląd JSON.",
+        json_downloaded: "Pobrano plik sentences.json.",
+        json_copied: "JSON skopiowany do schowka.",
+        json_imported: "Wczytano plik JSON.",
+        json_import_error: "Nie udało się wczytać pliku JSON.",
+        add_one_valid_set: "Dodaj przynajmniej jeden poprawny zestaw."
+      },
+
+      ja: {
+        page_title: "教師パネル",
+        login_title: "教師パネルへアクセス",
+        login_subtitle: "パネルを開くにはパスワードを入力してください。",
+        password: "パスワード",
+        enter: "入る",
+        back_to_game: "ゲームに戻る",
+        login_error: "パスワードが正しくありません。",
+        panel_title: "教師パネル D",
+        panel_subtitle: "「文字のみ」オプションは文字モードのセットでのみ利用できます。",
+        open_student_game: "生徒用ゲームを開く",
+
+        section1_title: "1. 全体設定（デフォルト）",
+        game_title: "ゲームタイトル",
+        difficulty: "難易度",
+        easy: "やさしい",
+        medium: "ふつう",
+        hard: "むずかしい",
+        default_class: "デフォルトのクラス / グループ",
+        source_language: "元の言語",
+        target_language: "訳先言語",
+        swap_languages_all: "すべてのセットで言語を入れ替える",
+        tile_spawn_time: "タイル出現タイミング",
+        slow: "遅い",
+        normal: "普通",
+        fast: "速い",
+        timer: "タイマー",
+        no_timer: "タイマーなし",
+        sec_30: "30秒",
+        sec_45: "45秒",
+        sec_60: "60秒",
+        sec_90: "90秒",
+        max_mistakes: "最大ミス数",
+        no_limit: "制限なし",
+        sentence_order: "文の順序",
+        in_order: "順番どおり",
+        random: "ランダム",
+        auto_next: "自動で次へ",
+        disabled: "無効",
+        sec2: "2秒",
+        sec3: "3秒",
+        sec5: "5秒",
+        default_distractor_count: "デフォルトのダミータイル数",
+        none: "なし",
+        default_distractor_mode: "デフォルトのダミータイル種類",
+        auto: "自動",
+        letters_only: "文字のみ",
+        from_material: "教材内のみ",
+        punctuation: "句読点",
+        automatic: "自動",
+        as_tiles: "タイルとして表示",
+        student_name_required: "生徒名を必須にする",
+        yes: "はい",
+        no: "いいえ",
+        show_set_picker: "開始時にセット選択を表示",
+        hint: "ヒント",
+        show_solution: "答えを表示",
+        translation_instruction: "翻訳指示",
+        sound: "音",
+
+        section2_title: "2. 新しいセット",
+        set_id: "セットID",
+        set_name: "セット名",
+        class_group: "クラス / グループ",
+        theme: "テーマ",
+        build_mode: "組み立てモード",
+        build_words: "単語で組み立てる",
+        build_letters: "文字で組み立てる",
+        distractor_settings: "ダミータイル設定",
+        inherit_global: "全体設定を継承",
+        use_own: "独自設定を使う",
+        distractor_count: "ダミータイル数",
+        distractor_type: "ダミータイル種類",
+        sentence_pairs: "文ペア",
+        add_set: "セットを追加",
+        clear_fields: "入力をクリア",
+
+        section3_title: "3. セットのフィルター",
+        filter_class: "クラス / グループで絞り込み",
+        filter_theme: "テーマで絞り込み",
+        clear_filters: "フィルターをクリア",
+
+        section4_title: "4. 翻訳セット",
+        add_empty_set: "空のセットを追加",
+        sort_sets: "セットを A-Z で並べ替え",
+        remove_all_sets: "すべてのセットを削除",
+
+        section5_title: "5. JSON プレビュー",
+        refresh_json: "JSON を更新",
+        download_json: "sentences.json をダウンロード",
+        copy_json: "JSON をコピー",
+        import_json: "既存の JSON を読み込む",
+
+        remove: "削除",
+        duplicate: "複製",
+        swap_languages: "言語を入れ替え",
+        move_up: "上へ",
+        move_down: "下へ",
+        add_pair: "ペアを追加",
+        source_sentence: "元の文",
+        target_translation: "訳文",
+        action: "操作",
+        no_pairs: "文ペアがありません。",
+        no_matching_sets: "フィルターに一致するセットがありません。",
+        set_count: "セット数",
+
+        global_info:
+          "<strong>全体設定の動作:</strong><br>" +
+          "- セットで <strong>全体設定を継承</strong> を選ぶと、ここでの設定が使われます。<br>" +
+          "- <strong>デフォルトのダミータイル数</strong> は、正解の横にいくつ誤り要素を出すかを決めます。<br>" +
+          "- <strong>デフォルトのダミータイル種類</strong> は、誤り要素をどこから取るかを決めます:" +
+          "<br>&nbsp;&nbsp;• <strong>自動</strong> - ゲームが最適な方法を自動で選びます。" +
+          "<br>&nbsp;&nbsp;• <strong>文字のみ</strong> - <strong>文字</strong>モード向きです。" +
+          "<br>&nbsp;&nbsp;• <strong>教材内のみ</strong> - ダミータイルはそのセットの教材からのみ取られます。",
+        global_warn:
+          "<strong>単語</strong>モードのセットでは、<strong>文字のみ</strong> はそのセット独自設定としては使われません。",
+
+        newset_inherit_info:
+          "<strong>このセットは全体設定を継承します。</strong><br>" +
+          "ゲームはデフォルト設定セクションのダミータイル数とダミータイル種類を使います。",
+        newset_own_info:
+          "<strong>このセットは独自設定を使います。</strong><br>" +
+          "ここで選んだダミータイル数とダミータイル種類がそのまま使われます。",
+        newset_words_mode_info:
+          "<strong>単語</strong>モードでは、<strong>文字のみ</strong> は単語組み立てに合わないため無効です。",
+        newset_letters_mode_info:
+          "<strong>文字</strong>モードでは、<strong>文字のみ</strong> が使え、通常はよい選択です。",
+
+        set_own_info: "このセットは独自設定を使います。",
+        set_inherit_info: "このセットは全体設定を継承します。",
+        uses_global_count: "全体設定のダミータイル数を使用",
+        uses_global_type: "全体設定のダミータイル種類を使用",
+        set_mode_words_info: "このセットは<strong>単語</strong>モードなので、<strong>文字のみ</strong> は無効です。",
+        set_mode_letters_info: "このセットは<strong>文字</strong>モードなので、<strong>文字のみ</strong> が利用できます。",
+
+        loaded_json_ok: "sentences.json から現在のデータを読み込みました。",
+        loaded_json_fallback: "sentences.json を読み込めなかったため、サンプルデータを読み込みました。",
+        enter_set_id_and_name: "セットIDとセット名を入力してください。",
+        add_at_least_one_pair: "有効な文ペアを少なくとも1つ追加してください。",
+        set_added: "セットを追加しました。",
+        fields_cleared: "入力をクリアしました。",
+        sets_sorted: "セットを A-Z に並べ替えました。",
+        sets_removed: "すべてのセットを削除しました。",
+        languages_swapped_set: "選択したセットで source と target を入れ替えました。",
+        languages_swapped_all: "すべてのセットで言語を入れ替えました。",
+        json_refreshed: "JSON プレビューを更新しました。",
+        json_downloaded: "sentences.json をダウンロードしました。",
+        json_copied: "JSON をクリップボードにコピーしました。",
+        json_imported: "JSON ファイルを読み込みました。",
+        json_import_error: "JSON ファイルを読み込めませんでした。",
+        add_one_valid_set: "少なくとも1つの有効なセットを追加してください。"
+      }
+    };
+
+    function detectLanguage(){
+      const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
+      if(lang.startsWith("pl")) return "pl";
+      if(lang.startsWith("ja")) return "ja";
+      if(lang.startsWith("en")) return "en";
+      return "en";
+    }
+
+    let currentLang = detectLanguage();
+
+    function t(key){
+      return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key;
+    }
+
+    function applyStaticTranslations(){
+      document.documentElement.lang = currentLang;
+      document.title = t("page_title");
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        if(el.tagName === "INPUT" && el.type !== "button" && el.type !== "submit" && el.type !== "password"){
+          el.placeholder = t(key);
+        } else {
+          el.innerHTML = t(key);
+        }
+      });
+
+      teacherPassword.placeholder = t("password");
+      newSetId.placeholder = "class5a";
+      newSetClassLabel.placeholder = "5A";
+      newSetTheme.placeholder = "animals";
+      filterClassLabel.placeholder = "5A";
+      filterTheme.placeholder = "animals";
+      newSetPairs.placeholder =
+        currentLang === "pl"
+          ? "Każda linia:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
+          : currentLang === "ja"
+            ? "各行に入力:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
+            : "Each line:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?";
+
+      document.getElementById("globalInfoBox").innerHTML = t("global_info");
+      document.getElementById("globalWarnBox").innerHTML = t("global_warn");
+      updateNewSetOwnFieldsState();
+      renderSets();
+      updateStatsLabel();
+    }
+
     const TEACHER_PASSWORD = "1111";
 
     const loginOverlay = document.getElementById("loginOverlay");
@@ -609,7 +1101,7 @@ How are you? = Jak się masz?"></textarea>
       if(teacherPassword.value === TEACHER_PASSWORD){
         unlockTeacherPanel();
       } else {
-        loginError.textContent = "Niepoprawne hasło.";
+        loginError.textContent = t("login_error");
         teacherPassword.select();
       }
     }
@@ -622,7 +1114,7 @@ How are you? = Jak się masz?"></textarea>
     const demoSets = [
       {
         id: "animals_words",
-        name: "Animals - wyrazy",
+        name: "Animals - words",
         classLabel: "5A",
         theme: "animals",
         buildMode: "words",
@@ -636,7 +1128,7 @@ How are you? = Jak się masz?"></textarea>
       },
       {
         id: "animals_letters",
-        name: "Animals - litery",
+        name: "Animals - letters",
         classLabel: "5A",
         theme: "animals",
         buildMode: "letters",
@@ -776,24 +1268,18 @@ How are you? = Jak się masz?"></textarea>
       newSetDistractorMode.disabled = !useOwn;
 
       if(useOwn){
-        newSetBehaviorInfo.innerHTML =
-          "<strong>Ten zestaw użyje własnych ustawień.</strong><br>" +
-          "Gra zastosuje dokładnie wybraną tutaj liczbę mylących kafelków i wybrany tutaj rodzaj mylących kafelków.";
+        newSetBehaviorInfo.innerHTML = t("newset_own_info");
         newSetBehaviorInfo.className = "note-box";
       } else {
-        newSetBehaviorInfo.innerHTML =
-          "<strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>" +
-          "Gra użyje globalnej liczby mylących kafelków oraz globalnego rodzaju mylących kafelków z sekcji ustawień domyślnych.";
+        newSetBehaviorInfo.innerHTML = t("newset_inherit_info");
         newSetBehaviorInfo.className = "help-box";
       }
 
       if(buildMode === "words"){
-        newSetModeInfo.innerHTML =
-          "W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana, ponieważ nie pasuje do układania z wyrazów.";
+        newSetModeInfo.innerHTML = t("newset_words_mode_info");
         newSetModeInfo.className = "warn-box";
       } else {
-        newSetModeInfo.innerHTML =
-          "W trybie <strong>Litery</strong> opcja <strong>Tylko litery</strong> jest dostępna i zwykle jest dobrym wyborem.";
+        newSetModeInfo.innerHTML = t("newset_letters_mode_info");
         newSetModeInfo.className = "note-box";
       }
     }
@@ -804,42 +1290,37 @@ How are you? = Jak się masz?"></textarea>
       if(useOwn){
         return `
           <div class="note-box">
-            <strong>Ten zestaw używa własnych ustawień.</strong><br>
-            Liczba mylących kafelków: <strong>${Number(set.distractorCount ?? 0)}</strong><br>
-            Rodzaj mylących kafelków: <strong>${translateDistractorMode(set.distractorMode || "auto")}</strong>
+            <strong>${t("set_own_info")}</strong><br>
+            ${t("distractor_count")}: <strong>${Number(set.distractorCount ?? 0)}</strong><br>
+            ${t("distractor_type")}: <strong>${translateDistractorMode(set.distractorMode || "auto")}</strong>
           </div>
         `;
       }
 
       return `
         <div class="help-box">
-          <strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>
-          Użyje globalnej liczby mylących kafelków: <strong>${Number(defaultDistractorCount.value)}</strong><br>
-          Użyje globalnego rodzaju mylących kafelków: <strong>${translateDistractorMode(defaultDistractorMode.value)}</strong>
+          <strong>${t("set_inherit_info")}</strong><br>
+          ${t("uses_global_count")}: <strong>${Number(defaultDistractorCount.value)}</strong><br>
+          ${t("uses_global_type")}: <strong>${translateDistractorMode(defaultDistractorMode.value)}</strong>
         </div>
       `;
     }
 
     function getSetModeInfoHtml(set){
       if(set.buildMode === "words"){
-        return `
-          <div class="warn-box">
-            Tryb tego zestawu to <strong>Wyrazy</strong>, więc opcja <strong>Tylko litery</strong> jest zablokowana.
-          </div>
-        `;
+        return `<div class="warn-box">${t("set_mode_words_info")}</div>`;
       }
-
-      return `
-        <div class="note-box">
-          Tryb tego zestawu to <strong>Litery</strong>, więc opcja <strong>Tylko litery</strong> jest dostępna.
-        </div>
-      `;
+      return `<div class="note-box">${t("set_mode_letters_info")}</div>`;
     }
 
     function translateDistractorMode(mode){
-      if(mode === "lettersOnly") return "Tylko litery";
-      if(mode === "material") return "Tylko z materiału";
-      return "Automatycznie";
+      if(mode === "lettersOnly") return t("letters_only");
+      if(mode === "material") return t("from_material");
+      return t("auto");
+    }
+
+    function updateStatsLabel(){
+      stats.textContent = `${t("set_count")}: ${filteredSets().length} / ${sets.length}`;
     }
 
     function swapLanguageLabels(){
@@ -856,7 +1337,7 @@ How are you? = Jak się masz?"></textarea>
       }));
       renderSets();
       updateJsonPreview();
-      setMessage("Zamieniono source i target w wybranym zestawie.", "ok");
+      setMessage(t("languages_swapped_set"), "ok");
     }
 
     function swapLanguagesInAllSets(){
@@ -870,7 +1351,7 @@ How are you? = Jak się masz?"></textarea>
       swapLanguageLabels();
       renderSets();
       updateJsonPreview();
-      setMessage("Zamieniono języki we wszystkich zestawach.", "ok");
+      setMessage(t("languages_swapped_all"), "ok");
     }
 
     function renderSets(){
@@ -878,7 +1359,7 @@ How are you? = Jak się masz?"></textarea>
       const visibleSets = filteredSets();
 
       if(visibleSets.length === 0){
-        setList.innerHTML = '<div class="small">Brak zestawów pasujących do filtrów.</div>';
+        setList.innerHTML = `<div class="small">${t("no_matching_sets")}</div>`;
       }
 
       visibleSets.forEach(set => {
@@ -888,7 +1369,7 @@ How are you? = Jak się masz?"></textarea>
           <tr>
             <td><input class="pair-input" type="text" value="${escapeHtmlAttr(pair.source)}" data-pair-field="source" data-set-index="${realIndex}" data-pair-index="${pairIndex}"></td>
             <td><input class="pair-input" type="text" value="${escapeHtmlAttr(pair.target)}" data-pair-field="target" data-set-index="${realIndex}" data-pair-index="${pairIndex}"></td>
-            <td><button class="danger" data-action="removePair" data-set-index="${realIndex}" data-pair-index="${pairIndex}">Usuń</button></td>
+            <td><button class="danger" data-action="removePair" data-set-index="${realIndex}" data-pair-index="${pairIndex}">${t("remove")}</button></td>
           </tr>
         `).join("");
 
@@ -899,31 +1380,31 @@ How are you? = Jak się masz?"></textarea>
         box.className = "set-item";
         box.innerHTML = `
           <div class="set-header">
-            <input type="text" value="${escapeHtmlAttr(set.id)}" placeholder="ID zestawu" data-field="id" data-index="${realIndex}">
-            <input type="text" value="${escapeHtmlAttr(set.name)}" placeholder="Nazwa zestawu" data-field="name" data-index="${realIndex}">
-            <input type="text" value="${escapeHtmlAttr(set.classLabel || "")}" placeholder="Klasa / grupa" data-field="classLabel" data-index="${realIndex}">
-            <input type="text" value="${escapeHtmlAttr(set.theme || "")}" placeholder="Temat" data-field="theme" data-index="${realIndex}">
+            <input type="text" value="${escapeHtmlAttr(set.id)}" placeholder="${t("set_id")}" data-field="id" data-index="${realIndex}">
+            <input type="text" value="${escapeHtmlAttr(set.name)}" placeholder="${t("set_name")}" data-field="name" data-index="${realIndex}">
+            <input type="text" value="${escapeHtmlAttr(set.classLabel || "")}" placeholder="${t("class_group")}" data-field="classLabel" data-index="${realIndex}">
+            <input type="text" value="${escapeHtmlAttr(set.theme || "")}" placeholder="${t("theme")}" data-field="theme" data-index="${realIndex}">
             <select data-field="buildMode" data-index="${realIndex}">
-              <option value="words" ${set.buildMode === "words" ? "selected" : ""}>Wyrazy</option>
-              <option value="letters" ${set.buildMode === "letters" ? "selected" : ""}>Litery</option>
+              <option value="words" ${set.buildMode === "words" ? "selected" : ""}>${t("build_words")}</option>
+              <option value="letters" ${set.buildMode === "letters" ? "selected" : ""}>${t("build_letters")}</option>
             </select>
             <select data-field="useOwnDistractors" data-index="${realIndex}">
-              <option value="false" ${!useOwn ? "selected" : ""}>Dziedzicz globalne</option>
-              <option value="true" ${useOwn ? "selected" : ""}>Użyj własnych</option>
+              <option value="false" ${!useOwn ? "selected" : ""}>${t("inherit_global")}</option>
+              <option value="true" ${useOwn ? "selected" : ""}>${t("use_own")}</option>
             </select>
             <select data-field="distractorCount" data-index="${realIndex}" ${!useOwn ? "disabled" : ""}>
-              <option value="0" ${Number(set.distractorCount ?? 4) === 0 ? "selected" : ""}>Brak</option>
+              <option value="0" ${Number(set.distractorCount ?? 4) === 0 ? "selected" : ""}>${t("none")}</option>
               <option value="2" ${Number(set.distractorCount ?? 4) === 2 ? "selected" : ""}>2</option>
               <option value="4" ${Number(set.distractorCount ?? 4) === 4 ? "selected" : ""}>4</option>
               <option value="6" ${Number(set.distractorCount ?? 4) === 6 ? "selected" : ""}>6</option>
               <option value="8" ${Number(set.distractorCount ?? 4) === 8 ? "selected" : ""}>8</option>
             </select>
             <select data-field="distractorMode" data-index="${realIndex}" ${!useOwn ? "disabled" : ""}>
-              <option value="auto" ${set.distractorMode === "auto" ? "selected" : ""}>Automatycznie</option>
-              <option value="lettersOnly" ${set.distractorMode === "lettersOnly" ? "selected" : ""} ${disableLettersOnly ? "disabled" : ""}>Tylko litery</option>
-              <option value="material" ${set.distractorMode === "material" ? "selected" : ""}>Tylko z materiału</option>
+              <option value="auto" ${set.distractorMode === "auto" ? "selected" : ""}>${t("auto")}</option>
+              <option value="lettersOnly" ${set.distractorMode === "lettersOnly" ? "selected" : ""} ${disableLettersOnly ? "disabled" : ""}>${t("letters_only")}</option>
+              <option value="material" ${set.distractorMode === "material" ? "selected" : ""}>${t("from_material")}</option>
             </select>
-            <button class="danger" data-action="removeSet" data-index="${realIndex}">Usuń</button>
+            <button class="danger" data-action="removeSet" data-index="${realIndex}">${t("remove")}</button>
           </div>
 
           ${getSetBehaviorInfoHtml(set)}
@@ -933,21 +1414,21 @@ How are you? = Jak się masz?"></textarea>
             <table>
               <thead>
                 <tr>
-                  <th>Zdanie źródłowe</th>
-                  <th>Tłumaczenie docelowe</th>
-                  <th>Akcja</th>
+                  <th>${t("source_sentence")}</th>
+                  <th>${t("target_translation")}</th>
+                  <th>${t("action")}</th>
                 </tr>
               </thead>
               <tbody>
-                ${rowsHtml || '<tr><td colspan="3" class="small">Brak par zdań.</td></tr>'}
+                ${rowsHtml || `<tr><td colspan="3" class="small">${t("no_pairs")}</td></tr>`}
               </tbody>
             </table>
             <div class="actions">
-              <button class="success" data-action="addPair" data-index="${realIndex}">Dodaj parę</button>
-              <button class="secondary" data-action="duplicateSet" data-index="${realIndex}">Duplikuj</button>
-              <button class="warning" data-action="swapSetLanguages" data-index="${realIndex}">Zamień języki</button>
-              <button class="secondary" data-action="upSet" data-index="${realIndex}">Przesuń w górę</button>
-              <button class="secondary" data-action="downSet" data-index="${realIndex}">Przesuń w dół</button>
+              <button class="success" data-action="addPair" data-index="${realIndex}">${t("add_pair")}</button>
+              <button class="secondary" data-action="duplicateSet" data-index="${realIndex}">${t("duplicate")}</button>
+              <button class="warning" data-action="swapSetLanguages" data-index="${realIndex}">${t("swap_languages")}</button>
+              <button class="secondary" data-action="upSet" data-index="${realIndex}">${t("move_up")}</button>
+              <button class="secondary" data-action="downSet" data-index="${realIndex}">${t("move_down")}</button>
             </div>
           </div>
         `;
@@ -955,7 +1436,7 @@ How are you? = Jak się masz?"></textarea>
       });
 
       bindSetEvents();
-      stats.textContent = "Liczba zestawów: " + visibleSets.length + " / " + sets.length;
+      updateStatsLabel();
     }
 
     function bindSetEvents(){
@@ -1013,7 +1494,7 @@ How are you? = Jak się masz?"></textarea>
           } else if(action === "duplicateSet"){
             sets.splice(i + 1, 0, JSON.parse(JSON.stringify(sets[i])));
             sets[i + 1].id = sets[i + 1].id + "_copy";
-            sets[i + 1].name = sets[i + 1].name + " kopia";
+            sets[i + 1].name = sets[i + 1].name + " copy";
           } else if(action === "swapSetLanguages"){
             swapLanguagesInSet(i);
             return;
@@ -1054,12 +1535,12 @@ How are you? = Jak się masz?"></textarea>
         .filter(set => set.id && set.name && set.pairs.length > 0);
 
       if(preparedSets.length === 0){
-        setMessage("Dodaj przynajmniej jeden poprawny zestaw.", "err");
+        setMessage(t("add_one_valid_set"), "err");
         return null;
       }
 
       return {
-        title: cleanText(gameTitle.value) || "Tłumaczenie zdań",
+        title: cleanText(gameTitle.value) || "Translation game",
         settings: {
           difficulty: difficulty.value,
           defaultClassLabel: cleanText(defaultClassLabel.value) || "",
@@ -1117,7 +1598,7 @@ How are you? = Jak się masz?"></textarea>
     }
 
     function applyData(data){
-      gameTitle.value = data.title || "Tłumaczenie zdań";
+      gameTitle.value = data.title || "Translation game";
 
       const s = data.settings || {};
       difficulty.value = s.difficulty || "medium";
@@ -1167,6 +1648,7 @@ How are you? = Jak się masz?"></textarea>
       renderSets();
       updateJsonPreview();
       updateNewSetOwnFieldsState();
+      applyStaticTranslations();
     }
 
     function downloadJsonFile(filename, content){
@@ -1187,28 +1669,28 @@ How are you? = Jak się masz?"></textarea>
 
       try{
         await navigator.clipboard.writeText(jsonOutput.value);
-        setMessage("JSON skopiowany do schowka.", "ok");
+        setMessage(t("json_copied"), "ok");
       }catch{
         jsonOutput.select();
         document.execCommand("copy");
-        setMessage("JSON skopiowany do schowka.", "ok");
+        setMessage(t("json_copied"), "ok");
       }
     }
 
     async function loadSentencesJsonAtStart(){
       try{
         const response = await fetch("sentences.json", { cache: "no-store" });
-        if(!response.ok) throw new Error("Brak pliku sentences.json");
+        if(!response.ok) throw new Error("No file");
 
         const data = await response.json();
-        if(!data || !Array.isArray(data.sets)) throw new Error("Niepoprawny format JSON");
+        if(!data || !Array.isArray(data.sets)) throw new Error("Invalid JSON");
 
         applyData(data);
-        setMessage("Wczytano aktualne dane z pliku sentences.json.", "ok");
+        setMessage(t("loaded_json_ok"), "ok");
       } catch(error){
         console.error(error);
         applyData({
-          title: "Tłumaczenie zdań EN-PL",
+          title: "Translation game",
           settings: {
             difficulty: "medium",
             defaultClassLabel: "5A",
@@ -1231,7 +1713,7 @@ How are you? = Jak się masz?"></textarea>
           },
           sets: demoSets
         });
-        setMessage("Nie udało się wczytać sentences.json. Załadowano dane przykładowe.", "err");
+        setMessage(t("loaded_json_fallback"), "err");
       }
     }
 
@@ -1251,17 +1733,17 @@ How are you? = Jak się masz?"></textarea>
       }
 
       if(!sanitizeId(id) || !cleanText(name)){
-        setMessage("Podaj ID i nazwę zestawu.", "err");
+        setMessage(t("enter_set_id_and_name"), "err");
         return;
       }
 
       if(pairs.length === 0){
-        setMessage("Dodaj przynajmniej jedną poprawną parę zdań.", "err");
+        setMessage(t("add_at_least_one_pair"), "err");
         return;
       }
 
       addSet(id, name, classLabel, theme, buildMode, useOwnDistractors, distractorCount, distractorMode, pairs);
-      setMessage("Dodano zestaw.", "ok");
+      setMessage(t("set_added"), "ok");
     });
 
     clearNewSetBtn.addEventListener("click", () => {
@@ -1275,13 +1757,13 @@ How are you? = Jak się masz?"></textarea>
       newSetDistractorCount.value = "4";
       newSetDistractorMode.value = "auto";
       updateNewSetOwnFieldsState();
-      setMessage("Wyczyszczono pola nowego zestawu.", "info");
+      setMessage(t("fields_cleared"), "info");
     });
 
     addEmptySetBtn.addEventListener("click", () => {
       sets.push({
-        id: "nowy_zestaw",
-        name: "Nowy zestaw",
+        id: "new_set",
+        name: currentLang === "ja" ? "新しいセット" : currentLang === "pl" ? "Nowy zestaw" : "New set",
         classLabel: "",
         theme: "",
         buildMode: "words",
@@ -1295,17 +1777,17 @@ How are you? = Jak się masz?"></textarea>
     });
 
     sortSetsBtn.addEventListener("click", () => {
-      sets.sort((a, b) => String(a.name).localeCompare(String(b.name), "pl"));
+      sets.sort((a, b) => String(a.name).localeCompare(String(b.name), currentLang === "ja" ? "ja" : currentLang === "pl" ? "pl" : "en"));
       renderSets();
       updateJsonPreview();
-      setMessage("Posortowano zestawy A-Z.", "ok");
+      setMessage(t("sets_sorted"), "ok");
     });
 
     clearSetsBtn.addEventListener("click", () => {
       sets = [];
       renderSets();
       updateJsonPreview();
-      setMessage("Usunięto wszystkie zestawy.", "info");
+      setMessage(t("sets_removed"), "info");
     });
 
     swapAllLanguagesBtn.addEventListener("click", swapLanguagesInAllSets);
@@ -1320,14 +1802,14 @@ How are you? = Jak się masz?"></textarea>
 
     previewBtn.addEventListener("click", () => {
       updateJsonPreview();
-      if(jsonOutput.value.trim()) setMessage("Odświeżono podgląd JSON.", "ok");
+      if(jsonOutput.value.trim()) setMessage(t("json_refreshed"), "ok");
     });
 
     downloadBtn.addEventListener("click", () => {
       updateJsonPreview();
       if(!jsonOutput.value.trim()) return;
       downloadJsonFile("sentences.json", jsonOutput.value);
-      setMessage("Pobrano plik sentences.json.", "ok");
+      setMessage(t("json_downloaded"), "ok");
     });
 
     copyBtn.addEventListener("click", copyJson);
@@ -1343,17 +1825,18 @@ How are you? = Jak się masz?"></textarea>
       try{
         const text = await file.text();
         const data = JSON.parse(text);
-        if(!data || !Array.isArray(data.sets)) throw new Error("Niepoprawny plik JSON.");
+        if(!data || !Array.isArray(data.sets)) throw new Error("Invalid file.");
         applyData(data);
-        setMessage("Wczytano plik JSON.", "ok");
+        setMessage(t("json_imported"), "ok");
       }catch(error){
         console.error(error);
-        setMessage("Nie udało się wczytać pliku JSON.", "err");
+        setMessage(t("json_import_error"), "err");
       }finally{
         importFile.value = "";
       }
     });
 
+    applyStaticTranslations();
     loadSentencesJsonAtStart();
     updateNewSetOwnFieldsState();
   </script>
