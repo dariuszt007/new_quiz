@@ -464,51 +464,6 @@
       display:none;
     }
 
-    .classroom-mode .container{
-      max-width:1600px;
-      padding:22px;
-    }
-
-    .classroom-mode .word-token{
-      min-width:96px;
-      max-width:420px;
-      font-size:28px;
-      padding:18px 22px;
-      border-radius:18px;
-    }
-
-    .classroom-mode button{
-      min-height:66px;
-      font-size:18px;
-      padding:14px 18px;
-    }
-
-    .classroom-mode .title{
-      font-size:38px;
-    }
-
-    .classroom-mode .source-box{
-      font-size:28px;
-      padding:18px;
-    }
-
-    .classroom-mode .progress{
-      font-size:30px;
-      min-height:120px;
-    }
-
-    .classroom-mode .card h2{
-      font-size:22px;
-    }
-
-    .classroom-mode .small{
-      font-size:17px;
-    }
-
-    .classroom-mode .score-box strong{
-      font-size:30px;
-    }
-
     .fullscreen-host{
       width:100%;
       min-height:100vh;
@@ -597,7 +552,6 @@
           <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
           <button class="secondary" id="focusBtn" data-i18n="focus_mode">Focus mode</button>
           <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Hide top panels</button>
-          <button class="secondary" id="classroomBtn">Tryb klasy</button>
           <button class="secondary" id="resetTokensBtn">Reset kafelków</button>
         </div>
       </div>
@@ -1049,7 +1003,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_4";
+    const REPORTS_KEY = "translation_reports_student_4_1";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1084,7 +1038,6 @@
     const backToSetsBtn = document.getElementById("backToSetsBtn");
     const focusBtn = document.getElementById("focusBtn");
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
-    const classroomBtn = document.getElementById("classroomBtn");
     const resetTokensBtn = document.getElementById("resetTokensBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
     const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
@@ -1143,8 +1096,6 @@
     let hintTokenIndex = -1;
     let focusMode = false;
     let panelsHidden = false;
-    let classroomMode = false;
-    let pendingFinalReport = false;
 
     let correctCount = 0;
     let wrongCount = 0;
@@ -1162,9 +1113,8 @@
       });
       floatingShowPanelsBtn.textContent = t("show_panels");
       floatingExitFocusBtn.textContent = t("normal_mode");
-      classroomBtn.textContent = classroomMode ? "Tryb zwykły" : "Tryb klasy";
-      resetTokensBtn.textContent = "Reset kafelków";
-      openReportBtn.textContent = "Pokaż raport";
+      resetTokensBtn.textContent = currentLang === "pl" ? "Reset kafelków" : currentLang === "ja" ? "タイルをリセット" : "Reset tiles";
+      openReportBtn.textContent = currentLang === "pl" ? "Pokaż raport" : currentLang === "ja" ? "レポートを見る" : "Show report";
       celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
       updateFullscreenButton();
@@ -1583,9 +1533,7 @@
 
       itemsToSpawn.forEach((word, idx) => {
         const width = gameArea.clientWidth;
-        const tokenWidthEstimate = classroomMode
-          ? Math.min(420, Math.max(96, String(word).length * 20 + 34))
-          : Math.min(340, Math.max(76, String(word).length * 16 + 30));
+        const tokenWidthEstimate = Math.min(340, Math.max(76, String(word).length * 16 + 30));
         const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
         const speed = getTokenSpeed();
 
@@ -1611,9 +1559,7 @@
 
       uniqueWords.forEach((word, idx) => {
         const width = gameArea.clientWidth;
-        const tokenWidthEstimate = classroomMode
-          ? Math.min(420, Math.max(96, String(word).length * 20 + 34))
-          : Math.min(340, Math.max(76, String(word).length * 16 + 30));
+        const tokenWidthEstimate = Math.min(340, Math.max(76, String(word).length * 16 + 30));
         const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
         const speed = getTokenSpeed();
 
@@ -1930,7 +1876,6 @@
     function showCelebrationScreen(){
       stopLoops();
       clearTokens();
-      pendingFinalReport = true;
       celebrationSubtitle.textContent = currentLang === "pl"
         ? "Ukończono cały zestaw."
         : currentLang === "ja"
@@ -1967,7 +1912,6 @@
       renderReportHistory();
       reportOverlay.classList.add("show");
       setMessage(t("report_shown"), "info");
-      pendingFinalReport = false;
     }
 
     function hideFinalReport(){ reportOverlay.classList.remove("show"); }
@@ -2080,13 +2024,6 @@
       floatingShowPanelsBtn.textContent = t("show_panels");
     }
 
-    function toggleClassroomMode(){
-      classroomMode = !classroomMode;
-      document.body.classList.toggle("classroom-mode", classroomMode);
-      classroomBtn.textContent = classroomMode ? "Tryb zwykły" : "Tryb klasy";
-      respawnCurrentVisibleTokens();
-    }
-
     restartBtn.addEventListener("click", () => loadSentenceByOrder(currentOrderIndex));
     nextBtn.addEventListener("click", goToNextSentence);
 
@@ -2102,7 +2039,6 @@
     backToSetsBtn.addEventListener("click", returnToSetChoice);
     focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
-    classroomBtn.addEventListener("click", toggleClassroomMode);
     resetTokensBtn.addEventListener("click", respawnCurrentVisibleTokens);
     floatingShowPanelsBtn.addEventListener("click", () => togglePanels(false));
     floatingExitFocusBtn.addEventListener("click", () => toggleFocusMode(false));
@@ -2127,7 +2063,7 @@
 
     window.addEventListener("resize", () => {
       fallingTokens.forEach(token => {
-        const maxX = Math.max(0, gameArea.clientWidth - (classroomMode ? 360 : 300));
+        const maxX = Math.max(0, gameArea.clientWidth - 300);
         if(token.x > maxX){
           token.x = maxX;
           if(token.element) token.element.style.left = token.x + "px";
