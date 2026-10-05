@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gra dla studentów</title>
+  <title>Gra dla studentów FINAL PRO</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -368,7 +368,7 @@
   <div class="container">
     <div class="topbar">
       <div>
-        <div class="title" id="gameTitle">Gra tłumaczeniowa</div>
+        <div class="title" id="gameTitle">Gra tłumaczeniowa FINAL PRO</div>
         <div class="subtitle" id="gameSubtitle">Ładowanie ustawień...</div>
         <div class="sentence-number" id="sentenceNumber">Zdanie 1</div>
       </div>
@@ -484,8 +484,8 @@
         showTranslationInstruction: true,
         sourceLanguageLabel: "English",
         targetLanguageLabel: "Polski",
-        distractorCount: 4,
-        distractorMode: "auto",
+        defaultDistractorCount: 4,
+        defaultDistractorMode: "auto",
         punctuationMode: "auto"
       },
       sets: [
@@ -495,6 +495,8 @@
           classLabel: "5A",
           theme: "animals",
           buildMode: "words",
+          distractorCount: 4,
+          distractorMode: "material",
           pairs: [
             { source: "Cat", target: "Kot" },
             { source: "Dog", target: "Pies" }
@@ -503,7 +505,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_stable_final_v2";
+    const REPORTS_KEY = "translation_reports_final_pro";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -601,6 +603,8 @@
             classLabel: String(set.classLabel || "").trim(),
             theme: String(set.theme || "").trim(),
             buildMode: set.buildMode === "letters" ? "letters" : "words",
+            distractorCount: Number(set.distractorCount ?? data.settings?.defaultDistractorCount ?? fallbackData.settings.defaultDistractorCount),
+            distractorMode: set.distractorMode || data.settings?.defaultDistractorMode || fallbackData.settings.defaultDistractorMode,
             pairs: Array.isArray(set.pairs)
               ? set.pairs.map(pair => ({
                   source: String(pair.source || "").trim(),
@@ -632,8 +636,8 @@
             showTranslationInstruction: data.settings?.showTranslationInstruction !== undefined ? Boolean(data.settings.showTranslationInstruction) : fallbackData.settings.showTranslationInstruction,
             sourceLanguageLabel: data.settings?.sourceLanguageLabel || fallbackData.settings.sourceLanguageLabel,
             targetLanguageLabel: data.settings?.targetLanguageLabel || fallbackData.settings.targetLanguageLabel,
-            distractorCount: Number(data.settings?.distractorCount ?? fallbackData.settings.distractorCount),
-            distractorMode: data.settings?.distractorMode || fallbackData.settings.distractorMode,
+            defaultDistractorCount: Number(data.settings?.defaultDistractorCount ?? fallbackData.settings.defaultDistractorCount),
+            defaultDistractorMode: data.settings?.defaultDistractorMode || fallbackData.settings.defaultDistractorMode,
             punctuationMode: data.settings?.punctuationMode || fallbackData.settings.punctuationMode
           },
           sets: cleanedSets
@@ -736,6 +740,20 @@
       return tokens.filter(t => t.kind !== "punct");
     }
 
+    function getEffectiveDistractorCount(){
+      if(activeSet && activeSet.distractorCount !== undefined && activeSet.distractorCount !== null){
+        return Number(activeSet.distractorCount);
+      }
+      return Number(config.settings.defaultDistractorCount || 0);
+    }
+
+    function getEffectiveDistractorMode(){
+      if(activeSet && activeSet.distractorMode){
+        return activeSet.distractorMode;
+      }
+      return config.settings.defaultDistractorMode || "auto";
+    }
+
     function updateScore(){
       correctCountEl.textContent = correctCount;
       wrongCountEl.textContent = wrongCount;
@@ -750,7 +768,8 @@
         (loadedFromFile ? "Załadowano dane z sentences.json" : "Użyto danych awaryjnych") +
         (studentName ? " | Uczeń: " + studentName : "") +
         " | Zestaw: " + setName +
-        (activeSet?.classLabel ? " | Klasa: " + activeSet.classLabel : "");
+        (activeSet?.classLabel ? " | Klasa: " + activeSet.classLabel : "") +
+        ` | Mylące: ${getEffectiveDistractorCount()} / ${getEffectiveDistractorMode()}`;
 
       difficultyLine.textContent = "Poziom: " + translateDifficulty(config.settings.difficulty);
       mistakesLine.textContent = "Błędy: " + sentenceMistakes + " / " + (
@@ -938,7 +957,7 @@
     }
 
     function getDistractorToken(){
-      const mode = config.settings.distractorMode || "auto";
+      const mode = getEffectiveDistractorMode();
 
       if(activeSet?.buildMode === "letters"){
         const pools = buildLetterDistractorPool();
@@ -1017,7 +1036,7 @@
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
       const itemsToSpawn = [expected.value];
-      const distractorCount = Number(config.settings.distractorCount || 0);
+      const distractorCount = getEffectiveDistractorCount();
 
       if(distractorCount > 0){
         let guard = 0;
