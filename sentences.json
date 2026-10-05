@@ -17,7 +17,7 @@
     "sourceLanguageLabel": "Polski",
     "targetLanguageLabel": "English",
     "distractorCount": 0,
-    "distractorMode": "material",
+    "distractorMode": "lettersOnly",
     "punctuationMode": "auto"
   },
   "sets": [
