@@ -532,7 +532,7 @@
       flex-direction:column;
       max-width:1400px;
       min-height:100vh;
-      padding-top:8px;
+      padding-top:58px;
       padding-bottom:8px;
     }
 
@@ -606,33 +606,96 @@
       background:linear-gradient(180deg,#0f172a 0%,#111827 100%);
     }
 
-    .floating-show-panels,
-    .floating-focus-exit{
+    .floating-show-panels{
       position:fixed;
       right:16px;
+      top:16px;
       z-index:1200;
       display:none;
       width:auto;
       max-width:240px;
-      min-height:48px;
-      padding:10px 14px;
+      min-height:44px;
+      padding:8px 12px;
     }
-
-    .floating-show-panels{top:16px}
-    .floating-focus-exit{top:74px}
 
     .panels-hidden .floating-show-panels{
       display:flex;
     }
 
-    .focus-mode .floating-focus-exit{
+    .focus-toolbar{
+      position:fixed;
+      top:8px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:1300;
+      display:none;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(15,23,42,.82);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 10px 30px rgba(0,0,0,.28);
+      backdrop-filter:blur(6px);
+      max-width:calc(100vw - 24px);
+    }
+
+    .focus-mode .focus-toolbar{
       display:flex;
+    }
+
+    .focus-mini-btn{
+      min-height:34px;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+      background:#334155;
+      color:white;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    .focus-mini-btn.warning{
+      background:var(--warning);
+      color:#111827;
+    }
+
+    .focus-mini-btn.success{
+      background:var(--success);
+      color:#04130a;
+    }
+
+    @media (max-width:700px){
+      .focus-toolbar{
+        top:6px;
+        padding:5px 8px;
+        gap:6px;
+      }
+      .focus-mini-btn{
+        min-height:30px;
+        padding:6px 10px;
+        font-size:11px;
+      }
+      .focus-mode .container{
+        padding-top:54px;
+      }
     }
   </style>
 </head>
 <body>
   <button class="secondary floating-show-panels" id="floatingShowPanelsBtn">Pokaż górne panele</button>
-  <button class="warning floating-focus-exit" id="floatingExitFocusBtn">Tryb normalny</button>
+
+  <div class="focus-toolbar" id="focusToolbar">
+    <button class="focus-mini-btn warning" id="floatingExitFocusBtn">Tryb normalny</button>
+    <button class="focus-mini-btn" id="focusNextBtn">Następne zdanie</button>
+    <button class="focus-mini-btn success" id="focusPauseBtn">Pauza</button>
+    <button class="focus-mini-btn" id="focusHintBtn">Podpowiedź</button>
+  </div>
 
   <div class="start-screen" id="startScreen" style="display:none;">
     <div class="start-box">
@@ -770,7 +833,7 @@
 
       <div class="small" id="reportDetails"></div>
 
-      <h3 style="margin-top:18px;" data-i18n="sentences_with_errors">Sentences with errors</h3>
+      <h3 style="margin-top:18px;">Wyniki zdań</h3>
       <div class="wrong-list" id="wrongSentencesList"></div>
 
       <h3 style="margin-top:18px;" data-i18n="history_reports">History of recent reports</h3>
@@ -814,7 +877,6 @@
         total: "Total",
         final_report: "Final report",
         accuracy: "Accuracy",
-        sentences_with_errors: "Sentences with errors",
         history_reports: "History of recent reports",
         close_report: "Close report",
         play_again: "Play again",
@@ -865,7 +927,6 @@
         enter_student_name: "Enter the student's name to start the game.",
         current_data_loaded: "Data from sentences.json loaded.",
         current_data_failed: "Could not load sentences.json. Fallback data used.",
-        no_wrong_sentences: "No sentences with errors.",
         no_report_history: "No saved reports.",
         student: "Student",
         set: "Set",
@@ -911,7 +972,6 @@
         total: "Razem",
         final_report: "Raport końcowy",
         accuracy: "Skuteczność",
-        sentences_with_errors: "Zdania z błędami",
         history_reports: "Historia ostatnich raportów",
         close_report: "Zamknij raport",
         play_again: "Zagraj od nowa",
@@ -962,7 +1022,6 @@
         enter_student_name: "Wpisz imię ucznia, aby rozpocząć grę.",
         current_data_loaded: "Wczytano dane z sentences.json.",
         current_data_failed: "Nie udało się wczytać sentences.json. Użyto danych awaryjnych.",
-        no_wrong_sentences: "Brak zdań z błędami.",
         no_report_history: "Brak zapisanych raportów.",
         student: "Uczeń",
         set: "Zestaw",
@@ -1008,7 +1067,6 @@
         total: "合計",
         final_report: "最終レポート",
         accuracy: "正確さ",
-        sentences_with_errors: "誤りのあった文",
         history_reports: "最近のレポート履歴",
         close_report: "レポートを閉じる",
         play_again: "もう一度遊ぶ",
@@ -1059,7 +1117,6 @@
         enter_student_name: "ゲームを始めるには生徒名を入力してください。",
         current_data_loaded: "sentences.json からデータを読み込みました。",
         current_data_failed: "sentences.json を読み込めなかったため、予備データを使用しました。",
-        no_wrong_sentences: "誤りのあった文はありません。",
         no_report_history: "保存されたレポートはありません。",
         student: "生徒",
         set: "セット",
@@ -1130,7 +1187,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_4C";
+    const REPORTS_KEY = "translation_reports_student_5_6";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1167,6 +1224,10 @@
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
     const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
+    const focusToolbar = document.getElementById("focusToolbar");
+    const focusNextBtn = document.getElementById("focusNextBtn");
+    const focusPauseBtn = document.getElementById("focusPauseBtn");
+    const focusHintBtn = document.getElementById("focusHintBtn");
 
     const correctCountEl = document.getElementById("correctCount");
     const wrongCountEl = document.getElementById("wrongCount");
@@ -1233,6 +1294,8 @@
     let studentName = "";
     let wrongSentences = [];
     let currentSentenceHadMistake = false;
+    let sentenceResults = [];
+    let sentenceWrongClicks = 0;
 
     function applyStaticTranslations(){
       document.documentElement.lang = currentLang;
@@ -1245,6 +1308,9 @@
       floatingExitFocusBtn.textContent = t("normal_mode");
       roundStartBtn.textContent = t("start");
       startOverlayText.textContent = t("round_wait_overlay");
+      focusNextBtn.textContent = t("next_sentence");
+      focusHintBtn.textContent = t("hint");
+      focusPauseBtn.textContent = paused ? t("resume") : t("pause");
       openReportBtn.textContent = currentLang === "pl" ? "Pokaż raport" : currentLang === "ja" ? "レポートを見る" : "Show report";
       celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
@@ -1780,13 +1846,6 @@
       tokenObj.element = el;
     }
 
-    function shuffleArray(arr){
-      for(let i = arr.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    }
-
     function removeToken(id){
       const index = fallingTokens.findIndex(t => t.id === id);
       if(index === -1) return;
@@ -1850,6 +1909,7 @@
       } else {
         wrongCount++;
         sentenceMistakes++;
+        sentenceWrongClicks++;
         currentSentenceHadMistake = true;
         markWrongToken(token);
         setTimeout(() => removeToken(id), 180);
@@ -1912,6 +1972,13 @@
       }
     }
 
+    function setPausedState(newPaused){
+      paused = newPaused;
+      toggleBtn.textContent = paused ? t("resume") : t("pause");
+      focusPauseBtn.textContent = paused ? t("resume") : t("pause");
+      setMessage(paused ? t("game_paused") : t("game_resumed"), "info");
+    }
+
     function unlockGameStart(){
       if(gameStarted) return;
       gameStarted = true;
@@ -1920,6 +1987,8 @@
       startOverlayMessage.classList.remove("show");
       sourceSentenceBox.classList.remove("hidden-source");
       progressDisplay.classList.remove("hidden-progress");
+      toggleFocusMode(true);
+      setPausedState(false);
       setMessage(t("round_started_msg"), "ok");
       startGameLoops();
       spawnTokenBatch();
@@ -1931,6 +2000,17 @@
       }
     }
 
+    function saveSentenceResult(status){
+      if(!currentPair) return;
+
+      sentenceResults.push({
+        source: currentPair.source,
+        target: currentPair.target,
+        status,
+        wrongClicks: sentenceWrongClicks
+      });
+    }
+
     function finishSentence(success, reason = ""){
       gameFinished = true;
       stopLoops();
@@ -1939,11 +2019,17 @@
       if(success){
         finishedCount++;
         completedSentencesCount++;
+        saveSentenceResult("correct");
+
+        if(currentSentenceHadMistake){
+          saveWrongSentenceIfNeeded(t("completed_with_errors"));
+        }
+
         updateScore();
-        if(currentSentenceHadMistake) saveWrongSentenceIfNeeded(t("completed_with_errors"));
         setMessage(t("sentence_success"), "ok");
       } else {
         completedSentencesCount++;
+        saveSentenceResult("incomplete");
         saveWrongSentenceIfNeeded(reason || t("sentence_not_completed"));
         setMessage(reason || t("sentence_not_completed"), "err");
       }
@@ -1969,6 +2055,7 @@
       currentTokenIndex = 0;
       hintTokenIndex = -1;
       currentSentenceHadMistake = false;
+      sentenceWrongClicks = 0;
 
       getExpectedTokenSkippingNonClickable();
 
@@ -1978,8 +2065,10 @@
       sentenceMistakes = 0;
       remainingTime = config.settings.timerSeconds;
       toggleBtn.textContent = t("pause");
+      focusPauseBtn.textContent = t("pause");
 
       hintBtn.style.display = config.settings.allowHint ? "flex" : "none";
+      focusHintBtn.style.display = config.settings.allowHint ? "inline-flex" : "none";
 
       renderProgress();
       updateTopInfo();
@@ -2030,10 +2119,28 @@
       setMessage(t("hint_msg"), "warn");
     }
 
+    function getCorrectSentenceCount(){
+      return sentenceResults.filter(item => item.status === "correct").length;
+    }
+
+    function getIncompleteSentenceCount(){
+      return sentenceResults.filter(item => item.status !== "correct").length;
+    }
+
+    function calculatePoints(){
+      return (getCorrectSentenceCount() * 10) - wrongCount;
+    }
+
+    function calculateMaxPoints(){
+      return pairs.length * 10;
+    }
+
     function calculateAccuracy(){
-      const totalClicks = correctCount + wrongCount;
-      if(totalClicks === 0) return 0;
-      return Math.round((correctCount / totalClicks) * 100);
+      const maxPoints = calculateMaxPoints();
+      if(maxPoints <= 0) return 0;
+      const points = calculatePoints();
+      const percent = Math.round((points / maxPoints) * 100);
+      return Math.max(0, percent);
     }
 
     function getCurrentReportObject(){
@@ -2049,6 +2156,11 @@
         finishedCount,
         totalSentences: pairs.length,
         accuracy: calculateAccuracy(),
+        points: calculatePoints(),
+        maxPoints: calculateMaxPoints(),
+        correctSentences: getCorrectSentenceCount(),
+        incompleteSentences: getIncompleteSentenceCount(),
+        sentenceResults: sentenceResults.slice(),
         wrongSentences: wrongSentences.slice()
       };
     }
@@ -2070,21 +2182,29 @@
       }
     }
 
-    function renderWrongSentences(){
+    function renderSentenceResults(){
       wrongSentencesList.innerHTML = "";
-      if(wrongSentences.length === 0){
-        wrongSentencesList.innerHTML = `<div class="wrong-item">${t("no_wrong_sentences")}</div>`;
+
+      if(sentenceResults.length === 0){
+        wrongSentencesList.innerHTML = `<div class="wrong-item">Brak danych o zdaniach.</div>`;
         return;
       }
 
-      wrongSentences.forEach(item => {
+      sentenceResults.forEach((item, index) => {
         const div = document.createElement("div");
-        div.className = "wrong-item";
+        const statusLabel = item.status === "correct"
+          ? "Poprawnie ukończone"
+          : "Nieukończone / pominięte";
+
+        div.className = item.status === "correct" ? "history-item" : "wrong-item";
+
         div.innerHTML = `
-          <strong>${t("source")}:</strong> ${escapeHtml(item.source)}<br>
-          <strong>${t("correct_translation")}:</strong> ${escapeHtml(item.target)}<br>
-          <strong>${t("reason")}:</strong> ${escapeHtml(item.reason)}
+          <strong>Zdanie ${index + 1}:</strong> ${escapeHtml(item.source)}<br>
+          <strong>Status:</strong> ${statusLabel}<br>
+          <strong>Poprawne tłumaczenie:</strong> ${escapeHtml(item.target)}<br>
+          <strong>Błędne kliknięcia:</strong> ${item.wrongClicks}
         `;
+
         wrongSentencesList.appendChild(div);
       });
     }
@@ -2102,7 +2222,7 @@
         const div = document.createElement("div");
         div.className = "history-item";
         div.textContent =
-          `${item.date} | ${item.studentName} | ${item.setName} | ${item.buildMode === "letters" ? t("letters_mode") : t("words_mode")} | ${item.correctCount} ${t("correct").toLowerCase()} | ${item.wrongCount} ${t("mistakes").toLowerCase()} | ${item.finishedCount}/${item.totalSentences} | ${item.accuracy}%`;
+          `${item.date} | ${item.studentName} | ${item.setName} | ${item.buildMode === "letters" ? t("letters_mode") : t("words_mode")} | Punkty: ${item.points}/${item.maxPoints} | ${item.accuracy}%`;
         historyList.appendChild(div);
       });
     }
@@ -2124,10 +2244,10 @@
       celebrationScore.textContent = `${calculateAccuracy()}%`;
 
       celebrationDetail.textContent = currentLang === "pl"
-        ? `Poprawne: ${correctCount} | Błędy: ${wrongCount} | Ukończone: ${finishedCount}/${pairs.length}`
+        ? `Punkty: ${calculatePoints()}/${calculateMaxPoints()} | Poprawnie ukończone: ${getCorrectSentenceCount()} | Nieukończone / pominięte: ${getIncompleteSentenceCount()} | Błędne kliknięcia: ${wrongCount}`
         : currentLang === "ja"
-          ? `正解: ${correctCount} | ミス: ${wrongCount} | 完了: ${finishedCount}/${pairs.length}`
-          : `Correct: ${correctCount} | Mistakes: ${wrongCount} | Completed: ${finishedCount}/${pairs.length}`;
+          ? `得点: ${calculatePoints()}/${calculateMaxPoints()} | 正しく完了: ${getCorrectSentenceCount()} | 未完了 / スキップ: ${getIncompleteSentenceCount()} | 誤クリック: ${wrongCount}`
+          : `Points: ${calculatePoints()}/${calculateMaxPoints()} | Correctly completed: ${getCorrectSentenceCount()} | Incomplete / skipped: ${getIncompleteSentenceCount()} | Wrong clicks: ${wrongCount}`;
 
       celebrationOverlay.classList.add("show");
     }
@@ -2143,19 +2263,24 @@
       const report = getCurrentReportObject();
       saveReportToHistory(report);
 
-      reportCorrect.textContent = report.correctCount;
+      reportCorrect.textContent = report.correctSentences;
       reportWrong.textContent = report.wrongCount;
-      reportFinished.textContent = report.finishedCount + " / " + report.totalSentences;
+      reportFinished.textContent = `${report.correctSentences} / ${report.totalSentences}`;
       reportAccuracy.textContent = report.accuracy + "%";
+
       reportTitle.textContent = report.title || t("final_report");
       reportDetails.textContent =
         `${t("student")}: ${report.studentName}` +
         ` | ${t("set")}: ${report.setName}` +
         (report.classLabel ? ` | ${t("class_label")}: ${report.classLabel}` : "") +
         ` | ${t("build_mode")}: ${report.buildMode === "letters" ? t("letters_mode") : t("words_mode")}` +
-        ` | ${t("date")}: ${report.date}`;
+        ` | ${t("date")}: ${report.date}` +
+        ` | Punkty: ${report.points}/${report.maxPoints}` +
+        ` | Poprawnie ukończone: ${report.correctSentences}` +
+        ` | Nieukończone / pominięte: ${report.incompleteSentences}` +
+        ` | Błędne kliknięcia: ${report.wrongCount}`;
 
-      renderWrongSentences();
+      renderSentenceResults();
       renderReportHistory();
       reportOverlay.classList.add("show");
       setMessage(t("report_shown"), "info");
@@ -2175,6 +2300,7 @@
       completedSentencesCount = 0;
       currentOrderIndex = 0;
       wrongSentences = [];
+      sentenceResults = [];
       gameStarted = false;
       roundStartBtn.style.display = "flex";
 
@@ -2216,6 +2342,7 @@
       sourceSentenceBox.classList.add("hidden-source");
       progressDisplay.classList.add("hidden-progress");
       startOverlayMessage.classList.add("show");
+      toggleFocusMode(false);
       setMessage(t("returned_to_sets"), "info");
     }
 
@@ -2248,19 +2375,23 @@
 
     roundStartBtn.addEventListener("click", unlockGameStart);
     nextBtn.addEventListener("click", goToNextSentence);
+    hintBtn.addEventListener("click", showHint);
 
     toggleBtn.addEventListener("click", () => {
-      paused = !paused;
-      toggleBtn.textContent = paused ? t("resume") : t("pause");
-      setMessage(paused ? t("game_paused") : t("game_resumed"), "info");
+      setPausedState(!paused);
     });
 
-    hintBtn.addEventListener("click", showHint);
     backToSetsBtn.addEventListener("click", returnToSetChoice);
     focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
     floatingShowPanelsBtn.addEventListener("click", () => togglePanels(false));
     floatingExitFocusBtn.addEventListener("click", () => toggleFocusMode(false));
+
+    focusNextBtn.addEventListener("click", goToNextSentence);
+    focusHintBtn.addEventListener("click", showHint);
+    focusPauseBtn.addEventListener("click", () => {
+      setPausedState(!paused);
+    });
 
     closeReportBtn.addEventListener("click", hideFinalReport);
     restartGameBtn.addEventListener("click", restartWholeGame);
