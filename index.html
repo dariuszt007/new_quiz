@@ -218,13 +218,8 @@
       font-weight:bold;
     }
 
-    .hidden-source{
-      visibility:hidden;
-    }
-
-    .hidden-progress{
-      visibility:hidden;
-    }
+    .hidden-source{visibility:hidden}
+    .hidden-progress{visibility:hidden}
 
     .start-overlay-message{
       position:absolute;
@@ -238,9 +233,7 @@
       padding:24px;
     }
 
-    .start-overlay-message.show{
-      display:flex;
-    }
+    .start-overlay-message.show{display:flex}
 
     .start-overlay-box{
       background:rgba(17,24,39,.92);
@@ -451,6 +444,26 @@
     .result-item.bad{
       background:rgba(239,68,68,.10);
       border:1px solid rgba(239,68,68,.25);
+    }
+
+    .start-screen{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.94);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      padding:20px;
+    }
+
+    .start-box{
+      width:min(760px, 100%);
+      background:#111827;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 20px 50px rgba(0,0,0,.4);
     }
 
     .focus-mode .topbar,
@@ -941,7 +954,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_7_REPORT_EXPORT";
+    const REPORTS_KEY = "translation_reports_student_5_7B_REPORT_ONLY_FIX";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
 
@@ -1037,9 +1050,8 @@
     let wrongCount = 0;
     let finishedCount = 0;
     let studentName = "";
-    let wrongSentences = [];
-    let currentSentenceHadMistake = false;
     let sentenceResults = [];
+    let currentSentenceHadMistake = false;
     let sentenceWrongClicks = 0;
     let currentSentenceFailReason = "";
 
@@ -1726,12 +1738,6 @@
       });
     }
 
-    function saveWrongSentenceIfNeeded(reason = ""){
-      if(currentSentenceHadMistake && currentPair){
-        wrongSentences.push({ source: currentPair.source, target: currentPair.target, reason });
-      }
-    }
-
     function saveSentenceResult(status, reason){
       if(!currentPair) return;
 
@@ -1755,9 +1761,6 @@
 
         const status = currentSentenceHadMistake ? "correct_with_errors" : "correct_clean";
         saveSentenceResult(status, "");
-        if(currentSentenceHadMistake){
-          saveWrongSentenceIfNeeded(t("completed_with_errors"));
-        }
 
         updateScore();
         setMessage(t("sentence_success"), "ok");
@@ -1767,17 +1770,14 @@
         if(failType === "mistakes"){
           currentSentenceFailReason = t("too_many_mistakes");
           saveSentenceResult("stopped_mistakes", currentSentenceFailReason);
-          saveWrongSentenceIfNeeded(currentSentenceFailReason);
           setMessage(currentSentenceFailReason, "err");
         } else if(failType === "time"){
           currentSentenceFailReason = t("time_up");
           saveSentenceResult("stopped_time", currentSentenceFailReason);
-          saveWrongSentenceIfNeeded(currentSentenceFailReason);
           setMessage(currentSentenceFailReason, "err");
         } else {
           currentSentenceFailReason = t("sentence_not_completed");
           saveSentenceResult("stopped_manual", currentSentenceFailReason);
-          saveWrongSentenceIfNeeded(currentSentenceFailReason);
           setMessage(currentSentenceFailReason, "err");
         }
       }
@@ -2028,7 +2028,6 @@
       finishedCount = 0;
       completedSentencesCount = 0;
       currentOrderIndex = 0;
-      wrongSentences = [];
       sentenceResults = [];
       gameStarted = false;
       paused = false;
