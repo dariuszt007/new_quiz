@@ -33,7 +33,7 @@
     }
 
     .container{
-      max-width:1400px;
+      max-width:1440px;
       margin:0 auto;
       padding:16px;
     }
@@ -94,7 +94,7 @@
     }
 
     @media (min-width:1100px){
-      .controls{grid-template-columns:repeat(3,minmax(180px,1fr))}
+      .controls{grid-template-columns:repeat(3,minmax(185px,1fr))}
     }
 
     button, input, select{
@@ -111,7 +111,6 @@
       white-space:normal;
       overflow-wrap:break-word;
       word-break:normal;
-      hyphens:auto;
       line-height:1.25;
       text-align:center;
       display:flex;
@@ -135,7 +134,7 @@
     .game-area{
       position:relative;
       height:62vh;
-      min-height:460px;
+      min-height:470px;
       overflow:hidden;
       border-radius:16px;
       border:2px solid rgba(56,189,248,.25);
@@ -363,6 +362,47 @@
       .report-actions{grid-template-columns:repeat(3,1fr)}
     }
 
+    .celebration-box{
+      width:min(760px, 100%);
+      background:#111827;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:24px;
+      padding:34px 24px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      text-align:center;
+    }
+
+    .celebration-title{
+      font-size:44px;
+      font-weight:900;
+      color:#fde68a;
+      margin-bottom:12px;
+    }
+
+    .celebration-subtitle{
+      font-size:20px;
+      color:#e5e7eb;
+      margin-bottom:20px;
+    }
+
+    .celebration-score{
+      font-size:28px;
+      font-weight:bold;
+      margin-bottom:20px;
+      color:#86efac;
+    }
+
+    .celebration-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    @media (min-width:700px){
+      .celebration-actions{grid-template-columns:repeat(2,1fr)}
+    }
+
     .start-screen{
       position:fixed;
       inset:0;
@@ -424,31 +464,84 @@
       display:none;
     }
 
+    .classroom-mode .container{
+      max-width:1600px;
+      padding:22px;
+    }
+
+    .classroom-mode .word-token{
+      min-width:96px;
+      max-width:420px;
+      font-size:28px;
+      padding:18px 22px;
+      border-radius:18px;
+    }
+
+    .classroom-mode button{
+      min-height:66px;
+      font-size:18px;
+      padding:14px 18px;
+    }
+
+    .classroom-mode .title{
+      font-size:38px;
+    }
+
+    .classroom-mode .source-box{
+      font-size:28px;
+      padding:18px;
+    }
+
+    .classroom-mode .progress{
+      font-size:30px;
+      min-height:120px;
+    }
+
+    .classroom-mode .card h2{
+      font-size:22px;
+    }
+
+    .classroom-mode .small{
+      font-size:17px;
+    }
+
+    .classroom-mode .score-box strong{
+      font-size:30px;
+    }
+
     .fullscreen-host{
       width:100%;
       min-height:100vh;
       background:linear-gradient(180deg,#0f172a 0%,#111827 100%);
     }
 
-    .floating-show-panels{
+    .floating-show-panels,
+    .floating-focus-exit{
       position:fixed;
       right:16px;
-      top:16px;
       z-index:1200;
       display:none;
       width:auto;
-      max-width:220px;
+      max-width:240px;
       min-height:48px;
       padding:10px 14px;
     }
 
+    .floating-show-panels{top:16px}
+    .floating-focus-exit{top:74px}
+
     .panels-hidden .floating-show-panels{
+      display:flex;
+    }
+
+    .focus-mode .floating-focus-exit{
       display:flex;
     }
   </style>
 </head>
 <body>
   <button class="secondary floating-show-panels" id="floatingShowPanelsBtn">Pokaż górne panele</button>
+  <button class="warning floating-focus-exit" id="floatingExitFocusBtn">Tryb normalny</button>
 
   <div class="start-screen" id="startScreen" style="display:none;">
     <div class="start-box">
@@ -504,6 +597,8 @@
           <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
           <button class="secondary" id="focusBtn" data-i18n="focus_mode">Focus mode</button>
           <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Hide top panels</button>
+          <button class="secondary" id="classroomBtn">Tryb klasy</button>
+          <button class="secondary" id="resetTokensBtn">Reset kafelków</button>
         </div>
       </div>
 
@@ -549,6 +644,18 @@
           <div class="score-box"><span data-i18n="completed">Completed</span><strong id="finishedCount">0</strong></div>
           <div class="score-box"><span data-i18n="total">Total</span><strong id="totalCount">0</strong></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="celebrationOverlay">
+    <div class="celebration-box">
+      <div class="celebration-title">Brawo!</div>
+      <div class="celebration-subtitle" id="celebrationSubtitle">Ukończono cały zestaw.</div>
+      <div class="celebration-score" id="celebrationScore">0%</div>
+      <div class="celebration-actions">
+        <button class="primary" id="openReportBtn">Pokaż raport</button>
+        <button class="success" id="celebrationRestartBtn">Zagraj od nowa</button>
       </div>
     </div>
   </div>
@@ -942,7 +1049,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_3";
+    const REPORTS_KEY = "translation_reports_student_4";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -977,12 +1084,21 @@
     const backToSetsBtn = document.getElementById("backToSetsBtn");
     const focusBtn = document.getElementById("focusBtn");
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
+    const classroomBtn = document.getElementById("classroomBtn");
+    const resetTokensBtn = document.getElementById("resetTokensBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
+    const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
 
     const correctCountEl = document.getElementById("correctCount");
     const wrongCountEl = document.getElementById("wrongCount");
     const finishedCountEl = document.getElementById("finishedCount");
     const totalCountEl = document.getElementById("totalCount");
+
+    const celebrationOverlay = document.getElementById("celebrationOverlay");
+    const celebrationSubtitle = document.getElementById("celebrationSubtitle");
+    const celebrationScore = document.getElementById("celebrationScore");
+    const openReportBtn = document.getElementById("openReportBtn");
+    const celebrationRestartBtn = document.getElementById("celebrationRestartBtn");
 
     const reportOverlay = document.getElementById("reportOverlay");
     const reportCorrect = document.getElementById("reportCorrect");
@@ -1027,6 +1143,8 @@
     let hintTokenIndex = -1;
     let focusMode = false;
     let panelsHidden = false;
+    let classroomMode = false;
+    let pendingFinalReport = false;
 
     let correctCount = 0;
     let wrongCount = 0;
@@ -1043,6 +1161,11 @@
         el.textContent = t(key);
       });
       floatingShowPanelsBtn.textContent = t("show_panels");
+      floatingExitFocusBtn.textContent = t("normal_mode");
+      classroomBtn.textContent = classroomMode ? "Tryb zwykły" : "Tryb klasy";
+      resetTokensBtn.textContent = "Reset kafelków";
+      openReportBtn.textContent = "Pokaż raport";
+      celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
       updateFullscreenButton();
       updateFocusButton();
@@ -1460,7 +1583,9 @@
 
       itemsToSpawn.forEach((word, idx) => {
         const width = gameArea.clientWidth;
-        const tokenWidthEstimate = Math.min(340, Math.max(76, String(word).length * 16 + 30));
+        const tokenWidthEstimate = classroomMode
+          ? Math.min(420, Math.max(96, String(word).length * 20 + 34))
+          : Math.min(340, Math.max(76, String(word).length * 16 + 30));
         const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
         const speed = getTokenSpeed();
 
@@ -1477,6 +1602,38 @@
         fallingTokens.push(tokenObj);
         createTokenElement(tokenObj);
       });
+    }
+
+    function respawnCurrentVisibleTokens(){
+      if(gameFinished) return;
+      const uniqueWords = [...new Set(fallingTokens.map(t => t.word))];
+      clearTokens();
+
+      uniqueWords.forEach((word, idx) => {
+        const width = gameArea.clientWidth;
+        const tokenWidthEstimate = classroomMode
+          ? Math.min(420, Math.max(96, String(word).length * 20 + 34))
+          : Math.min(340, Math.max(76, String(word).length * 16 + 30));
+        const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
+        const speed = getTokenSpeed();
+
+        const tokenObj = {
+          id: ++tokenIdCounter,
+          word,
+          x,
+          y: 20 + idx * 12,
+          speed,
+          colorIndex: tokenIdCounter,
+          element: null
+        };
+
+        fallingTokens.push(tokenObj);
+        createTokenElement(tokenObj);
+      });
+
+      if(uniqueWords.length === 0){
+        spawnTokenBatch();
+      }
     }
 
     function shuffleArray(arr){
@@ -1616,7 +1773,7 @@
       }
 
       if(completedSentencesCount >= pairs.length){
-        autoNextTimeout = setTimeout(showFinalReport, 800);
+        autoNextTimeout = setTimeout(showCelebrationScreen, 700);
         return;
       }
 
@@ -1658,7 +1815,7 @@
 
     function goToNextSentence(){
       if(currentOrderIndex + 1 >= order.length){
-        showFinalReport();
+        showCelebrationScreen();
         return;
       }
       loadSentenceByOrder(currentOrderIndex + 1);
@@ -1770,6 +1927,23 @@
       });
     }
 
+    function showCelebrationScreen(){
+      stopLoops();
+      clearTokens();
+      pendingFinalReport = true;
+      celebrationSubtitle.textContent = currentLang === "pl"
+        ? "Ukończono cały zestaw."
+        : currentLang === "ja"
+          ? "セットを最後まで完了しました。"
+          : "The whole set has been completed.";
+      celebrationScore.textContent = `${calculateAccuracy()}%`;
+      celebrationOverlay.classList.add("show");
+    }
+
+    function hideCelebrationScreen(){
+      celebrationOverlay.classList.remove("show");
+    }
+
     function showFinalReport(){
       stopLoops();
       clearTokens();
@@ -1793,6 +1967,7 @@
       renderReportHistory();
       reportOverlay.classList.add("show");
       setMessage(t("report_shown"), "info");
+      pendingFinalReport = false;
     }
 
     function hideFinalReport(){ reportOverlay.classList.remove("show"); }
@@ -1801,6 +1976,7 @@
       stopLoops();
       clearTokens();
       hideFinalReport();
+      hideCelebrationScreen();
 
       correctCount = 0;
       wrongCount = 0;
@@ -1840,6 +2016,7 @@
       stopLoops();
       clearTokens();
       hideFinalReport();
+      hideCelebrationScreen();
       startScreen.style.display = "flex";
       setMessage(t("returned_to_sets"), "info");
     }
@@ -1876,8 +2053,8 @@
       fullscreenBtn.textContent = isFullscreenActive() ? t("exit_fullscreen") : t("fullscreen");
     }
 
-    function toggleFocusMode(){
-      focusMode = !focusMode;
+    function toggleFocusMode(forceValue = null){
+      focusMode = typeof forceValue === "boolean" ? forceValue : !focusMode;
       document.body.classList.toggle("focus-mode", focusMode);
       if(focusMode){
         panelsHidden = false;
@@ -1889,6 +2066,7 @@
 
     function updateFocusButton(){
       focusBtn.textContent = focusMode ? t("normal_mode") : t("focus_mode");
+      floatingExitFocusBtn.textContent = t("normal_mode");
     }
 
     function togglePanels(forceValue = null){
@@ -1900,6 +2078,13 @@
     function updatePanelsButton(){
       togglePanelsBtn.textContent = panelsHidden ? t("show_panels") : t("hide_panels");
       floatingShowPanelsBtn.textContent = t("show_panels");
+    }
+
+    function toggleClassroomMode(){
+      classroomMode = !classroomMode;
+      document.body.classList.toggle("classroom-mode", classroomMode);
+      classroomBtn.textContent = classroomMode ? "Tryb zwykły" : "Tryb klasy";
+      respawnCurrentVisibleTokens();
     }
 
     restartBtn.addEventListener("click", () => loadSentenceByOrder(currentOrderIndex));
@@ -1915,9 +2100,12 @@
     solutionBtn.addEventListener("click", showSolution);
     fullscreenBtn.addEventListener("click", toggleFullscreen);
     backToSetsBtn.addEventListener("click", returnToSetChoice);
-    focusBtn.addEventListener("click", toggleFocusMode);
+    focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
+    classroomBtn.addEventListener("click", toggleClassroomMode);
+    resetTokensBtn.addEventListener("click", respawnCurrentVisibleTokens);
     floatingShowPanelsBtn.addEventListener("click", () => togglePanels(false));
+    floatingExitFocusBtn.addEventListener("click", () => toggleFocusMode(false));
 
     document.addEventListener("fullscreenchange", updateFullscreenButton);
     document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
@@ -1927,12 +2115,19 @@
     restartGameBtn.addEventListener("click", restartWholeGame);
     reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
 
+    openReportBtn.addEventListener("click", () => {
+      hideCelebrationScreen();
+      showFinalReport();
+    });
+
+    celebrationRestartBtn.addEventListener("click", restartWholeGame);
+
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
 
     window.addEventListener("resize", () => {
       fallingTokens.forEach(token => {
-        const maxX = Math.max(0, gameArea.clientWidth - 300);
+        const maxX = Math.max(0, gameArea.clientWidth - (classroomMode ? 360 : 300));
         if(token.x > maxX){
           token.x = maxX;
           if(token.element) token.element.style.left = token.x + "px";
