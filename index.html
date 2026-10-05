@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gra dla studentów FINAL PRO</title>
+  <title>Gra dla studentów C</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -368,7 +368,7 @@
   <div class="container">
     <div class="topbar">
       <div>
-        <div class="title" id="gameTitle">Gra tłumaczeniowa FINAL PRO</div>
+        <div class="title" id="gameTitle">Gra tłumaczeniowa C</div>
         <div class="subtitle" id="gameSubtitle">Ładowanie ustawień...</div>
         <div class="sentence-number" id="sentenceNumber">Zdanie 1</div>
       </div>
@@ -495,6 +495,7 @@
           classLabel: "5A",
           theme: "animals",
           buildMode: "words",
+          useOwnDistractors: true,
           distractorCount: 4,
           distractorMode: "material",
           pairs: [
@@ -505,7 +506,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_final_pro";
+    const REPORTS_KEY = "translation_reports_c";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -603,6 +604,7 @@
             classLabel: String(set.classLabel || "").trim(),
             theme: String(set.theme || "").trim(),
             buildMode: set.buildMode === "letters" ? "letters" : "words",
+            useOwnDistractors: set.useOwnDistractors === true,
             distractorCount: Number(set.distractorCount ?? data.settings?.defaultDistractorCount ?? fallbackData.settings.defaultDistractorCount),
             distractorMode: set.distractorMode || data.settings?.defaultDistractorMode || fallbackData.settings.defaultDistractorMode,
             pairs: Array.isArray(set.pairs)
@@ -741,15 +743,15 @@
     }
 
     function getEffectiveDistractorCount(){
-      if(activeSet && activeSet.distractorCount !== undefined && activeSet.distractorCount !== null){
-        return Number(activeSet.distractorCount);
+      if(activeSet?.useOwnDistractors){
+        return Number(activeSet.distractorCount ?? 0);
       }
       return Number(config.settings.defaultDistractorCount || 0);
     }
 
     function getEffectiveDistractorMode(){
-      if(activeSet && activeSet.distractorMode){
-        return activeSet.distractorMode;
+      if(activeSet?.useOwnDistractors){
+        return activeSet.distractorMode || "auto";
       }
       return config.settings.defaultDistractorMode || "auto";
     }
@@ -769,7 +771,7 @@
         (studentName ? " | Uczeń: " + studentName : "") +
         " | Zestaw: " + setName +
         (activeSet?.classLabel ? " | Klasa: " + activeSet.classLabel : "") +
-        ` | Mylące: ${getEffectiveDistractorCount()} / ${getEffectiveDistractorMode()}`;
+        ` | Mylące: ${getEffectiveDistractorCount()} / ${getEffectiveDistractorMode()} / ${activeSet?.useOwnDistractors ? "własne" : "globalne"}`;
 
       difficultyLine.textContent = "Poziom: " + translateDifficulty(config.settings.difficulty);
       mistakesLine.textContent = "Błędy: " + sentenceMistakes + " / " + (
