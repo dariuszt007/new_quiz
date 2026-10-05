@@ -24,7 +24,7 @@
     {
       "id": "animals_words",
       "name": "Animals - wyrazy",
-      "classLabel": "5A",
+      "classLabel": "5",
       "theme": "animals",
       "buildMode": "words",
       "pairs": [
@@ -49,7 +49,7 @@
     {
       "id": "animals_letters",
       "name": "Animals - litery",
-      "classLabel": "5A",
+      "classLabel": "5",
       "theme": "animals",
       "buildMode": "letters",
       "pairs": [
@@ -74,7 +74,7 @@
     {
       "id": "school_words",
       "name": "School - wyrazy",
-      "classLabel": "5A",
+      "classLabel": "5",
       "theme": "school",
       "buildMode": "words",
       "pairs": [
@@ -95,7 +95,7 @@
     {
       "id": "school_letters",
       "name": "School - litery",
-      "classLabel": "5A",
+      "classLabel": "5",
       "theme": "school",
       "buildMode": "letters",
       "pairs": [
@@ -116,7 +116,7 @@
     {
       "id": "daily_words",
       "name": "Daily life - wyrazy",
-      "classLabel": "6A",
+      "classLabel": "6",
       "theme": "daily life",
       "buildMode": "words",
       "pairs": [
@@ -137,7 +137,7 @@
     {
       "id": "daily_letters",
       "name": "Daily life - litery",
-      "classLabel": "6A",
+      "classLabel": "6",
       "theme": "daily life",
       "buildMode": "letters",
       "pairs": [
