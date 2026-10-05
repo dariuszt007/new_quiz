@@ -523,6 +523,8 @@
         move_down: "Move down",
         add_pair: "Add pair",
         import_csv: "Import CSV",
+        export_csv: "Export CSV",
+        replace_pairs_confirm: "Replace the current pairs in this set with the CSV data?",
         source_sentence: "Source sentence",
         target_translation: "Target translation",
         action: "Action",
@@ -571,8 +573,10 @@
         json_imported: "JSON file loaded.",
         json_import_error: "Could not load JSON file.",
         add_one_valid_set: "Add at least one valid set.",
-        csv_imported: "CSV imported into the selected set.",
-        csv_import_error: "Could not import CSV for this set."
+        csv_imported_replace: "CSV imported into the selected set and replaced its pairs.",
+        csv_imported_append: "CSV imported into the selected set and appended its pairs.",
+        csv_import_error: "Could not import CSV for this set.",
+        csv_exported: "CSV exported for the selected set."
       },
       pl: {
         page_title: "Panel nauczyciela",
@@ -668,6 +672,8 @@
         move_down: "Przesuń w dół",
         add_pair: "Dodaj parę",
         import_csv: "Import CSV",
+        export_csv: "Eksport CSV",
+        replace_pairs_confirm: "Czy chcesz zastąpić obecne pary w tym zestawie danymi z CSV?",
         source_sentence: "Zdanie źródłowe",
         target_translation: "Tłumaczenie docelowe",
         action: "Akcja",
@@ -716,8 +722,10 @@
         json_imported: "Wczytano plik JSON.",
         json_import_error: "Nie udało się wczytać pliku JSON.",
         add_one_valid_set: "Dodaj przynajmniej jeden poprawny zestaw.",
-        csv_imported: "Zaimportowano CSV do wybranego zestawu.",
-        csv_import_error: "Nie udało się zaimportować CSV do tego zestawu."
+        csv_imported_replace: "Zaimportowano CSV do wybranego zestawu i zastąpiono pary.",
+        csv_imported_append: "Zaimportowano CSV do wybranego zestawu i dopisano pary.",
+        csv_import_error: "Nie udało się zaimportować CSV do tego zestawu.",
+        csv_exported: "Wyeksportowano CSV dla wybranego zestawu."
       },
       ja: {
         page_title: "教師パネル",
@@ -813,6 +821,8 @@
         move_down: "下へ",
         add_pair: "ペアを追加",
         import_csv: "CSV を読み込む",
+        export_csv: "CSV を書き出す",
+        replace_pairs_confirm: "このセットの現在の文ペアを CSV データで置き換えますか？",
         source_sentence: "元の文",
         target_translation: "訳文",
         action: "操作",
@@ -861,8 +871,10 @@
         json_imported: "JSON ファイルを読み込みました。",
         json_import_error: "JSON ファイルを読み込めませんでした。",
         add_one_valid_set: "少なくとも1つの有効なセットを追加してください。",
-        csv_imported: "選択したセットに CSV を読み込みました。",
-        csv_import_error: "このセットに CSV を読み込めませんでした。"
+        csv_imported_replace: "選択したセットに CSV を読み込み、文ペアを置き換えました。",
+        csv_imported_append: "選択したセットに CSV を読み込み、文ペアを追加しました。",
+        csv_import_error: "このセットに CSV を読み込めませんでした。",
+        csv_exported: "選択したセットの CSV を書き出しました。"
       }
     };
 
@@ -1189,6 +1201,36 @@
       return pairs;
     }
 
+    function escapeCsvValue(value){
+      const text = String(value ?? "");
+      if(text.includes('"') || text.includes(",") || text.includes("\n")){
+        return `"${text.replace(/"/g, '""')}"`;
+      }
+      return text;
+    }
+
+    function exportSetToCsv(setIndex){
+      const set = sets[setIndex];
+      if(!set) return;
+
+      const rows = ["source,target"];
+      (set.pairs || []).forEach(pair => {
+        rows.push(`${escapeCsvValue(pair.source)},${escapeCsvValue(pair.target)}`);
+      });
+
+      const csv = rows.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${sanitizeId(set.id || "set")}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setMessage(t("csv_exported"), "ok");
+    }
+
     function renderSets(){
       setList.innerHTML = "";
       const visibleSets = filteredSets();
@@ -1262,6 +1304,7 @@
               <button class="secondary" data-action="duplicateSet" data-index="${realIndex}">${t("duplicate")}</button>
               <button class="warning" data-action="swapSetLanguages" data-index="${realIndex}">${t("swap_languages")}</button>
               <button class="secondary" data-action="importCsv" data-index="${realIndex}">${t("import_csv")}</button>
+              <button class="secondary" data-action="exportCsv" data-index="${realIndex}">${t("export_csv")}</button>
               <button class="secondary" data-action="upSet" data-index="${realIndex}">${t("move_up")}</button>
               <button class="secondary" data-action="downSet" data-index="${realIndex}">${t("move_down")}</button>
               <input type="file" accept=".csv,text/csv" data-csv-input="${realIndex}" style="display:none" />
@@ -1332,6 +1375,9 @@
             const fileInput = setList.querySelector(`[data-csv-input="${i}"]`);
             if(fileInput) fileInput.click();
             return;
+          } else if(action === "exportCsv"){
+            exportSetToCsv(i);
+            return;
           } else if(action === "upSet" && i > 0){
             [sets[i - 1], sets[i]] = [sets[i], sets[i - 1]];
           } else if(action === "downSet" && i < sets.length - 1){
@@ -1357,10 +1403,18 @@
             const text = await file.text();
             const pairs = parseCsvText(text);
             if(!pairs.length) throw new Error("No pairs");
-            sets[setIndex].pairs = pairs;
+
+            const replace = confirm(t("replace_pairs_confirm"));
+            if(replace){
+              sets[setIndex].pairs = pairs;
+              setMessage(t("csv_imported_replace"), "ok");
+            } else {
+              sets[setIndex].pairs = [...(sets[setIndex].pairs || []), ...pairs];
+              setMessage(t("csv_imported_append"), "ok");
+            }
+
             renderSets();
             updateJsonPreview();
-            setMessage(t("csv_imported"), "ok");
           }catch(error){
             console.error(error);
             setMessage(t("csv_import_error"), "err");
