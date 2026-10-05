@@ -1,22 +1,22 @@
 {
   "title": "Tłumaczenie zdań EN-PL",
   "settings": {
-    "difficulty": "medium",
+    "difficulty": "easy",
     "defaultClassLabel": "5A",
-    "spawnRate": 1100,
+    "spawnRate": 1500,
     "timerSeconds": 45,
-    "maxMistakes": 5,
+    "maxMistakes": 0,
     "randomOrder": false,
     "autoNextSeconds": 3,
     "soundEnabled": true,
     "studentNameMode": true,
     "showSetPicker": true,
     "allowHint": true,
-    "allowSolution": false,
+    "allowSolution": true,
     "showTranslationInstruction": true,
-    "sourceLanguageLabel": "English",
-    "targetLanguageLabel": "Polski",
-    "distractorCount": 4,
+    "sourceLanguageLabel": "Polski",
+    "targetLanguageLabel": "English",
+    "distractorCount": 0,
     "distractorMode": "auto",
     "punctuationMode": "auto"
   },
@@ -28,10 +28,22 @@
       "theme": "animals",
       "buildMode": "words",
       "pairs": [
-        { "source": "Cat", "target": "Kot" },
-        { "source": "Dog", "target": "Pies" },
-        { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" }
+        {
+          "source": "Kot",
+          "target": "Cat"
+        },
+        {
+          "source": "Pies",
+          "target": "Dog"
+        },
+        {
+          "source": "Ptak",
+          "target": "Bird"
+        },
+        {
+          "source": "Koń",
+          "target": "Horse"
+        }
       ]
     },
     {
@@ -41,10 +53,22 @@
       "theme": "animals",
       "buildMode": "letters",
       "pairs": [
-        { "source": "Cat", "target": "Kot" },
-        { "source": "Dog", "target": "Pies" },
-        { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" }
+        {
+          "source": "Kot",
+          "target": "Cat"
+        },
+        {
+          "source": "Pies",
+          "target": "Dog"
+        },
+        {
+          "source": "Ptak",
+          "target": "Bird"
+        },
+        {
+          "source": "Koń",
+          "target": "Horse"
+        }
       ]
     },
     {
@@ -54,9 +78,18 @@
       "theme": "school",
       "buildMode": "words",
       "pairs": [
-        { "source": "This is my book.", "target": "To jest moja książka." },
-        { "source": "I have a pencil.", "target": "Mam ołówek." },
-        { "source": "The teacher is here.", "target": "Nauczyciel jest tutaj." }
+        {
+          "source": "To jest moja książka.",
+          "target": "This is my book."
+        },
+        {
+          "source": "Mam ołówek.",
+          "target": "I have a pencil."
+        },
+        {
+          "source": "Nauczyciel jest tutaj.",
+          "target": "The teacher is here."
+        }
       ]
     },
     {
@@ -66,9 +99,18 @@
       "theme": "school",
       "buildMode": "letters",
       "pairs": [
-        { "source": "Book", "target": "Książka" },
-        { "source": "Pen", "target": "Długopis" },
-        { "source": "Desk", "target": "Biurko" }
+        {
+          "source": "Książka",
+          "target": "Book"
+        },
+        {
+          "source": "Długopis",
+          "target": "Pen"
+        },
+        {
+          "source": "Biurko",
+          "target": "Desk"
+        }
       ]
     },
     {
@@ -78,9 +120,18 @@
       "theme": "daily life",
       "buildMode": "words",
       "pairs": [
-        { "source": "I like apples.", "target": "Lubię jabłka." },
-        { "source": "She is my friend.", "target": "Ona jest moją przyjaciółką." },
-        { "source": "We go to school every day.", "target": "Chodzimy do szkoły codziennie." }
+        {
+          "source": "Lubię jabłka.",
+          "target": "I like apples."
+        },
+        {
+          "source": "Ona jest moją przyjaciółką.",
+          "target": "She is my friend."
+        },
+        {
+          "source": "Chodzimy do szkoły codziennie.",
+          "target": "We go to school every day."
+        }
       ]
     },
     {
@@ -90,9 +141,18 @@
       "theme": "daily life",
       "buildMode": "letters",
       "pairs": [
-        { "source": "Friend", "target": "Przyjaciel" },
-        { "source": "School", "target": "Szkoła" },
-        { "source": "Apple", "target": "Jabłko" }
+        {
+          "source": "Przyjaciel",
+          "target": "Friend"
+        },
+        {
+          "source": "Szkoła",
+          "target": "School"
+        },
+        {
+          "source": "Jabłko",
+          "target": "Apple"
+        }
       ]
     }
   ]
