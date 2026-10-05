@@ -1,158 +1,110 @@
 {
   "title": "Tłumaczenie zdań EN-PL",
   "settings": {
-    "difficulty": "easy",
+    "difficulty": "medium",
     "defaultClassLabel": "5A",
-    "spawnRate": 1500,
+    "spawnRate": 1100,
     "timerSeconds": 45,
-    "maxMistakes": 0,
+    "maxMistakes": 5,
     "randomOrder": false,
     "autoNextSeconds": 3,
     "soundEnabled": true,
     "studentNameMode": true,
     "showSetPicker": true,
     "allowHint": true,
-    "allowSolution": true,
+    "allowSolution": false,
     "showTranslationInstruction": true,
-    "sourceLanguageLabel": "Polski",
-    "targetLanguageLabel": "English",
-    "distractorCount": 0,
-    "distractorMode": "lettersOnly",
+    "sourceLanguageLabel": "English",
+    "targetLanguageLabel": "Polski",
+    "defaultDistractorCount": 4,
+    "defaultDistractorMode": "auto",
     "punctuationMode": "auto"
   },
   "sets": [
     {
       "id": "animals_words",
       "name": "Animals - wyrazy",
-      "classLabel": "5",
+      "classLabel": "5A",
       "theme": "animals",
       "buildMode": "words",
+      "distractorCount": 4,
+      "distractorMode": "material",
       "pairs": [
-        {
-          "source": "Kot",
-          "target": "Cat"
-        },
-        {
-          "source": "Pies",
-          "target": "Dog"
-        },
-        {
-          "source": "Ptak",
-          "target": "Bird"
-        },
-        {
-          "source": "Koń",
-          "target": "Horse"
-        }
+        { "source": "Cat", "target": "Kot" },
+        { "source": "Dog", "target": "Pies" },
+        { "source": "Bird", "target": "Ptak" },
+        { "source": "Horse", "target": "Koń" }
       ]
     },
     {
       "id": "animals_letters",
       "name": "Animals - litery",
-      "classLabel": "5",
+      "classLabel": "5A",
       "theme": "animals",
       "buildMode": "letters",
+      "distractorCount": 2,
+      "distractorMode": "lettersOnly",
       "pairs": [
-        {
-          "source": "Kot",
-          "target": "Cat"
-        },
-        {
-          "source": "Pies",
-          "target": "Dog"
-        },
-        {
-          "source": "Ptak",
-          "target": "Bird"
-        },
-        {
-          "source": "Koń",
-          "target": "Horse"
-        }
+        { "source": "Cat", "target": "Kot" },
+        { "source": "Dog", "target": "Pies" },
+        { "source": "Bird", "target": "Ptak" },
+        { "source": "Horse", "target": "Koń" }
       ]
     },
     {
       "id": "school_words",
       "name": "School - wyrazy",
-      "classLabel": "5",
+      "classLabel": "5A",
       "theme": "school",
       "buildMode": "words",
+      "distractorCount": 6,
+      "distractorMode": "material",
       "pairs": [
-        {
-          "source": "To jest moja książka.",
-          "target": "This is my book."
-        },
-        {
-          "source": "Mam ołówek.",
-          "target": "I have a pencil."
-        },
-        {
-          "source": "Nauczyciel jest tutaj.",
-          "target": "The teacher is here."
-        }
+        { "source": "This is my book.", "target": "To jest moja książka." },
+        { "source": "I have a pencil.", "target": "Mam ołówek." },
+        { "source": "The teacher is here.", "target": "Nauczyciel jest tutaj." }
       ]
     },
     {
       "id": "school_letters",
       "name": "School - litery",
-      "classLabel": "5",
+      "classLabel": "5A",
       "theme": "school",
       "buildMode": "letters",
+      "distractorCount": 2,
+      "distractorMode": "material",
       "pairs": [
-        {
-          "source": "Książka",
-          "target": "Book"
-        },
-        {
-          "source": "Długopis",
-          "target": "Pen"
-        },
-        {
-          "source": "Biurko",
-          "target": "Desk"
-        }
+        { "source": "Book", "target": "Książka" },
+        { "source": "Pen", "target": "Długopis" },
+        { "source": "Desk", "target": "Biurko" }
       ]
     },
     {
       "id": "daily_words",
       "name": "Daily life - wyrazy",
-      "classLabel": "6",
+      "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "words",
+      "distractorCount": 4,
+      "distractorMode": "auto",
       "pairs": [
-        {
-          "source": "Lubię jabłka.",
-          "target": "I like apples."
-        },
-        {
-          "source": "Ona jest moją przyjaciółką.",
-          "target": "She is my friend."
-        },
-        {
-          "source": "Chodzimy do szkoły codziennie.",
-          "target": "We go to school every day."
-        }
+        { "source": "I like apples.", "target": "Lubię jabłka." },
+        { "source": "She is my friend.", "target": "Ona jest moją przyjaciółką." },
+        { "source": "We go to school every day.", "target": "Chodzimy do szkoły codziennie." }
       ]
     },
     {
       "id": "daily_letters",
       "name": "Daily life - litery",
-      "classLabel": "6",
+      "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "letters",
+      "distractorCount": 0,
+      "distractorMode": "lettersOnly",
       "pairs": [
-        {
-          "source": "Przyjaciel",
-          "target": "Friend"
-        },
-        {
-          "source": "Szkoła",
-          "target": "School"
-        },
-        {
-          "source": "Jabłko",
-          "target": "Apple"
-        }
+        { "source": "Friend", "target": "Przyjaciel" },
+        { "source": "School", "target": "Szkoła" },
+        { "source": "Apple", "target": "Jabłko" }
       ]
     }
   ]
