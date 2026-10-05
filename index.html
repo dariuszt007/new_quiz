@@ -450,13 +450,31 @@
       display:none;
     }
 
-    .focus-mode .bottom{
-      grid-template-columns:1fr;
+    .focus-mode .container{
+      display:flex;
+      flex-direction:column;
+      max-width:1400px;
+      min-height:100vh;
     }
 
     .focus-mode .game-area{
-      height:68vh;
-      min-height:520px;
+      height:62vh;
+      min-height:420px;
+      flex:0 0 auto;
+      margin-bottom:14px;
+    }
+
+    .focus-mode .bottom{
+      display:block;
+      margin-top:0;
+    }
+
+    .focus-mode .bottom .card:first-child{
+      display:block;
+    }
+
+    .focus-mode .bottom .card:last-child{
+      display:none;
     }
 
     .panels-hidden .topbar,
@@ -1003,7 +1021,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_4_1";
+    const REPORTS_KEY = "translation_reports_student_5";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1389,6 +1407,21 @@
       return count;
     }
 
+    function estimateTokenWidth(word){
+      return Math.min(340, Math.max(76, String(word).length * 16 + 30));
+    }
+
+    function getLanePositions(itemCount){
+      const width = gameArea.clientWidth;
+      const lanes = [];
+      const safeCount = Math.max(1, itemCount);
+      const spacing = width / (safeCount + 1);
+      for(let i = 0; i < safeCount; i++){
+        lanes.push(Math.floor((i + 1) * spacing));
+      }
+      return lanes;
+    }
+
     function createTokenElement(tokenObj){
       const el = document.createElement("div");
       el.className = "word-token " + COLOR_CLASSES[tokenObj.colorIndex % COLOR_CLASSES.length];
@@ -1530,18 +1563,19 @@
       }
 
       shuffleArray(itemsToSpawn);
+      const lanes = getLanePositions(itemsToSpawn.length);
 
       itemsToSpawn.forEach((word, idx) => {
-        const width = gameArea.clientWidth;
-        const tokenWidthEstimate = Math.min(340, Math.max(76, String(word).length * 16 + 30));
-        const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
+        const tokenWidthEstimate = estimateTokenWidth(word);
+        const centerX = lanes[idx] || Math.floor(gameArea.clientWidth / 2);
+        const x = Math.max(0, Math.min(gameArea.clientWidth - tokenWidthEstimate - 8, centerX - Math.floor(tokenWidthEstimate / 2)));
         const speed = getTokenSpeed();
 
         const tokenObj = {
           id: ++tokenIdCounter,
           word,
           x,
-          y: -76 - (idx * 12),
+          y: -76 - (idx * 18),
           speed,
           colorIndex: tokenIdCounter,
           element: null
@@ -1557,17 +1591,24 @@
       const uniqueWords = [...new Set(fallingTokens.map(t => t.word))];
       clearTokens();
 
+      if(uniqueWords.length === 0){
+        spawnTokenBatch();
+        return;
+      }
+
+      const lanes = getLanePositions(uniqueWords.length);
+
       uniqueWords.forEach((word, idx) => {
-        const width = gameArea.clientWidth;
-        const tokenWidthEstimate = Math.min(340, Math.max(76, String(word).length * 16 + 30));
-        const x = Math.max(0, Math.floor(Math.random() * Math.max(20, width - tokenWidthEstimate - 10)));
+        const tokenWidthEstimate = estimateTokenWidth(word);
+        const centerX = lanes[idx] || Math.floor(gameArea.clientWidth / 2);
+        const x = Math.max(0, Math.min(gameArea.clientWidth - tokenWidthEstimate - 8, centerX - Math.floor(tokenWidthEstimate / 2)));
         const speed = getTokenSpeed();
 
         const tokenObj = {
           id: ++tokenIdCounter,
           word,
           x,
-          y: 20 + idx * 12,
+          y: 20 + idx * 16,
           speed,
           colorIndex: tokenIdCounter,
           element: null
@@ -1576,10 +1617,6 @@
         fallingTokens.push(tokenObj);
         createTokenElement(tokenObj);
       });
-
-      if(uniqueWords.length === 0){
-        spawnTokenBatch();
-      }
     }
 
     function shuffleArray(arr){
@@ -2006,6 +2043,7 @@
       }
       updateFocusButton();
       updatePanelsButton();
+      setTimeout(respawnCurrentVisibleTokens, 80);
     }
 
     function updateFocusButton(){
@@ -2017,6 +2055,7 @@
       panelsHidden = typeof forceValue === "boolean" ? forceValue : !panelsHidden;
       document.body.classList.toggle("panels-hidden", panelsHidden);
       updatePanelsButton();
+      setTimeout(respawnCurrentVisibleTokens, 80);
     }
 
     function updatePanelsButton(){
@@ -2062,13 +2101,7 @@
     startGameBtn.addEventListener("click", startGame);
 
     window.addEventListener("resize", () => {
-      fallingTokens.forEach(token => {
-        const maxX = Math.max(0, gameArea.clientWidth - 300);
-        if(token.x > maxX){
-          token.x = maxX;
-          if(token.element) token.element.style.left = token.x + "px";
-        }
-      });
+      respawnCurrentVisibleTokens();
     });
 
     async function init(){
