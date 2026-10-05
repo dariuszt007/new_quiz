@@ -522,6 +522,7 @@
         move_up: "Move up",
         move_down: "Move down",
         add_pair: "Add pair",
+        import_csv: "Import CSV",
         source_sentence: "Source sentence",
         target_translation: "Target translation",
         action: "Action",
@@ -569,7 +570,9 @@
         json_copied: "JSON copied to clipboard.",
         json_imported: "JSON file loaded.",
         json_import_error: "Could not load JSON file.",
-        add_one_valid_set: "Add at least one valid set."
+        add_one_valid_set: "Add at least one valid set.",
+        csv_imported: "CSV imported into the selected set.",
+        csv_import_error: "Could not import CSV for this set."
       },
       pl: {
         page_title: "Panel nauczyciela",
@@ -664,6 +667,7 @@
         move_up: "Przesuń w górę",
         move_down: "Przesuń w dół",
         add_pair: "Dodaj parę",
+        import_csv: "Import CSV",
         source_sentence: "Zdanie źródłowe",
         target_translation: "Tłumaczenie docelowe",
         action: "Akcja",
@@ -711,7 +715,9 @@
         json_copied: "JSON skopiowany do schowka.",
         json_imported: "Wczytano plik JSON.",
         json_import_error: "Nie udało się wczytać pliku JSON.",
-        add_one_valid_set: "Dodaj przynajmniej jeden poprawny zestaw."
+        add_one_valid_set: "Dodaj przynajmniej jeden poprawny zestaw.",
+        csv_imported: "Zaimportowano CSV do wybranego zestawu.",
+        csv_import_error: "Nie udało się zaimportować CSV do tego zestawu."
       },
       ja: {
         page_title: "教師パネル",
@@ -806,6 +812,7 @@
         move_up: "上へ",
         move_down: "下へ",
         add_pair: "ペアを追加",
+        import_csv: "CSV を読み込む",
         source_sentence: "元の文",
         target_translation: "訳文",
         action: "操作",
@@ -853,7 +860,9 @@
         json_copied: "JSON をクリップボードにコピーしました。",
         json_imported: "JSON ファイルを読み込みました。",
         json_import_error: "JSON ファイルを読み込めませんでした。",
-        add_one_valid_set: "少なくとも1つの有効なセットを追加してください。"
+        add_one_valid_set: "少なくとも1つの有効なセットを追加してください。",
+        csv_imported: "選択したセットに CSV を読み込みました。",
+        csv_import_error: "このセットに CSV を読み込めませんでした。"
       }
     };
 
@@ -1118,6 +1127,68 @@
       setMessage(t("languages_swapped_all"), "ok");
     }
 
+    function splitCsvLine(line){
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for(let i = 0; i < line.length; i++){
+        const ch = line[i];
+        if(ch === '"'){
+          if(inQuotes && line[i + 1] === '"'){
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if(ch === "," && !inQuotes){
+          result.push(current);
+          current = "";
+        } else {
+          current += ch;
+        }
+      }
+      result.push(current);
+      return result.map(v => v.trim());
+    }
+
+    function normalizeCsvCell(cell){
+      let value = String(cell ?? "").trim();
+      if(value.startsWith('"') && value.endsWith('"') && value.length >= 2){
+        value = value.slice(1, -1).replace(/""/g, '"').trim();
+      }
+      return value;
+    }
+
+    function parseCsvText(text){
+      const lines = String(text)
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .split("\n")
+        .map(line => line.trim())
+        .filter(Boolean);
+
+      if(lines.length === 0) return [];
+
+      let startIndex = 0;
+      const first = splitCsvLine(lines[0]).map(normalizeCsvCell).map(v => v.toLowerCase());
+      if(first.length >= 2 && first[0] === "source" && first[1] === "target"){
+        startIndex = 1;
+      }
+
+      const pairs = [];
+      for(let i = startIndex; i < lines.length; i++){
+        const cols = splitCsvLine(lines[i]).map(normalizeCsvCell);
+        if(cols.length < 2) continue;
+        const source = cols[0];
+        const target = cols.slice(1).join(",").trim();
+        if(source && target){
+          pairs.push({ source, target });
+        }
+      }
+      return pairs;
+    }
+
     function renderSets(){
       setList.innerHTML = "";
       const visibleSets = filteredSets();
@@ -1190,8 +1261,10 @@
               <button class="success" data-action="addPair" data-index="${realIndex}">${t("add_pair")}</button>
               <button class="secondary" data-action="duplicateSet" data-index="${realIndex}">${t("duplicate")}</button>
               <button class="warning" data-action="swapSetLanguages" data-index="${realIndex}">${t("swap_languages")}</button>
+              <button class="secondary" data-action="importCsv" data-index="${realIndex}">${t("import_csv")}</button>
               <button class="secondary" data-action="upSet" data-index="${realIndex}">${t("move_up")}</button>
               <button class="secondary" data-action="downSet" data-index="${realIndex}">${t("move_down")}</button>
+              <input type="file" accept=".csv,text/csv" data-csv-input="${realIndex}" style="display:none" />
             </div>
           </div>
         `;
@@ -1255,6 +1328,10 @@
           } else if(action === "swapSetLanguages"){
             swapLanguagesInSet(i);
             return;
+          } else if(action === "importCsv"){
+            const fileInput = setList.querySelector(`[data-csv-input="${i}"]`);
+            if(fileInput) fileInput.click();
+            return;
           } else if(action === "upSet" && i > 0){
             [sets[i - 1], sets[i]] = [sets[i], sets[i - 1]];
           } else if(action === "downSet" && i < sets.length - 1){
@@ -1267,6 +1344,29 @@
 
           renderSets();
           updateJsonPreview();
+        });
+      });
+
+      setList.querySelectorAll("[data-csv-input]").forEach(input => {
+        input.addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          const setIndex = Number(e.target.dataset.csvInput);
+          if(!file) return;
+
+          try{
+            const text = await file.text();
+            const pairs = parseCsvText(text);
+            if(!pairs.length) throw new Error("No pairs");
+            sets[setIndex].pairs = pairs;
+            renderSets();
+            updateJsonPreview();
+            setMessage(t("csv_imported"), "ok");
+          }catch(error){
+            console.error(error);
+            setMessage(t("csv_import_error"), "err");
+          }finally{
+            e.target.value = "";
+          }
         });
       });
     }
