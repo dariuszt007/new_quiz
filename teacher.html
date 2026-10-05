@@ -374,6 +374,8 @@
           <textarea id="newSetPairs"></textarea>
 
           <div class="actions">
+            <button class="secondary" id="importNewSetCsvBtn" data-i18n="import_csv">Import CSV</button>
+            <input type="file" id="importNewSetCsvInput" accept=".csv,text/csv" style="display:none" />
             <button class="primary" id="addSetBtn" data-i18n="add_set">Add set</button>
             <button class="danger" id="clearNewSetBtn" data-i18n="clear_fields">Clear fields</button>
           </div>
@@ -525,6 +527,7 @@
         import_csv: "Import CSV",
         export_csv: "Export CSV",
         replace_pairs_confirm: "Replace the current pairs in this set with the CSV data?",
+        replace_pairs_new_set_confirm: "Replace the current pairs in the New set section with the CSV data?",
         source_sentence: "Source sentence",
         target_translation: "Target translation",
         action: "Action",
@@ -576,7 +579,9 @@
         csv_imported_replace: "CSV imported into the selected set and replaced its pairs.",
         csv_imported_append: "CSV imported into the selected set and appended its pairs.",
         csv_import_error: "Could not import CSV for this set.",
-        csv_exported: "CSV exported for the selected set."
+        csv_exported: "CSV exported for the selected set.",
+        csv_newset_imported_replace: "CSV imported into the New set section and replaced its pairs.",
+        csv_newset_imported_append: "CSV imported into the New set section and appended its pairs."
       },
       pl: {
         page_title: "Panel nauczyciela",
@@ -674,6 +679,7 @@
         import_csv: "Import CSV",
         export_csv: "Eksport CSV",
         replace_pairs_confirm: "Czy chcesz zastąpić obecne pary w tym zestawie danymi z CSV?",
+        replace_pairs_new_set_confirm: "Czy chcesz zastąpić obecne pary w sekcji Nowy zestaw danymi z CSV?",
         source_sentence: "Zdanie źródłowe",
         target_translation: "Tłumaczenie docelowe",
         action: "Akcja",
@@ -725,7 +731,9 @@
         csv_imported_replace: "Zaimportowano CSV do wybranego zestawu i zastąpiono pary.",
         csv_imported_append: "Zaimportowano CSV do wybranego zestawu i dopisano pary.",
         csv_import_error: "Nie udało się zaimportować CSV do tego zestawu.",
-        csv_exported: "Wyeksportowano CSV dla wybranego zestawu."
+        csv_exported: "Wyeksportowano CSV dla wybranego zestawu.",
+        csv_newset_imported_replace: "Zaimportowano CSV do sekcji Nowy zestaw i zastąpiono pary.",
+        csv_newset_imported_append: "Zaimportowano CSV do sekcji Nowy zestaw i dopisano pary."
       },
       ja: {
         page_title: "教師パネル",
@@ -823,6 +831,7 @@
         import_csv: "CSV を読み込む",
         export_csv: "CSV を書き出す",
         replace_pairs_confirm: "このセットの現在の文ペアを CSV データで置き換えますか？",
+        replace_pairs_new_set_confirm: "新しいセット欄の現在の文ペアを CSV データで置き換えますか？",
         source_sentence: "元の文",
         target_translation: "訳文",
         action: "操作",
@@ -874,7 +883,9 @@
         csv_imported_replace: "選択したセットに CSV を読み込み、文ペアを置き換えました。",
         csv_imported_append: "選択したセットに CSV を読み込み、文ペアを追加しました。",
         csv_import_error: "このセットに CSV を読み込めませんでした。",
-        csv_exported: "選択したセットの CSV を書き出しました。"
+        csv_exported: "選択したセットの CSV を書き出しました。",
+        csv_newset_imported_replace: "新しいセット欄に CSV を読み込み、文ペアを置き換えました。",
+        csv_newset_imported_append: "新しいセット欄に CSV を読み込み、文ペアを追加しました。"
       }
     };
 
@@ -928,6 +939,8 @@
     const newSetDistractorMode = document.getElementById("newSetDistractorMode");
     const newSetBehaviorInfo = document.getElementById("newSetBehaviorInfo");
     const newSetModeInfo = document.getElementById("newSetModeInfo");
+    const importNewSetCsvBtn = document.getElementById("importNewSetCsvBtn");
+    const importNewSetCsvInput = document.getElementById("importNewSetCsvInput");
 
     const addSetBtn = document.getElementById("addSetBtn");
     const clearNewSetBtn = document.getElementById("clearNewSetBtn");
@@ -1060,6 +1073,21 @@
       if(mode === "lettersOnly") return t("letters_only");
       if(mode === "material") return t("from_material");
       return t("auto");
+    }
+
+    function deduplicatePairs(pairs){
+      const seen = new Set();
+      const result = [];
+      for(const pair of pairs || []){
+        const source = cleanText(pair.source);
+        const target = cleanText(pair.target);
+        if(!source || !target) continue;
+        const key = `${source}|||${target}`;
+        if(seen.has(key)) continue;
+        seen.add(key);
+        result.push({ source, target });
+      }
+      return result;
     }
 
     function getSetBehaviorInfoHtml(set){
@@ -1198,7 +1226,7 @@
           pairs.push({ source, target });
         }
       }
-      return pairs;
+      return deduplicatePairs(pairs);
     }
 
     function escapeCsvValue(value){
@@ -1406,10 +1434,10 @@
 
             const replace = confirm(t("replace_pairs_confirm"));
             if(replace){
-              sets[setIndex].pairs = pairs;
+              sets[setIndex].pairs = deduplicatePairs(pairs);
               setMessage(t("csv_imported_replace"), "ok");
             } else {
-              sets[setIndex].pairs = [...(sets[setIndex].pairs || []), ...pairs];
+              sets[setIndex].pairs = deduplicatePairs([...(sets[setIndex].pairs || []), ...pairs]);
               setMessage(t("csv_imported_append"), "ok");
             }
 
@@ -1436,9 +1464,7 @@
           useOwnDistractors: !!set.useOwnDistractors,
           distractorCount: Number(set.distractorCount ?? 4),
           distractorMode: set.distractorMode || "auto",
-          pairs: (set.pairs || [])
-            .map(pair => ({ source: cleanText(pair.source), target: cleanText(pair.target) }))
-            .filter(pair => pair.source && pair.target)
+          pairs: deduplicatePairs(set.pairs || [])
         }))
         .filter(set => set.id && set.name && set.pairs.length > 0);
 
@@ -1496,10 +1522,7 @@
         useOwnDistractors: !!useOwnDistractors,
         distractorCount: Number(distractorCount ?? 4),
         distractorMode: distractorMode || "auto",
-        pairs: (pairs || []).map(pair => ({
-          source: cleanText(pair.source),
-          target: cleanText(pair.target)
-        })).filter(pair => pair.source && pair.target)
+        pairs: deduplicatePairs(pairs || [])
       });
       renderSets();
       updateJsonPreview();
@@ -1543,12 +1566,12 @@
           useOwnDistractors: set.useOwnDistractors === true,
           distractorCount: Number(set.distractorCount ?? (s.defaultDistractorCount ?? 4)),
           distractorMode,
-          pairs: Array.isArray(set.pairs)
+          pairs: deduplicatePairs(Array.isArray(set.pairs)
             ? set.pairs.map(pair => ({
                 source: cleanText(pair.source || ""),
                 target: cleanText(pair.target || "")
               }))
-            : []
+            : [])
         };
       }) : [];
 
@@ -1645,7 +1668,7 @@
       const useOwnDistractors = newSetUseOwnDistractors.value === "true";
       const distractorCount = newSetDistractorCount.value;
       let distractorMode = newSetDistractorMode.value;
-      const pairs = parsePairsFromTextarea(newSetPairs.value);
+      const pairs = deduplicatePairs(parsePairsFromTextarea(newSetPairs.value));
 
       if(buildMode === "words" && distractorMode === "lettersOnly") distractorMode = "auto";
 
@@ -1674,6 +1697,40 @@
       newSetDistractorMode.value = "auto";
       updateNewSetOwnFieldsState();
       setMessage(t("fields_cleared"), "info");
+    });
+
+    importNewSetCsvBtn.addEventListener("click", () => {
+      importNewSetCsvInput.click();
+    });
+
+    importNewSetCsvInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+
+      try{
+        const text = await file.text();
+        const pairs = parseCsvText(text);
+        if(!pairs.length) throw new Error("No pairs");
+
+        const existingPairs = deduplicatePairs(parsePairsFromTextarea(newSetPairs.value));
+        const replace = confirm(t("replace_pairs_new_set_confirm"));
+
+        let finalPairs;
+        if(replace){
+          finalPairs = deduplicatePairs(pairs);
+          setMessage(t("csv_newset_imported_replace"), "ok");
+        } else {
+          finalPairs = deduplicatePairs([...existingPairs, ...pairs]);
+          setMessage(t("csv_newset_imported_append"), "ok");
+        }
+
+        newSetPairs.value = finalPairs.map(pair => `${pair.source} = ${pair.target}`).join("\n");
+      }catch(error){
+        console.error(error);
+        setMessage(t("csv_import_error"), "err");
+      }finally{
+        e.target.value = "";
+      }
     });
 
     addEmptySetBtn.addEventListener("click", () => {
