@@ -222,6 +222,10 @@
       visibility:hidden;
     }
 
+    .hidden-progress{
+      visibility:hidden;
+    }
+
     .start-overlay-message{
       position:absolute;
       inset:0;
@@ -675,11 +679,9 @@
         <h2 data-i18n="controls">Controls</h2>
         <div class="controls">
           <button class="primary" id="roundStartBtn">Start</button>
-          <button class="primary" id="restartBtn" data-i18n="restart_sentence">Restart sentence</button>
           <button class="secondary" id="nextBtn" data-i18n="next_sentence">Next sentence</button>
           <button class="success" id="toggleBtn" data-i18n="pause">Pause</button>
           <button class="warning" id="hintBtn" data-i18n="hint">Hint</button>
-          <button class="danger" id="solutionBtn" data-i18n="solution">Solution</button>
           <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
           <button class="secondary" id="focusBtn" data-i18n="focus_mode">Focus mode</button>
           <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Hide top panels</button>
@@ -719,7 +721,7 @@
         <div class="source-box hidden-source" id="sourceSentenceBox">...</div>
 
         <div class="small" style="margin-top:14px;" id="targetLabel"></div>
-        <div class="progress" id="progressDisplay"></div>
+        <div class="progress hidden-progress" id="progressDisplay"></div>
 
         <div class="progress-bar-wrap">
           <div class="progress-bar" id="progressBar"></div>
@@ -794,12 +796,10 @@
         start: "Start",
         instruction: "Instruction",
         controls: "Controls",
-        restart_sentence: "Restart sentence",
         next_sentence: "Next sentence",
         pause: "Pause",
         resume: "Resume",
         hint: "Hint",
-        solution: "Solution",
         back_to_sets: "Back to set choice",
         focus_mode: "Focus mode",
         normal_mode: "Normal mode",
@@ -856,13 +856,11 @@
         sentence_finished_already: "This sentence has already ended.",
         everything_done: "All elements are already placed.",
         hint_msg: "The hint shows the next correct element.",
-        solution_disabled: "Showing the solution is disabled.",
         correct_next: "Good! The next correct element was selected.",
         wrong_next: "Wrong! This is not the next correct element.",
         sentence_success: "Great! The whole translation has been completed.",
         too_many_mistakes: "Mistake limit reached.",
         time_up: "Time is up.",
-        solution_shown: "The solution was shown.",
         report_shown: "The final report is displayed.",
         enter_student_name: "Enter the student's name to start the game.",
         current_data_loaded: "Data from sentences.json loaded.",
@@ -895,12 +893,10 @@
         start: "Start",
         instruction: "Instrukcja",
         controls: "Sterowanie",
-        restart_sentence: "Restart zdania",
         next_sentence: "Następne zdanie",
         pause: "Pauza",
         resume: "Wznów",
         hint: "Podpowiedź",
-        solution: "Rozwiązanie",
         back_to_sets: "Powrót do wyboru zestawu",
         focus_mode: "Tryb focus",
         normal_mode: "Tryb normalny",
@@ -957,13 +953,11 @@
         sentence_finished_already: "Zdanie jest już zakończone.",
         everything_done: "Wszystkie elementy są już ułożone.",
         hint_msg: "Podpowiedź pokazuje następny poprawny element.",
-        solution_disabled: "Pokazywanie rozwiązania jest wyłączone.",
         correct_next: "Dobrze! Wybrano poprawny następny element.",
         wrong_next: "Błąd! To nie jest następny poprawny element.",
         sentence_success: "Brawo! Udało się ułożyć całe tłumaczenie.",
         too_many_mistakes: "Przekroczono limit błędów.",
         time_up: "Koniec czasu.",
-        solution_shown: "Pokazano rozwiązanie.",
         report_shown: "Wyświetlono raport końcowy.",
         enter_student_name: "Wpisz imię ucznia, aby rozpocząć grę.",
         current_data_loaded: "Wczytano dane z sentences.json.",
@@ -996,12 +990,10 @@
         start: "開始",
         instruction: "説明",
         controls: "操作",
-        restart_sentence: "文をやり直す",
         next_sentence: "次の文",
         pause: "一時停止",
         resume: "再開",
         hint: "ヒント",
-        solution: "答え",
         back_to_sets: "セット選択に戻る",
         focus_mode: "集中モード",
         normal_mode: "通常モード",
@@ -1058,13 +1050,11 @@
         sentence_finished_already: "この文はすでに終了しています。",
         everything_done: "すべての要素がすでに配置されています。",
         hint_msg: "ヒントは次の正しい要素を示します。",
-        solution_disabled: "答えの表示は無効です。",
         correct_next: "正解です。次の正しい要素が選ばれました。",
         wrong_next: "不正解です。これは次の正しい要素ではありません。",
         sentence_success: "すばらしいです。翻訳全体を完成できました。",
         too_many_mistakes: "ミスの上限に達しました。",
         time_up: "時間切れです。",
-        solution_shown: "答えを表示しました。",
         report_shown: "最終レポートを表示しました。",
         enter_student_name: "ゲームを始めるには生徒名を入力してください。",
         current_data_loaded: "sentences.json からデータを読み込みました。",
@@ -1140,7 +1130,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_4B";
+    const REPORTS_KEY = "translation_reports_student_5_4C";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1169,11 +1159,9 @@
     const sentenceSummary = document.getElementById("sentenceSummary");
 
     const roundStartBtn = document.getElementById("roundStartBtn");
-    const restartBtn = document.getElementById("restartBtn");
     const nextBtn = document.getElementById("nextBtn");
     const toggleBtn = document.getElementById("toggleBtn");
     const hintBtn = document.getElementById("hintBtn");
-    const solutionBtn = document.getElementById("solutionBtn");
     const backToSetsBtn = document.getElementById("backToSetsBtn");
     const focusBtn = document.getElementById("focusBtn");
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
@@ -1307,7 +1295,7 @@
             studentNameMode: data.settings?.studentNameMode !== undefined ? Boolean(data.settings.studentNameMode) : fallbackData.settings.studentNameMode,
             showSetPicker: data.settings?.showSetPicker !== undefined ? Boolean(data.settings.showSetPicker) : fallbackData.settings.showSetPicker,
             allowHint: data.settings?.allowHint !== undefined ? Boolean(data.settings.allowHint) : fallbackData.settings.allowHint,
-            allowSolution: data.settings?.allowSolution !== undefined ? Boolean(data.settings.allowSolution) : fallbackData.settings.allowSolution,
+            allowSolution: false,
             showTranslationInstruction: data.settings?.showTranslationInstruction !== undefined ? Boolean(data.settings.showTranslationInstruction) : fallbackData.settings.showTranslationInstruction,
             sourceLanguageLabel: data.settings?.sourceLanguageLabel || fallbackData.settings.sourceLanguageLabel,
             targetLanguageLabel: data.settings?.targetLanguageLabel || fallbackData.settings.targetLanguageLabel,
@@ -1618,6 +1606,112 @@
       };
     }
 
+    function getTokenSpeed(){
+      if(config.settings.difficulty === "easy") return 0.6 + Math.random() * 0.8;
+      if(config.settings.difficulty === "hard") return 1.1 + Math.random() * 1.6;
+      return 0.8 + Math.random() * 1.2;
+    }
+
+    function getSetWordPool(){
+      const pool = [];
+      if(!activeSet) return [];
+      activeSet.pairs.forEach(pair => {
+        tokenizeWords(pair.target).forEach(token => {
+          if(!isPunctuation(token)) pool.push(token);
+        });
+      });
+      return [...new Set(pool)];
+    }
+
+    function getSetLetterPool(){
+      const pool = [];
+      if(!activeSet) return [];
+      activeSet.pairs.forEach(pair => {
+        String(pair.target).split("").forEach(ch => {
+          if(ch !== " " && !isPunctuation(ch)) pool.push(ch);
+        });
+      });
+      return [...new Set(pool)];
+    }
+
+    function buildWordDistractorPool(){
+      const currentTarget = new Set(
+        currentTokens.filter(t => t.kind === "word").map(t => String(t.value).trim()).filter(Boolean)
+      );
+
+      const setPool = getSetWordPool().filter(word => !currentTarget.has(word));
+      const globalPool = [];
+      allSets.forEach(set => {
+        if(set.buildMode !== "words") return;
+        set.pairs.forEach(pair => {
+          tokenizeWords(pair.target).forEach(token => {
+            const clean = String(token).trim();
+            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)) globalPool.push(clean);
+          });
+        });
+      });
+
+      return { setOnly: [...new Set(setPool)], global: [...new Set(globalPool)] };
+    }
+
+    function buildLetterDistractorPool(){
+      const currentLetter = currentTokens[currentTokenIndex]?.value || "";
+      const setPool = getSetLetterPool().filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
+      const genericPool = LETTER_DISTRACTORS.filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
+      return { setOnly: [...new Set(setPool)], generic: [...new Set(genericPool)] };
+    }
+
+    function getDistractorToken(){
+      const mode = getEffectiveDistractorMode();
+
+      if(activeSet?.buildMode === "letters"){
+        const pools = buildLetterDistractorPool();
+
+        if(mode === "material"){
+          if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+          return null;
+        }
+        if(mode === "lettersOnly"){
+          if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
+          return null;
+        }
+        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+        if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
+        return null;
+      }
+
+      const pools = buildWordDistractorPool();
+      if(mode === "lettersOnly") return null;
+      if(mode === "material"){
+        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+        return null;
+      }
+      if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+      if(pools.global.length > 0) return pools.global[Math.floor(Math.random() * pools.global.length)];
+      return null;
+    }
+
+    function getExpectedTokenSkippingNonClickable(){
+      while(currentTokenIndex < currentTokens.length){
+        const token = currentTokens[currentTokenIndex];
+
+        if(activeSet?.buildMode === "letters"){
+          if(token.kind === "space" || token.kind === "punct"){
+            currentTokenIndex++;
+            continue;
+          }
+          break;
+        } else {
+          if(token.kind === "punct"){
+            currentTokenIndex++;
+            continue;
+          }
+          break;
+        }
+      }
+      return currentTokens[currentTokenIndex];
+    }
+
     function spawnTokenBatch(){
       if(gameFinished || paused || !gameStarted) return;
 
@@ -1672,6 +1766,18 @@
         fallingTokens.push(tokenObj);
         createTokenElement(tokenObj);
       });
+    }
+
+    function createTokenElement(tokenObj){
+      const el = document.createElement("div");
+      el.className = "word-token " + COLOR_CLASSES[tokenObj.colorIndex % COLOR_CLASSES.length];
+      el.textContent = tokenObj.word;
+      el.style.left = tokenObj.x + "px";
+      el.style.top = tokenObj.y + "px";
+      el.dataset.id = tokenObj.id;
+      el.addEventListener("click", () => handleTokenClick(tokenObj.id));
+      gameArea.appendChild(el);
+      tokenObj.element = el;
     }
 
     function shuffleArray(arr){
@@ -1813,6 +1919,7 @@
       roundStartBtn.style.display = "none";
       startOverlayMessage.classList.remove("show");
       sourceSentenceBox.classList.remove("hidden-source");
+      progressDisplay.classList.remove("hidden-progress");
       setMessage(t("round_started_msg"), "ok");
       startGameLoops();
       spawnTokenBatch();
@@ -1873,19 +1980,20 @@
       toggleBtn.textContent = t("pause");
 
       hintBtn.style.display = config.settings.allowHint ? "flex" : "none";
-      solutionBtn.style.display = config.settings.allowSolution ? "flex" : "none";
 
       renderProgress();
       updateTopInfo();
 
       if(gameStarted){
         sourceSentenceBox.classList.remove("hidden-source");
+        progressDisplay.classList.remove("hidden-progress");
         startOverlayMessage.classList.remove("show");
         setMessage(t("round_started_msg"), "info");
         startGameLoops();
         spawnTokenBatch();
       } else {
         sourceSentenceBox.classList.add("hidden-source");
+        progressDisplay.classList.add("hidden-progress");
         startOverlayMessage.classList.add("show");
         setMessage(t("round_ready_msg"), "info");
         animationId = requestAnimationFrame(updateTokens);
@@ -1920,17 +2028,6 @@
       hintTokenIndex = currentTokenIndex;
       renderProgress();
       setMessage(t("hint_msg"), "warn");
-    }
-
-    function showSolution(){
-      if(!config.settings.allowSolution){
-        setMessage(t("solution_disabled"), "err");
-        return;
-      }
-      currentSentenceHadMistake = true;
-      currentTokenIndex = currentTokens.length;
-      renderProgress();
-      finishSentence(false, t("solution_shown"));
     }
 
     function calculateAccuracy(){
@@ -2117,6 +2214,7 @@
       gameStarted = false;
       roundStartBtn.style.display = "flex";
       sourceSentenceBox.classList.add("hidden-source");
+      progressDisplay.classList.add("hidden-progress");
       startOverlayMessage.classList.add("show");
       setMessage(t("returned_to_sets"), "info");
     }
@@ -2149,7 +2247,6 @@
     }
 
     roundStartBtn.addEventListener("click", unlockGameStart);
-    restartBtn.addEventListener("click", () => loadSentenceByOrder(currentOrderIndex));
     nextBtn.addEventListener("click", goToNextSentence);
 
     toggleBtn.addEventListener("click", () => {
@@ -2159,7 +2256,6 @@
     });
 
     hintBtn.addEventListener("click", showHint);
-    solutionBtn.addEventListener("click", showSolution);
     backToSetsBtn.addEventListener("click", returnToSetChoice);
     focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
