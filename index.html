@@ -532,14 +532,14 @@
       flex-direction:column;
       max-width:1400px;
       min-height:100vh;
-      padding-top:58px;
+      padding-top:12px;
       padding-bottom:8px;
     }
 
     .focus-mode .game-area{
-      height:46vh;
-      min-height:240px;
-      max-height:46vh;
+      height:50vh;
+      min-height:280px;
+      max-height:50vh;
       flex:0 0 auto;
       margin-bottom:6px;
     }
@@ -624,7 +624,7 @@
 
     .focus-toolbar{
       position:fixed;
-      top:8px;
+      bottom:10px;
       left:50%;
       transform:translateX(-50%);
       z-index:1300;
@@ -660,11 +660,6 @@
       white-space:nowrap;
     }
 
-    .focus-mini-btn.warning{
-      background:var(--warning);
-      color:#111827;
-    }
-
     .focus-mini-btn.success{
       background:var(--success);
       color:#04130a;
@@ -672,7 +667,7 @@
 
     @media (max-width:700px){
       .focus-toolbar{
-        top:6px;
+        bottom:8px;
         padding:5px 8px;
         gap:6px;
       }
@@ -681,9 +676,6 @@
         padding:6px 10px;
         font-size:11px;
       }
-      .focus-mode .container{
-        padding-top:54px;
-      }
     }
   </style>
 </head>
@@ -691,7 +683,6 @@
   <button class="secondary floating-show-panels" id="floatingShowPanelsBtn">Pokaż górne panele</button>
 
   <div class="focus-toolbar" id="focusToolbar">
-    <button class="focus-mini-btn warning" id="floatingExitFocusBtn">Tryb normalny</button>
     <button class="focus-mini-btn" id="focusNextBtn">Następne zdanie</button>
     <button class="focus-mini-btn success" id="focusPauseBtn">Pauza</button>
     <button class="focus-mini-btn" id="focusHintBtn">Podpowiedź</button>
@@ -1187,12 +1178,11 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6A_FIX_2";
+    const REPORTS_KEY = "translation_reports_student_5_6B_FIX";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
 
-    const appRoot = document.getElementById("appRoot");
     const gameArea = document.getElementById("gameArea");
     const progressDisplay = document.getElementById("progressDisplay");
     const progressBar = document.getElementById("progressBar");
@@ -1223,7 +1213,6 @@
     const focusBtn = document.getElementById("focusBtn");
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
-    const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
     const focusNextBtn = document.getElementById("focusNextBtn");
     const focusPauseBtn = document.getElementById("focusPauseBtn");
     const focusHintBtn = document.getElementById("focusHintBtn");
@@ -1304,7 +1293,6 @@
         el.textContent = t(key);
       });
       floatingShowPanelsBtn.textContent = t("show_panels");
-      floatingExitFocusBtn.textContent = t("normal_mode");
       roundStartBtn.textContent = t("start");
       startOverlayText.textContent = t("round_wait_overlay");
       focusNextBtn.textContent = t("next_sentence");
@@ -1433,7 +1421,6 @@
 
     function updatePreStartControls(){
       const preStart = !gameStarted;
-
       roundStartBtn.style.display = preStart ? "flex" : "none";
       nextBtn.style.display = preStart ? "none" : "flex";
       toggleBtn.style.display = preStart ? "none" : "flex";
@@ -1791,6 +1778,7 @@
 
     function spawnTokenBatch(){
       if(gameFinished || paused || !gameStarted) return;
+      if(gameArea.clientWidth < 20 || gameArea.clientHeight < 20) return;
 
       const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
@@ -1855,6 +1843,13 @@
       el.addEventListener("click", () => handleTokenClick(tokenObj.id));
       gameArea.appendChild(el);
       tokenObj.element = el;
+    }
+
+    function shuffleArray(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
     }
 
     function removeToken(id){
@@ -1967,7 +1962,9 @@
       if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
 
       animationId = requestAnimationFrame(updateTokens);
-      spawnInterval = setInterval(spawnTokenBatch, config.settings.spawnRate);
+      spawnInterval = setInterval(() => {
+        spawnTokenBatch();
+      }, config.settings.spawnRate);
 
       if(config.settings.timerSeconds > 0){
         timerInterval = setInterval(() => {
@@ -1990,6 +1987,19 @@
       setMessage(paused ? t("game_paused") : t("game_resumed"), "info");
     }
 
+    function tryInitialSpawnSequence(){
+      if(!gameStarted) return;
+      clearTokens();
+      spawnTokenBatch();
+
+      setTimeout(() => {
+        if(!gameStarted) return;
+        if(fallingTokens.length === 0){
+          spawnTokenBatch();
+        }
+      }, 180);
+    }
+
     function unlockGameStart(){
       if(gameStarted) return;
 
@@ -1997,24 +2007,24 @@
       paused = false;
 
       updatePreStartControls();
-
       startOverlayMessage.classList.remove("show");
       sourceSentenceBox.classList.remove("hidden-source");
       progressDisplay.classList.remove("hidden-progress");
 
-      setMessage(t("round_started_msg"), "ok");
-      setPausedState(false);
-
       toggleFocusMode(true);
+      setPausedState(false);
+      setMessage(t("round_started_msg"), "ok");
 
-      clearTokens();
       stopLoops();
+      clearTokens();
 
-      setTimeout(() => {
-        if(!gameStarted) return;
-        startGameLoops();
-        spawnTokenBatch();
-      }, 80);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if(!gameStarted) return;
+          startGameLoops();
+          tryInitialSpawnSequence();
+        });
+      });
     }
 
     function saveWrongSentenceIfNeeded(reason = ""){
@@ -2058,7 +2068,10 @@
       }
 
       if(completedSentencesCount >= pairs.length){
-        autoNextTimeout = setTimeout(showCelebrationScreen, 700);
+        autoNextTimeout = setTimeout(() => {
+          showFinalReport();
+          toggleFocusMode(false);
+        }, 500);
         return;
       }
 
@@ -2102,20 +2115,26 @@
         progressDisplay.classList.remove("hidden-progress");
         startOverlayMessage.classList.remove("show");
         setMessage(t("round_started_msg"), "info");
-        startGameLoops();
-        spawnTokenBatch();
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if(!gameStarted) return;
+            startGameLoops();
+            tryInitialSpawnSequence();
+          });
+        });
       } else {
         sourceSentenceBox.classList.add("hidden-source");
         progressDisplay.classList.add("hidden-progress");
         startOverlayMessage.classList.add("show");
         setMessage(t("round_ready_msg"), "info");
-        animationId = requestAnimationFrame(updateTokens);
       }
     }
 
     function goToNextSentence(){
       if(currentOrderIndex + 1 >= order.length){
-        showCelebrationScreen();
+        showFinalReport();
+        toggleFocusMode(false);
         return;
       }
       loadSentenceByOrder(currentOrderIndex + 1);
@@ -2252,9 +2271,6 @@
     }
 
     function showCelebrationScreen(){
-      stopLoops();
-      clearTokens();
-
       celebrationStudent.textContent = studentName
         ? (currentLang === "pl" ? `Uczeń: ${studentName}` : currentLang === "ja" ? `生徒: ${studentName}` : `Student: ${studentName}`)
         : "";
@@ -2283,6 +2299,7 @@
     function showFinalReport(){
       stopLoops();
       clearTokens();
+      hideCelebrationScreen();
 
       const report = getCurrentReportObject();
       saveReportToHistory(report);
@@ -2307,6 +2324,7 @@
       renderSentenceResults();
       renderReportHistory();
       reportOverlay.classList.add("show");
+      toggleFocusMode(false);
       setMessage(t("report_shown"), "info");
     }
 
@@ -2326,6 +2344,7 @@
       wrongSentences = [];
       sentenceResults = [];
       gameStarted = false;
+      paused = false;
 
       updatePreStartControls();
 
@@ -2363,6 +2382,7 @@
       hideCelebrationScreen();
       startScreen.style.display = "flex";
       gameStarted = false;
+      paused = false;
       sourceSentenceBox.classList.add("hidden-source");
       progressDisplay.classList.add("hidden-progress");
       startOverlayMessage.classList.add("show");
@@ -2373,7 +2393,6 @@
 
     function updateFocusButton(){
       focusBtn.textContent = focusMode ? t("normal_mode") : t("focus_mode");
-      floatingExitFocusBtn.textContent = t("normal_mode");
     }
 
     function toggleFocusMode(forceValue = null){
@@ -2410,7 +2429,6 @@
     focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
     floatingShowPanelsBtn.addEventListener("click", () => togglePanels(false));
-    floatingExitFocusBtn.addEventListener("click", () => toggleFocusMode(false));
 
     focusNextBtn.addEventListener("click", goToNextSentence);
     focusHintBtn.addEventListener("click", showHint);
@@ -2423,7 +2441,6 @@
     reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
 
     openReportBtn.addEventListener("click", () => {
-      hideCelebrationScreen();
       showFinalReport();
     });
 
