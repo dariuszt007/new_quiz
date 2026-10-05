@@ -1,5 +1,5 @@
 {
-  "title": "Tłumaczenie zdań EN-PL",
+  "title": "Translation Game",
   "settings": {
     "difficulty": "medium",
     "defaultClassLabel": "5A",
@@ -23,7 +23,7 @@
   "sets": [
     {
       "id": "animals_words",
-      "name": "Animals - wyrazy",
+      "name": "Animals - words",
       "classLabel": "5A",
       "theme": "animals",
       "buildMode": "words",
@@ -34,12 +34,14 @@
         { "source": "Cat", "target": "Kot" },
         { "source": "Dog", "target": "Pies" },
         { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" }
+        { "source": "Horse", "target": "Koń" },
+        { "source": "Cow", "target": "Krowa" },
+        { "source": "Mouse", "target": "Mysz" }
       ]
     },
     {
       "id": "animals_letters",
-      "name": "Animals - litery",
+      "name": "Animals - letters",
       "classLabel": "5A",
       "theme": "animals",
       "buildMode": "letters",
@@ -50,12 +52,14 @@
         { "source": "Cat", "target": "Kot" },
         { "source": "Dog", "target": "Pies" },
         { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" }
+        { "source": "Horse", "target": "Koń" },
+        { "source": "Cow", "target": "Krowa" },
+        { "source": "Mouse", "target": "Mysz" }
       ]
     },
     {
       "id": "school_words",
-      "name": "School - wyrazy",
+      "name": "School - words",
       "classLabel": "5A",
       "theme": "school",
       "buildMode": "words",
@@ -65,12 +69,14 @@
       "pairs": [
         { "source": "This is my book.", "target": "To jest moja książka." },
         { "source": "I have a pencil.", "target": "Mam ołówek." },
-        { "source": "The teacher is here.", "target": "Nauczyciel jest tutaj." }
+        { "source": "The teacher is here.", "target": "Nauczyciel jest tutaj." },
+        { "source": "The school bag is heavy.", "target": "Plecak szkolny jest ciężki." },
+        { "source": "My notebook is on the desk.", "target": "Mój zeszyt jest na biurku." }
       ]
     },
     {
       "id": "school_letters",
-      "name": "School - litery",
+      "name": "School - letters",
       "classLabel": "5A",
       "theme": "school",
       "buildMode": "letters",
@@ -80,12 +86,14 @@
       "pairs": [
         { "source": "Book", "target": "Książka" },
         { "source": "Pen", "target": "Długopis" },
-        { "source": "Desk", "target": "Biurko" }
+        { "source": "Desk", "target": "Biurko" },
+        { "source": "Notebook", "target": "Zeszyt" },
+        { "source": "Teacher", "target": "Nauczyciel" }
       ]
     },
     {
       "id": "daily_words",
-      "name": "Daily life - wyrazy",
+      "name": "Daily life - words",
       "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "words",
@@ -95,12 +103,14 @@
       "pairs": [
         { "source": "I like apples.", "target": "Lubię jabłka." },
         { "source": "She is my friend.", "target": "Ona jest moją przyjaciółką." },
-        { "source": "We go to school every day.", "target": "Chodzimy do szkoły codziennie." }
+        { "source": "We go to school every day.", "target": "Chodzimy do szkoły codziennie." },
+        { "source": "I get up at seven.", "target": "Wstaję o siódmej." },
+        { "source": "They play in the garden.", "target": "Oni bawią się w ogrodzie." }
       ]
     },
     {
       "id": "daily_letters",
-      "name": "Daily life - litery",
+      "name": "Daily life - letters",
       "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "letters",
@@ -110,7 +120,43 @@
       "pairs": [
         { "source": "Friend", "target": "Przyjaciel" },
         { "source": "School", "target": "Szkoła" },
-        { "source": "Apple", "target": "Jabłko" }
+        { "source": "Apple", "target": "Jabłko" },
+        { "source": "Morning", "target": "Poranek" },
+        { "source": "Garden", "target": "Ogród" }
+      ]
+    },
+    {
+      "id": "travel_words",
+      "name": "Travel - words",
+      "classLabel": "6A",
+      "theme": "travel",
+      "buildMode": "words",
+      "useOwnDistractors": true,
+      "distractorCount": 6,
+      "distractorMode": "material",
+      "pairs": [
+        { "source": "We are going to the station.", "target": "Idziemy na stację." },
+        { "source": "The bus is late today.", "target": "Autobus jest dziś spóźniony." },
+        { "source": "I have a ticket.", "target": "Mam bilet." },
+        { "source": "They travel by train.", "target": "Oni podróżują pociągiem." },
+        { "source": "Our hotel is near the beach.", "target": "Nasz hotel jest blisko plaży." }
+      ]
+    },
+    {
+      "id": "travel_letters",
+      "name": "Travel - letters",
+      "classLabel": "6A",
+      "theme": "travel",
+      "buildMode": "letters",
+      "useOwnDistractors": true,
+      "distractorCount": 2,
+      "distractorMode": "lettersOnly",
+      "pairs": [
+        { "source": "Train", "target": "Pociąg" },
+        { "source": "Ticket", "target": "Bilet" },
+        { "source": "Hotel", "target": "Hotel" },
+        { "source": "Beach", "target": "Plaża" },
+        { "source": "Station", "target": "Stacja" }
       ]
     }
   ]
