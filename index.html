@@ -49,9 +49,16 @@
       box-shadow:0 8px 20px rgba(0,0,0,.22)
     }
     .card h2{margin-top:0;font-size:18px}
-    .controls{display:flex;flex-wrap:wrap;gap:8px}
+    .controls{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+    @media (min-width:900px){
+      .controls{grid-template-columns:repeat(4,minmax(0,1fr))}
+    }
     button, input, select{
-      border:none;border-radius:10px;padding:10px 14px;font-size:14px
+      border:none;border-radius:10px;padding:12px 14px;font-size:14px
     }
     button{cursor:pointer;font-weight:bold}
     input, select{
@@ -99,6 +106,21 @@
       color:#dbeafe;font-size:20px;font-weight:bold
     }
 
+    .progress-bar-wrap{
+      margin-top:12px;
+      background:rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      height:16px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--accent),#60a5fa);
+      transition:width .2s ease;
+    }
+
     .correct-word{color:var(--success);font-weight:bold}
     .hint-word{
       color:#fde68a;font-weight:bold;border-bottom:2px dotted #f59e0b;padding:0 2px
@@ -137,7 +159,15 @@
       background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center
     }
     .report-box strong{display:block;font-size:24px;margin-top:6px}
-    .report-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .report-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:16px;
+    }
+    @media (min-width:700px){
+      .report-actions{grid-template-columns:repeat(3,1fr)}
+    }
 
     .start-screen{
       position:fixed;inset:0;background:rgba(2,6,23,.94);
@@ -208,6 +238,8 @@
           <button class="success" id="toggleBtn" data-i18n="pause">Pause</button>
           <button class="warning" id="hintBtn" data-i18n="hint">Hint</button>
           <button class="danger" id="solutionBtn" data-i18n="solution">Solution</button>
+          <button class="secondary" id="fullscreenBtn" data-i18n="fullscreen">Full screen</button>
+          <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
         </div>
       </div>
 
@@ -237,6 +269,10 @@
 
         <div class="small" style="margin-top:14px;" id="targetLabel"></div>
         <div class="progress" id="progressDisplay"></div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
 
         <div class="summary-box small" id="sentenceSummary"></div>
       </div>
@@ -276,6 +312,7 @@
       <div class="report-actions">
         <button class="primary" id="closeReportBtn" data-i18n="close_report">Close report</button>
         <button class="success" id="restartGameBtn" data-i18n="play_again">Play again</button>
+        <button class="secondary" id="reportBackToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
       </div>
     </div>
   </div>
@@ -299,6 +336,9 @@
         resume: "Resume",
         hint: "Hint",
         solution: "Solution",
+        fullscreen: "Full screen",
+        exit_fullscreen: "Exit full screen",
+        back_to_sets: "Back to set choice",
         status: "Status",
         timer_mistakes: "Timer and mistakes",
         building_translation: "Building the translation",
@@ -374,7 +414,8 @@
         show_set_name_none: "none",
         status_loaded_json: "Loaded from sentences.json",
         status_fallback: "Fallback data used",
-        distractors_label: "Distractors"
+        distractors_label: "Distractors",
+        returned_to_sets: "Returned to set choice."
       },
       pl: {
         page_title: "Gra tłumaczeniowa",
@@ -393,6 +434,9 @@
         resume: "Wznów",
         hint: "Podpowiedź",
         solution: "Rozwiązanie",
+        fullscreen: "Pełny ekran",
+        exit_fullscreen: "Wyjdź z pełnego ekranu",
+        back_to_sets: "Powrót do wyboru zestawu",
         status: "Status",
         timer_mistakes: "Timer i błędy",
         building_translation: "Budowane tłumaczenie",
@@ -468,7 +512,8 @@
         show_set_name_none: "brak",
         status_loaded_json: "Załadowano dane z sentences.json",
         status_fallback: "Użyto danych awaryjnych",
-        distractors_label: "Mylące"
+        distractors_label: "Mylące",
+        returned_to_sets: "Wrócono do wyboru zestawu."
       },
       ja: {
         page_title: "翻訳ゲーム",
@@ -487,6 +532,9 @@
         resume: "再開",
         hint: "ヒント",
         solution: "答え",
+        fullscreen: "全画面",
+        exit_fullscreen: "全画面を終了",
+        back_to_sets: "セット選択に戻る",
         status: "状態",
         timer_mistakes: "タイマーとミス",
         building_translation: "翻訳を組み立てる",
@@ -562,7 +610,8 @@
         show_set_name_none: "なし",
         status_loaded_json: "sentences.json から読み込み",
         status_fallback: "予備データを使用",
-        distractors_label: "ダミー"
+        distractors_label: "ダミー",
+        returned_to_sets: "セット選択に戻りました。"
       }
     };
 
@@ -617,13 +666,14 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_final_clean";
+    const REPORTS_KEY = "translation_reports_student_1";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
 
     const gameArea = document.getElementById("gameArea");
     const progressDisplay = document.getElementById("progressDisplay");
+    const progressBar = document.getElementById("progressBar");
     const sourceSentenceBox = document.getElementById("sourceSentenceBox");
     const sourceLabel = document.getElementById("sourceLabel");
     const targetLabel = document.getElementById("targetLabel");
@@ -646,6 +696,8 @@
     const toggleBtn = document.getElementById("toggleBtn");
     const hintBtn = document.getElementById("hintBtn");
     const solutionBtn = document.getElementById("solutionBtn");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const backToSetsBtn = document.getElementById("backToSetsBtn");
 
     const correctCountEl = document.getElementById("correctCount");
     const wrongCountEl = document.getElementById("wrongCount");
@@ -662,6 +714,7 @@
     const wrongSentencesList = document.getElementById("wrongSentencesList");
     const closeReportBtn = document.getElementById("closeReportBtn");
     const restartGameBtn = document.getElementById("restartGameBtn");
+    const reportBackToSetsBtn = document.getElementById("reportBackToSetsBtn");
     const historyList = document.getElementById("historyList");
 
     const startScreen = document.getElementById("startScreen");
@@ -708,6 +761,7 @@
         el.textContent = t(key);
       });
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
+      updateFullscreenButton();
     }
 
     async function loadData(){
@@ -955,6 +1009,7 @@
       const done = getSolvedDisplayTokenCount();
       const percent = total === 0 ? 100 : Math.round((done / total) * 100);
 
+      progressBar.style.width = percent + "%";
       statusLine.textContent = `${t("progress")}: ${percent}%`;
       sentenceNumber.textContent = `${t("sentence")} ${currentOrderIndex + 1} ${t("of")} ${pairs.length}`;
       sentenceSummary.textContent =
@@ -1234,6 +1289,7 @@
           if(paused || gameFinished) return;
           remainingTime--;
           updateTopInfo();
+
           if(remainingTime <= 0){
             currentSentenceHadMistake = true;
             finishSentence(false, t("time_up"));
@@ -1296,8 +1352,8 @@
       remainingTime = config.settings.timerSeconds;
       toggleBtn.textContent = t("pause");
 
-      hintBtn.style.display = config.settings.allowHint ? "inline-block" : "none";
-      solutionBtn.style.display = config.settings.allowSolution ? "inline-block" : "none";
+      hintBtn.style.display = config.settings.allowHint ? "inline-block" : "inline-block";
+      solutionBtn.style.display = config.settings.allowSolution ? "inline-block" : "inline-block";
 
       renderProgress();
       updateTopInfo();
@@ -1486,6 +1542,30 @@
       setMessage(t("start_game_msg"), "info");
     }
 
+    function returnToSetChoice(){
+      stopLoops();
+      clearTokens();
+      hideFinalReport();
+      startScreen.style.display = "flex";
+      setMessage(t("returned_to_sets"), "info");
+    }
+
+    async function toggleFullscreen(){
+      try{
+        if(!document.fullscreenElement){
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      }catch(error){
+        console.error(error);
+      }
+    }
+
+    function updateFullscreenButton(){
+      fullscreenBtn.textContent = document.fullscreenElement ? t("exit_fullscreen") : t("fullscreen");
+    }
+
     restartBtn.addEventListener("click", () => loadSentenceByOrder(currentOrderIndex));
     nextBtn.addEventListener("click", goToNextSentence);
 
@@ -1497,9 +1577,14 @@
 
     hintBtn.addEventListener("click", showHint);
     solutionBtn.addEventListener("click", showSolution);
+    fullscreenBtn.addEventListener("click", toggleFullscreen);
+    backToSetsBtn.addEventListener("click", returnToSetChoice);
+
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
 
     closeReportBtn.addEventListener("click", hideFinalReport);
     restartGameBtn.addEventListener("click", restartWholeGame);
+    reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
 
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
@@ -1522,6 +1607,7 @@
       setMessage(t("loading_sentences"), "info");
       statusLine.textContent = `${t("progress")}: 0%`;
       sentenceSummary.textContent = t("waiting_start");
+      progressBar.style.width = "0%";
 
       const data = await loadData();
       config = { title: data.title, settings: data.settings };
