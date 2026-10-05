@@ -50,15 +50,6 @@
     .title{font-size:30px;font-weight:bold}
     .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
 
-    .topbar a{
-      color:white;
-      text-decoration:none;
-      background:#334155;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:bold;
-    }
-
     .cards{
       display:grid;
       grid-template-columns:1fr;
@@ -495,26 +486,64 @@
       flex-direction:column;
       max-width:1400px;
       min-height:100vh;
+      padding-top:14px;
+      padding-bottom:14px;
     }
 
     .focus-mode .game-area{
-      height:62vh;
-      min-height:420px;
+      height:52vh;
+      min-height:300px;
+      max-height:52vh;
       flex:0 0 auto;
-      margin-bottom:14px;
+      margin-bottom:10px;
     }
 
     .focus-mode .bottom{
       display:block;
       margin-top:0;
+      flex:1 1 auto;
     }
 
     .focus-mode .bottom .card:first-child{
       display:block;
+      padding:10px 12px;
     }
 
     .focus-mode .bottom .card:last-child{
       display:none;
+    }
+
+    .focus-mode .bottom .card:first-child h2{
+      margin-bottom:8px;
+      font-size:16px;
+    }
+
+    .focus-mode .source-box{
+      font-size:18px;
+      padding:10px 12px;
+      margin-top:6px;
+    }
+
+    .focus-mode .progress{
+      font-size:18px;
+      line-height:1.9;
+      min-height:72px;
+      padding:10px 12px;
+    }
+
+    .focus-mode .small{
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .focus-mode .summary-box{
+      margin-top:8px;
+      padding:8px 10px;
+    }
+
+    .focus-mode .progress-bar-wrap{
+      margin-top:8px;
+      height:14px;
     }
 
     .panels-hidden .topbar,
@@ -589,7 +618,6 @@
         <div class="subtitle" id="gameSubtitle"></div>
         <div class="sentence-number" id="sentenceNumber"></div>
       </div>
-      <a href="teacher.html" data-i18n="teacher_panel">Teacher panel</a>
     </div>
 
     <div class="cards" id="topCards">
@@ -712,7 +740,6 @@
         class_group: "Class / group",
         sentence_set: "Sentence set",
         start: "Start",
-        teacher_panel: "Teacher panel",
         instruction: "Instruction",
         controls: "Controls",
         restart_sentence: "Restart sentence",
@@ -814,7 +841,6 @@
         class_group: "Klasa / grupa",
         sentence_set: "Zestaw zdań",
         start: "Rozpocznij",
-        teacher_panel: "Panel nauczyciela",
         instruction: "Instrukcja",
         controls: "Sterowanie",
         restart_sentence: "Restart zdania",
@@ -916,7 +942,6 @@
         class_group: "クラス / グループ",
         sentence_set: "文セット",
         start: "開始",
-        teacher_panel: "教師パネル",
         instruction: "説明",
         controls: "操作",
         restart_sentence: "文をやり直す",
@@ -1063,7 +1088,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_2";
+    const REPORTS_KEY = "translation_reports_student_5_3";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
