@@ -134,6 +134,26 @@
       font-size:14px;
       line-height:1.6;
     }
+    .help-box{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(56,189,248,.08);
+      border:1px solid rgba(56,189,248,.18);
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.6;
+    }
+    .warn-box{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(245,158,11,.12);
+      border:1px solid rgba(245,158,11,.22);
+      color:#fde68a;
+      font-size:13px;
+      line-height:1.6;
+    }
     .json-output{
       min-height:340px;
       font-family:Consolas, monospace;
@@ -356,6 +376,12 @@
                 <option value="lettersOnly">Tylko litery</option>
                 <option value="material">Tylko z materiału</option>
               </select>
+              <div class="help-box">
+                - <strong>Automatycznie</strong>: gra sama dobiera najlepszy typ.<br>
+                - <strong>Tylko litery</strong>: najlepsze dla zestawów w trybie <strong>Litery</strong>.<br>
+                - <strong>Tylko z materiału</strong>: bierze mylące elementy tylko z aktualnego materiału.
+              </div>
+              <div class="warn-box" id="distractorModeWarning" style="display:none;"></div>
             </div>
             <div>
               <label for="punctuationMode">Interpunkcja</label>
@@ -519,6 +545,7 @@ How are you? = Jak się masz?"></textarea>
     const teacherPassword = document.getElementById("teacherPassword");
     const loginBtn = document.getElementById("loginBtn");
     const loginError = document.getElementById("loginError");
+    const distractorModeWarning = document.getElementById("distractorModeWarning");
 
     function unlockTeacherPanel(){
       loginOverlay.style.display = "none";
@@ -550,8 +577,7 @@ How are you? = Jak się masz?"></textarea>
         buildMode: "words",
         pairs: [
           { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" },
-          { source: "Bird", target: "Ptak" }
+          { source: "Dog", target: "Pies" }
         ]
       },
       {
@@ -562,8 +588,7 @@ How are you? = Jak się masz?"></textarea>
         buildMode: "letters",
         pairs: [
           { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" },
-          { source: "Bird", target: "Ptak" }
+          { source: "Dog", target: "Pies" }
         ]
       }
     ];
@@ -666,6 +691,29 @@ How are you? = Jak się masz?"></textarea>
       });
     }
 
+    function refreshDistractorModeWarning(){
+      const mode = distractorMode.value;
+      const hasWordSets = sets.some(set => set.buildMode === "words");
+      const hasLetterSets = sets.some(set => set.buildMode === "letters");
+
+      if(mode === "lettersOnly" && hasWordSets){
+        distractorModeWarning.style.display = "block";
+        distractorModeWarning.innerHTML =
+          "Uwaga: wybrano <strong>Tylko litery</strong>. To ustawienie najlepiej pasuje do zestawów w trybie <strong>Litery</strong>. " +
+          "Dla zestawów w trybie <strong>Wyrazy</strong> gra może nie dodawać mylących kafelków.";
+        return;
+      }
+
+      if(mode === "material" && !hasLetterSets && !hasWordSets){
+        distractorModeWarning.style.display = "block";
+        distractorModeWarning.textContent = "Brak zestawów do oceny ustawienia mylących kafelków.";
+        return;
+      }
+
+      distractorModeWarning.style.display = "none";
+      distractorModeWarning.textContent = "";
+    }
+
     function swapLanguageLabels(){
       const oldSource = sourceLanguageLabel.value;
       sourceLanguageLabel.value = targetLanguageLabel.value;
@@ -680,6 +728,7 @@ How are you? = Jak się masz?"></textarea>
       }));
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
       setMessage("Zamieniono source i target w wybranym zestawie.", "ok");
     }
 
@@ -694,6 +743,7 @@ How are you? = Jak się masz?"></textarea>
       swapLanguageLabels();
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
       setMessage("Zamieniono języki we wszystkich zestawach.", "ok");
     }
 
@@ -767,6 +817,7 @@ How are you? = Jak się masz?"></textarea>
           const field = e.target.dataset.field;
           sets[i][field] = field === "id" ? sanitizeId(e.target.value) : e.target.value;
           updateJsonPreview();
+          refreshDistractorModeWarning();
         });
       });
 
@@ -808,6 +859,7 @@ How are you? = Jak się masz?"></textarea>
 
           renderSets();
           updateJsonPreview();
+          refreshDistractorModeWarning();
         });
       });
     }
@@ -883,6 +935,7 @@ How are you? = Jak się masz?"></textarea>
       });
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
     }
 
     function applyData(data){
@@ -924,6 +977,7 @@ How are you? = Jak się masz?"></textarea>
 
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
     }
 
     function downloadJsonFile(filename, content){
@@ -1018,6 +1072,7 @@ How are you? = Jak się masz?"></textarea>
       sets = JSON.parse(JSON.stringify(demoSets));
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
       setMessage("Wstawiono przykładowe zestawy.", "ok");
     });
 
@@ -1039,6 +1094,7 @@ How are you? = Jak się masz?"></textarea>
       sets.sort((a, b) => String(a.name).localeCompare(String(b.name), "pl"));
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
       setMessage("Posortowano zestawy A-Z.", "ok");
     });
 
@@ -1046,6 +1102,7 @@ How are you? = Jak się masz?"></textarea>
       sets = [];
       renderSets();
       updateJsonPreview();
+      refreshDistractorModeWarning();
       setMessage("Usunięto wszystkie zestawy.", "info");
     });
 
@@ -1061,11 +1118,13 @@ How are you? = Jak się masz?"></textarea>
 
     previewBtn.addEventListener("click", () => {
       updateJsonPreview();
+      refreshDistractorModeWarning();
       if(jsonOutput.value.trim()) setMessage("Odświeżono podgląd JSON.", "ok");
     });
 
     downloadBtn.addEventListener("click", () => {
       updateJsonPreview();
+      refreshDistractorModeWarning();
       if(!jsonOutput.value.trim()) return;
       downloadJsonFile("sentences.json", jsonOutput.value);
       setMessage("Pobrano plik sentences.json.", "ok");
@@ -1073,6 +1132,8 @@ How are you? = Jak się masz?"></textarea>
 
     copyBtn.addEventListener("click", copyJson);
     importBtn.addEventListener("click", () => importFile.click());
+
+    distractorMode.addEventListener("change", refreshDistractorModeWarning);
 
     importFile.addEventListener("change", async (event) => {
       const file = event.target.files[0];
