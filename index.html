@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,312 +29,131 @@
       background:linear-gradient(180deg,#0f172a 0%,#111827 100%);
       min-height:100vh;
     }
-    .container{
-      max-width:1280px;
-      margin:0 auto;
-      padding:16px;
-    }
+    .container{max-width:1280px;margin:0 auto;padding:16px}
     .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;flex-wrap:wrap;margin-bottom:16px
     }
-    .title{
-      font-size:28px;
-      font-weight:bold;
-    }
-    .subtitle{
-      color:var(--muted);
-      margin-top:6px;
-      font-size:14px;
-    }
+    .title{font-size:28px;font-weight:bold}
+    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
     .topbar a{
-      color:white;
-      text-decoration:none;
-      background:#334155;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:bold;
+      color:white;text-decoration:none;background:#334155;
+      padding:10px 14px;border-radius:10px;font-weight:bold
     }
-    .cards{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-bottom:16px;
-    }
-    @media (min-width:1000px){
-      .cards{
-        grid-template-columns:1fr 1fr 1fr 1fr;
-      }
-    }
+    .cards{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:16px}
+    @media (min-width:1000px){.cards{grid-template-columns:1fr 1fr 1fr 1fr}}
     .card{
       background:rgba(17,24,39,.92);
       border:1px solid var(--border);
-      border-radius:16px;
-      padding:14px;
-      box-shadow:0 8px 20px rgba(0,0,0,.22);
+      border-radius:16px;padding:14px;
+      box-shadow:0 8px 20px rgba(0,0,0,.22)
     }
-    .card h2{
-      margin-top:0;
-      font-size:18px;
-    }
-    .controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
+    .card h2{margin-top:0;font-size:18px}
+    .controls{display:flex;flex-wrap:wrap;gap:8px}
     button, input, select{
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      font-size:14px;
+      border:none;border-radius:10px;padding:10px 14px;font-size:14px
     }
-    button{
-      cursor:pointer;
-      font-weight:bold;
-    }
+    button{cursor:pointer;font-weight:bold}
     input, select{
-      width:100%;
-      background:#0b1220;
-      color:var(--text);
-      border:1px solid var(--border);
+      width:100%;background:#0b1220;color:var(--text);
+      border:1px solid var(--border)
     }
-    .primary{background:var(--accent); color:#08111f;}
-    .secondary{background:#334155; color:white;}
-    .success{background:var(--success); color:#04130a;}
-    .warning{background:var(--warning); color:#111827;}
-    .danger{background:var(--danger); color:white;}
+    .primary{background:var(--accent);color:#08111f}
+    .secondary{background:#334155;color:white}
+    .success{background:var(--success);color:#04130a}
+    .warning{background:var(--warning);color:#111827}
+    .danger{background:var(--danger);color:white}
 
     .game-area{
-      position:relative;
-      height:58vh;
-      min-height:420px;
-      overflow:hidden;
-      border-radius:16px;
-      border:2px solid rgba(56,189,248,.25);
+      position:relative;height:58vh;min-height:420px;overflow:hidden;
+      border-radius:16px;border:2px solid rgba(56,189,248,.25);
       background:
         radial-gradient(circle at top, rgba(56,189,248,.10), transparent 36%),
         linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,1));
     }
 
     .word-token{
-      position:absolute;
-      min-width:52px;
-      max-width:260px;
-      padding:10px 14px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:var(--tokenText);
-      font-size:18px;
-      font-weight:bold;
-      cursor:pointer;
-      user-select:none;
-      box-shadow:0 10px 20px rgba(0,0,0,.28);
-      transition:transform .08s ease;
-      text-align:center;
-      white-space:nowrap;
-      border:2px solid rgba(255,255,255,.5);
+      position:absolute;min-width:52px;max-width:260px;padding:10px 14px;
+      border-radius:14px;display:flex;align-items:center;justify-content:center;
+      color:var(--tokenText);font-size:18px;font-weight:bold;cursor:pointer;
+      user-select:none;box-shadow:0 10px 20px rgba(0,0,0,.28);
+      transition:transform .08s ease;text-align:center;white-space:nowrap;
+      border:2px solid rgba(255,255,255,.5)
     }
-    .word-token:hover{ transform:scale(1.04); }
-    .token-c1{ background:var(--token1); }
-    .token-c2{ background:var(--token2); }
-    .token-c3{ background:var(--token3); }
-    .token-c4{ background:var(--token4); }
+    .word-token:hover{transform:scale(1.04)}
+    .token-c1{background:var(--token1)}
+    .token-c2{background:var(--token2)}
+    .token-c3{background:var(--token3)}
+    .token-c4{background:var(--token4)}
 
-    .bottom{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:16px;
-    }
-    @media (min-width:1000px){
-      .bottom{ grid-template-columns:1.45fr .75fr; }
-    }
+    .bottom{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+    @media (min-width:1000px){.bottom{grid-template-columns:1.45fr .75fr}}
 
     .progress{
-      font-size:22px;
-      line-height:2.1;
-      word-break:break-word;
-      background:rgba(255,255,255,.03);
-      padding:12px;
-      border-radius:12px;
-      min-height:90px;
+      font-size:22px;line-height:2.1;word-break:break-word;
+      background:rgba(255,255,255,.03);padding:12px;border-radius:12px;min-height:90px
     }
-
     .source-box{
-      margin-top:10px;
-      padding:12px;
-      border-radius:12px;
-      background:rgba(56,189,248,.08);
-      border:1px solid rgba(56,189,248,.25);
-      color:#dbeafe;
-      font-size:20px;
-      font-weight:bold;
+      margin-top:10px;padding:12px;border-radius:12px;
+      background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);
+      color:#dbeafe;font-size:20px;font-weight:bold
     }
 
-    .correct-word{
-      color:var(--success);
-      font-weight:bold;
-    }
+    .correct-word{color:var(--success);font-weight:bold}
     .hint-word{
-      color:#fde68a;
-      font-weight:bold;
-      border-bottom:2px dotted #f59e0b;
-      padding:0 2px;
+      color:#fde68a;font-weight:bold;border-bottom:2px dotted #f59e0b;padding:0 2px
     }
     .missing-word{
-      color:#64748b;
-      border-bottom:2px dashed #475569;
-      padding:0 4px;
-      display:inline-block;
-      min-width:18px;
-      text-align:center;
-      margin-right:2px;
+      color:#64748b;border-bottom:2px dashed #475569;padding:0 4px;
+      display:inline-block;min-width:18px;text-align:center;margin-right:2px
     }
-    .space-gap{
-      display:inline-block;
-      width:14px;
-    }
+    .space-gap{display:inline-block;width:14px}
 
-    .message{
-      min-height:28px;
-      font-size:16px;
-      font-weight:bold;
-    }
-    .ok{color:var(--success)}
-    .err{color:var(--danger)}
-    .info{color:var(--accent)}
-    .warn{color:#fde68a}
+    .message{min-height:28px;font-size:16px;font-weight:bold}
+    .ok{color:var(--success)} .err{color:var(--danger)} .info{color:var(--accent)} .warn{color:#fde68a}
+    .small{color:var(--muted);font-size:14px;line-height:1.5}
 
-    .small{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .score{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-      margin-top:10px;
-    }
+    .score{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
     .score-box{
-      background:rgba(255,255,255,.03);
-      border-radius:10px;
-      padding:10px;
-      text-align:center;
+      background:rgba(255,255,255,.03);border-radius:10px;padding:10px;text-align:center
     }
-    .score-box strong{
-      display:block;
-      font-size:22px;
-      margin-top:4px;
-    }
-    .sentence-number{
-      font-size:15px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-    .summary-box{
-      margin-top:12px;
-      padding:12px;
-      border-radius:12px;
-      background:rgba(255,255,255,.03);
-    }
+    .score-box strong{display:block;font-size:22px;margin-top:4px}
+    .sentence-number{font-size:15px;color:var(--muted);margin-top:6px}
+    .summary-box{margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.03)}
 
     .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.88);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:999;
-      padding:20px;
+      position:fixed;inset:0;background:rgba(2,6,23,.88);
+      display:none;align-items:center;justify-content:center;z-index:999;padding:20px
     }
-    .overlay.show{ display:flex; }
-
+    .overlay.show{display:flex}
     .report{
-      width:min(980px, 100%);
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:24px;
-      box-shadow:0 20px 50px rgba(0,0,0,.4);
-      max-height:90vh;
-      overflow:auto;
+      width:min(980px, 100%);background:#111827;border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.4);
+      max-height:90vh;overflow:auto
     }
-    .report-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      margin:16px 0;
-    }
-    @media (min-width:700px){
-      .report-grid{ grid-template-columns:repeat(4,1fr); }
-    }
+    .report-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    @media (min-width:700px){.report-grid{grid-template-columns:repeat(4,1fr)}}
     .report-box{
-      background:rgba(255,255,255,.04);
-      border-radius:12px;
-      padding:14px;
-      text-align:center;
+      background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center
     }
-    .report-box strong{
-      display:block;
-      font-size:24px;
-      margin-top:6px;
-    }
-    .report-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:16px;
-    }
+    .report-box strong{display:block;font-size:24px;margin-top:6px}
+    .report-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 
     .start-screen{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.94);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      padding:20px;
+      position:fixed;inset:0;background:rgba(2,6,23,.94);
+      display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px
     }
     .start-box{
-      width:min(720px, 100%);
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:24px;
-      box-shadow:0 20px 50px rgba(0,0,0,.4);
+      width:min(720px, 100%);background:#111827;border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.4)
     }
-    .history-list{
-      margin-top:16px;
-      display:grid;
-      gap:10px;
-    }
+    .history-list,.wrong-list{margin-top:16px;display:grid;gap:10px}
     .history-item{
-      background:rgba(255,255,255,.04);
-      padding:10px 12px;
-      border-radius:10px;
-      font-size:14px;
-    }
-    .wrong-list{
-      margin-top:16px;
-      display:grid;
-      gap:10px;
+      background:rgba(255,255,255,.04);padding:10px 12px;border-radius:10px;font-size:14px
     }
     .wrong-item{
-      background:rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.25);
-      padding:10px 12px;
-      border-radius:10px;
-      font-size:14px;
+      background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);
+      padding:10px 12px;border-radius:10px;font-size:14px
     }
   </style>
 </head>
@@ -472,7 +291,6 @@
         sentence_set: "Sentence set",
         start: "Start",
         teacher_panel: "Teacher panel",
-
         instruction: "Instruction",
         controls: "Controls",
         restart_sentence: "Restart sentence",
@@ -495,14 +313,11 @@
         history_reports: "History of recent reports",
         close_report: "Close report",
         play_again: "Play again",
-
         loading_settings: "Loading settings...",
         loading_sentences: "Loading sentences...",
         progress: "Progress",
         sentence: "Sentence",
         of: "of",
-        source_sentence: "Source sentence",
-        translation: "Translation",
         source_sentence_lang: "Source sentence",
         translation_lang: "Translation",
         waiting_start: "Waiting for the game to start...",
@@ -522,13 +337,9 @@
         build_mode_line_letters: "building from letters",
         build_mode_line_words: "building from words",
         sec: "s",
-
         easy: "easy",
         medium: "medium",
         hard: "hard",
-
-        loaded_from_json: "Loaded data from sentences.json.",
-        fallback_data: "Could not load sentences.json. Fallback data used.",
         start_game_msg: "Game started.",
         new_game_msg: "A new game has started.",
         game_paused: "Game paused.",
@@ -550,25 +361,21 @@
         current_data_failed: "Could not load sentences.json. Fallback data used.",
         no_wrong_sentences: "No sentences with errors.",
         no_report_history: "No saved reports.",
-
         student: "Student",
         set: "Set",
         class_label: "Class",
         build_mode: "Mode",
         date: "Date",
-
         source: "Source",
         correct_translation: "Correct translation",
         reason: "Reason",
         completed_with_errors: "Sentence completed, but with mistakes.",
         sentence_not_completed: "The sentence could not be completed.",
         show_set_name_none: "none",
-
-        status_loaded_json: "Loaded data from sentences.json",
+        status_loaded_json: "Loaded from sentences.json",
         status_fallback: "Fallback data used",
         distractors_label: "Distractors"
       },
-
       pl: {
         page_title: "Gra tłumaczeniowa",
         start_game: "Start gry",
@@ -578,7 +385,6 @@
         sentence_set: "Zestaw zdań",
         start: "Rozpocznij",
         teacher_panel: "Panel nauczyciela",
-
         instruction: "Instrukcja",
         controls: "Sterowanie",
         restart_sentence: "Restart zdania",
@@ -601,14 +407,11 @@
         history_reports: "Historia ostatnich raportów",
         close_report: "Zamknij raport",
         play_again: "Zagraj od nowa",
-
         loading_settings: "Ładowanie ustawień...",
         loading_sentences: "Ładowanie zdań...",
         progress: "Postęp",
         sentence: "Zdanie",
         of: "z",
-        source_sentence: "Zdanie źródłowe",
-        translation: "Tłumaczenie",
         source_sentence_lang: "Zdanie źródłowe",
         translation_lang: "Tłumaczenie",
         waiting_start: "Oczekiwanie na rozpoczęcie gry...",
@@ -628,13 +431,9 @@
         build_mode_line_letters: "układanie z liter",
         build_mode_line_words: "układanie z wyrazów",
         sec: "s",
-
         easy: "łatwy",
         medium: "średni",
         hard: "trudny",
-
-        loaded_from_json: "Wczytano dane z sentences.json.",
-        fallback_data: "Nie udało się wczytać sentences.json. Użyto danych awaryjnych.",
         start_game_msg: "Rozpoczęto grę.",
         new_game_msg: "Rozpoczęto nową grę.",
         game_paused: "Gra zatrzymana.",
@@ -656,25 +455,21 @@
         current_data_failed: "Nie udało się wczytać sentences.json. Użyto danych awaryjnych.",
         no_wrong_sentences: "Brak zdań z błędami.",
         no_report_history: "Brak zapisanych raportów.",
-
         student: "Uczeń",
         set: "Zestaw",
         class_label: "Klasa",
         build_mode: "Tryb",
         date: "Data",
-
         source: "Źródło",
         correct_translation: "Poprawne tłumaczenie",
         reason: "Powód",
         completed_with_errors: "Zdanie ukończone, ale z błędami.",
         sentence_not_completed: "Nie udało się ukończyć zdania.",
         show_set_name_none: "brak",
-
         status_loaded_json: "Załadowano dane z sentences.json",
         status_fallback: "Użyto danych awaryjnych",
         distractors_label: "Mylące"
       },
-
       ja: {
         page_title: "翻訳ゲーム",
         start_game: "ゲーム開始",
@@ -684,7 +479,6 @@
         sentence_set: "文セット",
         start: "開始",
         teacher_panel: "教師パネル",
-
         instruction: "説明",
         controls: "操作",
         restart_sentence: "文をやり直す",
@@ -707,14 +501,11 @@
         history_reports: "最近のレポート履歴",
         close_report: "レポートを閉じる",
         play_again: "もう一度遊ぶ",
-
         loading_settings: "設定を読み込み中...",
         loading_sentences: "文を読み込み中...",
         progress: "進行",
         sentence: "文",
         of: "/",
-        source_sentence: "元の文",
-        translation: "翻訳",
         source_sentence_lang: "元の文",
         translation_lang: "翻訳",
         waiting_start: "ゲーム開始を待っています...",
@@ -734,13 +525,9 @@
         build_mode_line_letters: "文字で組み立て",
         build_mode_line_words: "単語で組み立て",
         sec: "秒",
-
         easy: "やさしい",
         medium: "ふつう",
         hard: "むずかしい",
-
-        loaded_from_json: "sentences.json を読み込みました。",
-        fallback_data: "sentences.json を読み込めなかったため、予備データを使用しました。",
         start_game_msg: "ゲームを開始しました。",
         new_game_msg: "新しいゲームを開始しました。",
         game_paused: "ゲームを一時停止しました。",
@@ -762,20 +549,17 @@
         current_data_failed: "sentences.json を読み込めなかったため、予備データを使用しました。",
         no_wrong_sentences: "誤りのあった文はありません。",
         no_report_history: "保存されたレポートはありません。",
-
         student: "生徒",
         set: "セット",
         class_label: "クラス",
         build_mode: "モード",
         date: "日付",
-
         source: "元文",
         correct_translation: "正しい翻訳",
         reason: "理由",
         completed_with_errors: "文は完成しましたが、ミスがありました。",
         sentence_not_completed: "文を完成できませんでした。",
         show_set_name_none: "なし",
-
         status_loaded_json: "sentences.json から読み込み",
         status_fallback: "予備データを使用",
         distractors_label: "ダミー"
@@ -791,23 +575,10 @@
     }
 
     let currentLang = detectLanguage();
-
-    function t(key){
-      return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key;
-    }
-
-    function applyStaticTranslations(){
-      document.documentElement.lang = currentLang;
-      document.title = t("page_title");
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.dataset.i18n;
-        el.textContent = t(key);
-      });
-      studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
-    }
+    function t(key){ return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key; }
 
     const fallbackData = {
-      title: "Translation game",
+      title: "Translation Game",
       settings: {
         difficulty: "medium",
         defaultClassLabel: "5A",
@@ -846,7 +617,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_d_i18n";
+    const REPORTS_KEY = "translation_reports_final_clean";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -929,13 +700,22 @@
     let wrongSentences = [];
     let currentSentenceHadMistake = false;
 
+    function applyStaticTranslations(){
+      document.documentElement.lang = currentLang;
+      document.title = t("page_title");
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+      });
+      studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
+    }
+
     async function loadData(){
       try{
         const response = await fetch("sentences.json", { cache: "no-store" });
-        if(!response.ok) throw new Error("Could not fetch sentences.json");
-
+        if(!response.ok) throw new Error("fetch failed");
         const data = await response.json();
-        if(!data || !Array.isArray(data.sets)) throw new Error("Invalid JSON format");
+        if(!data || !Array.isArray(data.sets)) throw new Error("invalid format");
 
         const cleanedSets = data.sets
           .map(set => ({
@@ -956,10 +736,9 @@
           }))
           .filter(set => set.id && set.name && set.pairs.length > 0);
 
-        if(cleanedSets.length === 0) throw new Error("No valid sets");
+        if(cleanedSets.length === 0) throw new Error("no valid sets");
 
         loadedFromFile = true;
-
         return {
           title: typeof data.title === "string" && data.title.trim() ? data.title.trim() : fallbackData.title,
           settings: {
@@ -1045,9 +824,7 @@
       message.className = "message " + type;
     }
 
-    function isPunctuation(ch){
-      return PUNCTUATION.includes(ch);
-    }
+    function isPunctuation(ch){ return PUNCTUATION.includes(ch); }
 
     function tokenizeWords(sentence){
       const parts = String(sentence).match(/[^\s.,!?;:]+|[.,!?;:]/g);
@@ -1063,9 +840,7 @@
     }
 
     function getTargetTokens(sentence, buildMode){
-      if(buildMode === "letters"){
-        return tokenizeLettersDetailed(sentence);
-      }
+      if(buildMode === "letters") return tokenizeLettersDetailed(sentence);
       return tokenizeWords(sentence).map(token => ({
         kind: isPunctuation(token) ? "punct" : "word",
         value: token
@@ -1073,26 +848,18 @@
     }
 
     function getClickableTokens(tokens){
-      if(activeSet?.buildMode === "letters"){
-        return tokens.filter(t => t.kind === "letter");
-      }
-      if(config.settings.punctuationMode === "tiles"){
-        return tokens.slice();
-      }
+      if(activeSet?.buildMode === "letters") return tokens.filter(t => t.kind === "letter");
+      if(config.settings.punctuationMode === "tiles") return tokens.slice();
       return tokens.filter(t => t.kind !== "punct");
     }
 
     function getEffectiveDistractorCount(){
-      if(activeSet?.useOwnDistractors){
-        return Number(activeSet.distractorCount ?? 0);
-      }
+      if(activeSet?.useOwnDistractors) return Number(activeSet.distractorCount ?? 0);
       return Number(config.settings.defaultDistractorCount || 0);
     }
 
     function getEffectiveDistractorMode(){
-      if(activeSet?.useOwnDistractors){
-        return activeSet.distractorMode || "auto";
-      }
+      if(activeSet?.useOwnDistractors) return activeSet.distractorMode || "auto";
       return config.settings.defaultDistractorMode || "auto";
     }
 
@@ -1232,9 +999,7 @@
       if(!activeSet) return [];
       activeSet.pairs.forEach(pair => {
         tokenizeWords(pair.target).forEach(token => {
-          if(!isPunctuation(token)){
-            pool.push(token);
-          }
+          if(!isPunctuation(token)) pool.push(token);
         });
       });
       return [...new Set(pool)];
@@ -1245,9 +1010,7 @@
       if(!activeSet) return [];
       activeSet.pairs.forEach(pair => {
         String(pair.target).split("").forEach(ch => {
-          if(ch !== " " && !isPunctuation(ch)){
-            pool.push(ch);
-          }
+          if(ch !== " " && !isPunctuation(ch)) pool.push(ch);
         });
       });
       return [...new Set(pool)];
@@ -1259,35 +1022,25 @@
       );
 
       const setPool = getSetWordPool().filter(word => !currentTarget.has(word));
-
       const globalPool = [];
       allSets.forEach(set => {
         if(set.buildMode !== "words") return;
         set.pairs.forEach(pair => {
           tokenizeWords(pair.target).forEach(token => {
             const clean = String(token).trim();
-            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)){
-              globalPool.push(clean);
-            }
+            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)) globalPool.push(clean);
           });
         });
       });
 
-      return {
-        setOnly: [...new Set(setPool)],
-        global: [...new Set(globalPool)]
-      };
+      return { setOnly: [...new Set(setPool)], global: [...new Set(globalPool)] };
     }
 
     function buildLetterDistractorPool(){
       const currentLetter = currentTokens[currentTokenIndex]?.value || "";
       const setPool = getSetLetterPool().filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
       const genericPool = LETTER_DISTRACTORS.filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
-
-      return {
-        setOnly: [...new Set(setPool)],
-        generic: [...new Set(genericPool)]
-      };
+      return { setOnly: [...new Set(setPool)], generic: [...new Set(genericPool)] };
     }
 
     function getDistractorToken(){
@@ -1297,47 +1050,26 @@
         const pools = buildLetterDistractorPool();
 
         if(mode === "material"){
-          if(pools.setOnly.length > 0){
-            return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-          }
+          if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
           return null;
         }
-
         if(mode === "lettersOnly"){
-          if(pools.generic.length > 0){
-            return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-          }
+          if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
           return null;
         }
-
-        if(pools.setOnly.length > 0){
-          return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        }
-        if(pools.generic.length > 0){
-          return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-        }
+        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+        if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
         return null;
       }
 
       const pools = buildWordDistractorPool();
-
-      if(mode === "lettersOnly"){
-        return null;
-      }
-
+      if(mode === "lettersOnly") return null;
       if(mode === "material"){
-        if(pools.setOnly.length > 0){
-          return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        }
+        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
         return null;
       }
-
-      if(pools.setOnly.length > 0){
-        return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-      }
-      if(pools.global.length > 0){
-        return pools.global[Math.floor(Math.random() * pools.global.length)];
-      }
+      if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+      if(pools.global.length > 0) return pools.global[Math.floor(Math.random() * pools.global.length)];
       return null;
     }
 
@@ -1359,7 +1091,6 @@
           break;
         }
       }
-
       return currentTokens[currentTokenIndex];
     }
 
@@ -1419,9 +1150,7 @@
       const index = fallingTokens.findIndex(t => t.id === id);
       if(index === -1) return;
       const [token] = fallingTokens.splice(index, 1);
-      if(token.element && token.element.parentNode){
-        token.element.parentNode.removeChild(token.element);
-      }
+      if(token.element && token.element.parentNode) token.element.parentNode.removeChild(token.element);
     }
 
     function removeAllTokensWithValue(value){
@@ -1474,12 +1203,8 @@
         for(let i = fallingTokens.length - 1; i >= 0; i--){
           const token = fallingTokens[i];
           token.y += token.speed;
-          if(token.element){
-            token.element.style.top = token.y + "px";
-          }
-          if(token.y > height){
-            removeToken(token.id);
-          }
+          if(token.element) token.element.style.top = token.y + "px";
+          if(token.y > height) removeToken(token.id);
         }
       }
       animationId = requestAnimationFrame(updateTokens);
@@ -1487,30 +1212,16 @@
 
     function clearTokens(){
       fallingTokens.forEach(token => {
-        if(token.element && token.element.parentNode){
-          token.element.parentNode.removeChild(token.element);
-        }
+        if(token.element && token.element.parentNode) token.element.parentNode.removeChild(token.element);
       });
       fallingTokens = [];
     }
 
     function stopLoops(){
-      if(animationId){
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-      if(spawnInterval){
-        clearInterval(spawnInterval);
-        spawnInterval = null;
-      }
-      if(timerInterval){
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-      if(autoNextTimeout){
-        clearTimeout(autoNextTimeout);
-        autoNextTimeout = null;
-      }
+      if(animationId){ cancelAnimationFrame(animationId); animationId = null; }
+      if(spawnInterval){ clearInterval(spawnInterval); spawnInterval = null; }
+      if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+      if(autoNextTimeout){ clearTimeout(autoNextTimeout); autoNextTimeout = null; }
     }
 
     function startLoops(){
@@ -1523,7 +1234,6 @@
           if(paused || gameFinished) return;
           remainingTime--;
           updateTopInfo();
-
           if(remainingTime <= 0){
             currentSentenceHadMistake = true;
             finishSentence(false, t("time_up"));
@@ -1534,11 +1244,7 @@
 
     function saveWrongSentenceIfNeeded(reason = ""){
       if(currentSentenceHadMistake && currentPair){
-        wrongSentences.push({
-          source: currentPair.source,
-          target: currentPair.target,
-          reason
-        });
+        wrongSentences.push({ source: currentPair.source, target: currentPair.target, reason });
       }
     }
 
@@ -1551,9 +1257,7 @@
         finishedCount++;
         completedSentencesCount++;
         updateScore();
-        if(currentSentenceHadMistake){
-          saveWrongSentenceIfNeeded(t("completed_with_errors"));
-        }
+        if(currentSentenceHadMistake) saveWrongSentenceIfNeeded(t("completed_with_errors"));
         setMessage(t("sentence_success"), "ok");
       } else {
         completedSentencesCount++;
@@ -1623,7 +1327,6 @@
         setMessage(t("everything_done"), "warn");
         return;
       }
-
       hintTokenIndex = currentTokenIndex;
       renderProgress();
       setMessage(t("hint_msg"), "warn");
@@ -1634,7 +1337,6 @@
         setMessage(t("solution_disabled"), "err");
         return;
       }
-
       currentSentenceHadMistake = true;
       currentTokenIndex = currentTokens.length;
       renderProgress();
@@ -1743,9 +1445,7 @@
       setMessage(t("report_shown"), "info");
     }
 
-    function hideFinalReport(){
-      reportOverlay.classList.remove("show");
-    }
+    function hideFinalReport(){ reportOverlay.classList.remove("show"); }
 
     function restartWholeGame(){
       stopLoops();
@@ -1766,9 +1466,7 @@
       setMessage(t("new_game_msg"), "info");
     }
 
-    function maybeShowStartScreen(){
-      startScreen.style.display = "flex";
-    }
+    function maybeShowStartScreen(){ startScreen.style.display = "flex"; }
 
     function startGame(){
       if(config.settings.studentNameMode && !studentNameInput.value.trim()){
@@ -1826,7 +1524,6 @@
       sentenceSummary.textContent = t("waiting_start");
 
       const data = await loadData();
-
       config = { title: data.title, settings: data.settings };
       allSets = data.sets.slice();
 
