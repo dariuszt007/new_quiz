@@ -375,7 +375,7 @@
     .overlay.show{display:flex}
 
     .report{
-      width:min(1180px, 100%);
+      width:min(1200px, 100%);
       background:#111827;
       border:1px solid rgba(255,255,255,.1);
       border-radius:22px;
@@ -383,6 +383,12 @@
       box-shadow:0 24px 60px rgba(0,0,0,.45);
       max-height:92vh;
       overflow:auto;
+    }
+
+    .report-header{
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      margin-bottom:18px;
     }
 
     .report-grid{
@@ -401,6 +407,7 @@
       border-radius:14px;
       padding:18px;
       text-align:center;
+      border:1px solid rgba(255,255,255,.06);
     }
 
     .report-box strong{
@@ -417,7 +424,7 @@
     }
 
     @media (min-width:700px){
-      .report-actions{grid-template-columns:repeat(5,1fr)}
+      .report-actions{grid-template-columns:repeat(6,1fr)}
     }
 
     .history-list,.results-list{
@@ -429,14 +436,15 @@
     .history-item{
       background:rgba(255,255,255,.04);
       padding:12px;
-      border-radius:10px;
+      border-radius:12px;
       font-size:14px;
+      border:1px solid rgba(255,255,255,.05);
     }
 
     .result-item{
       background:rgba(255,255,255,.04);
-      padding:12px;
-      border-radius:10px;
+      padding:14px;
+      border-radius:12px;
       font-size:14px;
       border:1px solid rgba(255,255,255,.06);
     }
@@ -444,6 +452,24 @@
     .result-item.bad{
       background:rgba(239,68,68,.10);
       border:1px solid rgba(239,68,68,.25);
+    }
+
+    .result-item.good{
+      background:rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.18);
+    }
+
+    .section-title{
+      margin-top:24px;
+      margin-bottom:8px;
+      font-size:20px;
+      font-weight:bold;
+    }
+
+    .report-note{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
     }
 
     .start-screen{
@@ -594,13 +620,6 @@
     .focus-mini-btn.success{
       background:var(--success);
       color:#04130a;
-    }
-
-    .section-title{
-      margin-top:22px;
-      margin-bottom:8px;
-      font-size:20px;
-      font-weight:bold;
     }
 
     @media (max-width:700px){
@@ -777,8 +796,10 @@
 
   <div class="overlay" id="reportOverlay">
     <div class="report">
-      <h2 data-i18n="final_report">Raport końcowy</h2>
-      <div class="small" id="reportTitle"></div>
+      <div class="report-header">
+        <h2 data-i18n="final_report">Raport końcowy</h2>
+        <div class="small" id="reportTitle"></div>
+      </div>
 
       <div class="report-grid">
         <div class="report-box"><span data-i18n="correct">Poprawne</span><strong id="reportCorrect">0</strong></div>
@@ -788,6 +809,7 @@
       </div>
 
       <div class="small" id="reportDetails"></div>
+      <div class="report-note">Raport pokazuje tylko realne wyniki zdań i pełną historię zapisanych raportów.</div>
 
       <div class="section-title">Wyniki zdań</div>
       <div class="results-list" id="resultsList"></div>
@@ -798,6 +820,7 @@
       <div class="report-actions">
         <button class="warning" id="exportPdfBtn">Eksport PDF</button>
         <button class="warning" id="exportCsvBtn">Eksport CSV</button>
+        <button class="danger" id="clearHistoryBtn">Wyczyść historię</button>
         <button class="primary" id="closeReportBtn" data-i18n="close_report">Zamknij raport</button>
         <button class="success" id="restartGameBtn" data-i18n="play_again">Zagraj od nowa</button>
         <button class="secondary" id="reportBackToSetsBtn" data-i18n="back_to_sets">Powrót do wyboru zestawu</button>
@@ -954,7 +977,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_7B_REPORT_ONLY_FIX";
+    const REPORTS_KEY = "translation_reports_student_5_7C_REPORT_ONLY_FIX_CLEAN";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
 
@@ -1011,6 +1034,7 @@
     const historyList = document.getElementById("historyList");
     const exportPdfBtn = document.getElementById("exportPdfBtn");
     const exportCsvBtn = document.getElementById("exportCsvBtn");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
     const printReportArea = document.getElementById("printReportArea");
 
     const startScreen = document.getElementById("startScreen");
@@ -1933,6 +1957,11 @@
       }
     }
 
+    function clearReportHistory(){
+      localStorage.removeItem(REPORTS_KEY);
+      renderReportHistory();
+    }
+
     function renderSentenceResults(){
       resultsList.innerHTML = "";
 
@@ -1942,9 +1971,9 @@
       }
 
       sentenceResults.forEach((item, index) => {
-        const div = document.createElement("div");
         const isBad = item.status !== "correct_clean" && item.status !== "correct_with_errors";
-        div.className = "result-item" + (isBad ? " bad" : "");
+        const div = document.createElement("div");
+        div.className = "result-item " + (isBad ? "bad" : "good");
 
         div.innerHTML = `
           <strong>Zdanie ${index + 1}</strong><br>
@@ -2253,6 +2282,11 @@
     reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
     exportCsvBtn.addEventListener("click", exportCsv);
     exportPdfBtn.addEventListener("click", exportPdf);
+    clearHistoryBtn.addEventListener("click", () => {
+      if(confirm("Czy na pewno chcesz usunąć całą historię raportów?")){
+        clearReportHistory();
+      }
+    });
 
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
