@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>teacher.html - Panel nauczyciela FINAL PRO</title>
+  <title>teacher.html - Panel nauczyciela C</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -25,7 +25,7 @@
       min-height:100vh;
     }
     .container{
-      max-width:1700px;
+      max-width:1800px;
       margin:0 auto;
       padding:20px;
     }
@@ -78,6 +78,10 @@
       color:var(--text);
       padding:12px;
       font-size:15px;
+    }
+    select:disabled, input:disabled, textarea:disabled{
+      opacity:.55;
+      cursor:not-allowed;
     }
     textarea{
       min-height:160px;
@@ -144,6 +148,26 @@
       font-size:13px;
       line-height:1.6;
     }
+    .note-box{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.18);
+      color:#dcfce7;
+      font-size:13px;
+      line-height:1.6;
+    }
+    .warn-box{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(245,158,11,.10);
+      border:1px solid rgba(245,158,11,.22);
+      color:#fde68a;
+      font-size:13px;
+      line-height:1.6;
+    }
     .json-output{
       min-height:340px;
       font-family:Consolas, monospace;
@@ -163,11 +187,11 @@
     }
     .set-header{
       display:grid;
-      grid-template-columns:1fr 1fr 1fr 1fr 170px 150px 190px auto;
+      grid-template-columns:1fr 1fr 1fr 1fr 170px 190px 140px 190px auto;
       gap:8px;
       margin-bottom:10px;
     }
-    @media (max-width:1450px){
+    @media (max-width:1600px){
       .set-header{ grid-template-columns:1fr; }
     }
     .pair-box{
@@ -252,8 +276,8 @@
     <div class="container">
       <div class="topbar">
         <div>
-          <div class="title">Panel nauczyciela FINAL PRO</div>
-          <div class="small">Każdy zestaw ma własny tryb, liczbę mylących kafelków i rodzaj mylących kafelków.</div>
+          <div class="title">Panel nauczyciela C</div>
+          <div class="small">Każdy zestaw może dziedziczyć globalne ustawienia mylących kafelków albo używać własnych.</div>
         </div>
         <a href="index.html">Otwórz grę studenta</a>
       </div>
@@ -421,8 +445,14 @@
             </div>
           </div>
 
-          <div class="help-box">
-            Jeśli zestaw ma własne <strong>distractorCount</strong> i <strong>distractorMode</strong>, to te wartości są używane zamiast domyślnych globalnych.
+          <div class="note-box">
+            <strong>Jak działają ustawienia globalne:</strong><br>
+            - Jeśli zestaw ma wybrane <strong>Dziedzicz globalne</strong>, użyje tych ustawień.<br>
+            - <strong>Domyślna liczba mylących kafelków</strong> określa, ile niepoprawnych elementów może pojawić się obok poprawnego.<br>
+            - <strong>Domyślny rodzaj mylących kafelków</strong> określa, skąd gra bierze błędne elementy:
+            <br>&nbsp;&nbsp;• <strong>Automatycznie</strong> - gra sama dobiera najlepszy wariant.
+            <br>&nbsp;&nbsp;• <strong>Tylko litery</strong> - użyteczne głównie przy trybie <strong>Litery</strong>.
+            <br>&nbsp;&nbsp;• <strong>Tylko z materiału</strong> - mylące kafelki pochodzą wyłącznie z materiału danego zestawu.
           </div>
         </div>
 
@@ -460,6 +490,13 @@
               </select>
             </div>
             <div>
+              <label for="newSetUseOwnDistractors">Ustawienia mylących kafelków</label>
+              <select id="newSetUseOwnDistractors">
+                <option value="false" selected>Dziedzicz globalne</option>
+                <option value="true">Użyj własnych</option>
+              </select>
+            </div>
+            <div>
               <label for="newSetDistractorCount">Liczba mylących kafelków</label>
               <select id="newSetDistractorCount">
                 <option value="0">Brak</option>
@@ -469,6 +506,9 @@
                 <option value="8">8</option>
               </select>
             </div>
+          </div>
+
+          <div class="row">
             <div>
               <label for="newSetDistractorMode">Rodzaj mylących kafelków</label>
               <select id="newSetDistractorMode">
@@ -479,6 +519,10 @@
             </div>
           </div>
 
+          <div class="note-box" id="newSetBehaviorInfo">
+            Ten zestaw ma obecnie wybrane <strong>Dziedzicz globalne</strong>, więc użyje globalnej liczby i globalnego rodzaju mylących kafelków.
+          </div>
+
           <label for="newSetPairs" style="margin-top:12px;">Pary zdań</label>
           <textarea id="newSetPairs" placeholder="Każda linia:
 I like apples. = Lubię jabłka.
@@ -486,7 +530,6 @@ How are you? = Jak się masz?"></textarea>
 
           <div class="actions">
             <button class="primary" id="addSetBtn">Dodaj zestaw</button>
-            <button class="warning" id="loadDemoSetsBtn">Wstaw przykładowe zestawy</button>
             <button class="danger" id="clearNewSetBtn">Wyczyść pola</button>
           </div>
 
@@ -577,12 +620,12 @@ How are you? = Jak się masz?"></textarea>
         classLabel: "5A",
         theme: "animals",
         buildMode: "words",
+        useOwnDistractors: true,
         distractorCount: 4,
         distractorMode: "material",
         pairs: [
           { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" },
-          { source: "Bird", target: "Ptak" }
+          { source: "Dog", target: "Pies" }
         ]
       },
       {
@@ -591,12 +634,12 @@ How are you? = Jak się masz?"></textarea>
         classLabel: "5A",
         theme: "animals",
         buildMode: "letters",
+        useOwnDistractors: true,
         distractorCount: 2,
         distractorMode: "lettersOnly",
         pairs: [
           { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" },
-          { source: "Bird", target: "Ptak" }
+          { source: "Dog", target: "Pies" }
         ]
       }
     ];
@@ -627,11 +670,12 @@ How are you? = Jak się masz?"></textarea>
     const newSetTheme = document.getElementById("newSetTheme");
     const newSetPairs = document.getElementById("newSetPairs");
     const newSetBuildMode = document.getElementById("newSetBuildMode");
+    const newSetUseOwnDistractors = document.getElementById("newSetUseOwnDistractors");
     const newSetDistractorCount = document.getElementById("newSetDistractorCount");
     const newSetDistractorMode = document.getElementById("newSetDistractorMode");
+    const newSetBehaviorInfo = document.getElementById("newSetBehaviorInfo");
 
     const addSetBtn = document.getElementById("addSetBtn");
-    const loadDemoSetsBtn = document.getElementById("loadDemoSetsBtn");
     const clearNewSetBtn = document.getElementById("clearNewSetBtn");
 
     const addEmptySetBtn = document.getElementById("addEmptySetBtn");
@@ -701,6 +745,52 @@ How are you? = Jak się masz?"></textarea>
       });
     }
 
+    function updateNewSetOwnFieldsState(){
+      const useOwn = newSetUseOwnDistractors.value === "true";
+      newSetDistractorCount.disabled = !useOwn;
+      newSetDistractorMode.disabled = !useOwn;
+
+      if(useOwn){
+        newSetBehaviorInfo.innerHTML =
+          "<strong>Ten zestaw użyje własnych ustawień.</strong><br>" +
+          "Gra zastosuje dokładnie wybraną tutaj liczbę mylących kafelków i wybrany tutaj rodzaj mylących kafelków.";
+        newSetBehaviorInfo.className = "note-box";
+      } else {
+        newSetBehaviorInfo.innerHTML =
+          "<strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>" +
+          "Gra użyje globalnej liczby mylących kafelków oraz globalnego rodzaju mylących kafelków z sekcji ustawień domyślnych.";
+        newSetBehaviorInfo.className = "help-box";
+      }
+    }
+
+    function getSetBehaviorInfoHtml(set){
+      const useOwn = !!set.useOwnDistractors;
+
+      if(useOwn){
+        return `
+          <div class="note-box">
+            <strong>Ten zestaw używa własnych ustawień.</strong><br>
+            Liczba mylących kafelków: <strong>${Number(set.distractorCount ?? 0)}</strong><br>
+            Rodzaj mylących kafelków: <strong>${translateDistractorMode(set.distractorMode || "auto")}</strong>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="help-box">
+          <strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>
+          Użyje globalnej liczby mylących kafelków: <strong>${Number(defaultDistractorCount.value)}</strong><br>
+          Użyje globalnego rodzaju mylących kafelków: <strong>${translateDistractorMode(defaultDistractorMode.value)}</strong>
+        </div>
+      `;
+    }
+
+    function translateDistractorMode(mode){
+      if(mode === "lettersOnly") return "Tylko litery";
+      if(mode === "material") return "Tylko z materiału";
+      return "Automatycznie";
+    }
+
     function swapLanguageLabels(){
       const oldSource = sourceLanguageLabel.value;
       sourceLanguageLabel.value = targetLanguageLabel.value;
@@ -751,6 +841,8 @@ How are you? = Jak się masz?"></textarea>
           </tr>
         `).join("");
 
+        const useOwn = !!set.useOwnDistractors;
+
         const box = document.createElement("div");
         box.className = "set-item";
         box.innerHTML = `
@@ -763,20 +855,26 @@ How are you? = Jak się masz?"></textarea>
               <option value="words" ${set.buildMode === "words" ? "selected" : ""}>Wyrazy</option>
               <option value="letters" ${set.buildMode === "letters" ? "selected" : ""}>Litery</option>
             </select>
-            <select data-field="distractorCount" data-index="${realIndex}">
+            <select data-field="useOwnDistractors" data-index="${realIndex}">
+              <option value="false" ${!useOwn ? "selected" : ""}>Dziedzicz globalne</option>
+              <option value="true" ${useOwn ? "selected" : ""}>Użyj własnych</option>
+            </select>
+            <select data-field="distractorCount" data-index="${realIndex}" ${!useOwn ? "disabled" : ""}>
               <option value="0" ${Number(set.distractorCount ?? 4) === 0 ? "selected" : ""}>Brak</option>
               <option value="2" ${Number(set.distractorCount ?? 4) === 2 ? "selected" : ""}>2</option>
               <option value="4" ${Number(set.distractorCount ?? 4) === 4 ? "selected" : ""}>4</option>
               <option value="6" ${Number(set.distractorCount ?? 4) === 6 ? "selected" : ""}>6</option>
               <option value="8" ${Number(set.distractorCount ?? 4) === 8 ? "selected" : ""}>8</option>
             </select>
-            <select data-field="distractorMode" data-index="${realIndex}">
+            <select data-field="distractorMode" data-index="${realIndex}" ${!useOwn ? "disabled" : ""}>
               <option value="auto" ${set.distractorMode === "auto" ? "selected" : ""}>Automatycznie</option>
               <option value="lettersOnly" ${set.distractorMode === "lettersOnly" ? "selected" : ""}>Tylko litery</option>
               <option value="material" ${set.distractorMode === "material" ? "selected" : ""}>Tylko z materiału</option>
             </select>
             <button class="danger" data-action="removeSet" data-index="${realIndex}">Usuń</button>
           </div>
+
+          ${getSetBehaviorInfoHtml(set)}
 
           <div class="pair-box">
             <table>
@@ -820,8 +918,12 @@ How are you? = Jak się masz?"></textarea>
           if(field === "distractorCount"){
             value = Number(value);
           }
+          if(field === "useOwnDistractors"){
+            value = value === "true";
+          }
 
           sets[i][field] = value;
+          renderSets();
           updateJsonPreview();
         });
       });
@@ -876,6 +978,7 @@ How are you? = Jak się masz?"></textarea>
           classLabel: cleanText(set.classLabel || ""),
           theme: cleanText(set.theme || ""),
           buildMode: set.buildMode === "letters" ? "letters" : "words",
+          useOwnDistractors: !!set.useOwnDistractors,
           distractorCount: Number(set.distractorCount ?? 4),
           distractorMode: set.distractorMode || "auto",
           pairs: (set.pairs || [])
@@ -927,13 +1030,14 @@ How are you? = Jak się masz?"></textarea>
       jsonOutput.value = JSON.stringify(data, null, 2);
     }
 
-    function addSet(id, name, classLabel, theme, buildMode, distractorCount, distractorMode, pairs){
+    function addSet(id, name, classLabel, theme, buildMode, useOwnDistractors, distractorCount, distractorMode, pairs){
       sets.push({
         id: sanitizeId(id),
         name: cleanText(name),
         classLabel: cleanText(classLabel || ""),
         theme: cleanText(theme || ""),
         buildMode: buildMode === "letters" ? "letters" : "words",
+        useOwnDistractors: !!useOwnDistractors,
         distractorCount: Number(distractorCount ?? 4),
         distractorMode: distractorMode || "auto",
         pairs: (pairs || []).map(pair => ({
@@ -974,6 +1078,7 @@ How are you? = Jak się masz?"></textarea>
         classLabel: cleanText(set.classLabel || ""),
         theme: cleanText(set.theme || ""),
         buildMode: set.buildMode === "letters" ? "letters" : "words",
+        useOwnDistractors: set.useOwnDistractors === true,
         distractorCount: Number(set.distractorCount ?? (s.defaultDistractorCount ?? 4)),
         distractorMode: set.distractorMode || s.defaultDistractorMode || "auto",
         pairs: Array.isArray(set.pairs)
@@ -986,6 +1091,7 @@ How are you? = Jak się masz?"></textarea>
 
       renderSets();
       updateJsonPreview();
+      updateNewSetOwnFieldsState();
     }
 
     function downloadJsonFile(filename, content){
@@ -1060,6 +1166,7 @@ How are you? = Jak się masz?"></textarea>
       const classLabel = newSetClassLabel.value;
       const theme = newSetTheme.value;
       const buildMode = newSetBuildMode.value;
+      const useOwnDistractors = newSetUseOwnDistractors.value === "true";
       const distractorCount = newSetDistractorCount.value;
       const distractorMode = newSetDistractorMode.value;
       const pairs = parsePairsFromTextarea(newSetPairs.value);
@@ -1074,15 +1181,8 @@ How are you? = Jak się masz?"></textarea>
         return;
       }
 
-      addSet(id, name, classLabel, theme, buildMode, distractorCount, distractorMode, pairs);
+      addSet(id, name, classLabel, theme, buildMode, useOwnDistractors, distractorCount, distractorMode, pairs);
       setMessage("Dodano zestaw.", "ok");
-    });
-
-    loadDemoSetsBtn.addEventListener("click", () => {
-      sets = JSON.parse(JSON.stringify(demoSets));
-      renderSets();
-      updateJsonPreview();
-      setMessage("Wstawiono przykładowe zestawy.", "ok");
     });
 
     clearNewSetBtn.addEventListener("click", () => {
@@ -1092,8 +1192,10 @@ How are you? = Jak się masz?"></textarea>
       newSetTheme.value = "";
       newSetPairs.value = "";
       newSetBuildMode.value = "words";
+      newSetUseOwnDistractors.value = "false";
       newSetDistractorCount.value = "4";
       newSetDistractorMode.value = "auto";
+      updateNewSetOwnFieldsState();
       setMessage("Wyczyszczono pola nowego zestawu.", "info");
     });
 
@@ -1104,6 +1206,7 @@ How are you? = Jak się masz?"></textarea>
         classLabel: "",
         theme: "",
         buildMode: "words",
+        useOwnDistractors: false,
         distractorCount: 4,
         distractorMode: "auto",
         pairs: []
@@ -1151,6 +1254,8 @@ How are you? = Jak się masz?"></textarea>
     copyBtn.addEventListener("click", copyJson);
     importBtn.addEventListener("click", () => importFile.click());
 
+    newSetUseOwnDistractors.addEventListener("change", updateNewSetOwnFieldsState);
+
     importFile.addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if(!file) return;
@@ -1170,6 +1275,7 @@ How are you? = Jak się masz?"></textarea>
     });
 
     loadSentencesJsonAtStart();
+    updateNewSetOwnFieldsState();
   </script>
 </body>
 </html>
