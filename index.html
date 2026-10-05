@@ -427,60 +427,6 @@
       .report-actions{grid-template-columns:repeat(3,1fr)}
     }
 
-    .celebration-box{
-      width:min(820px, 100%);
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:24px;
-      padding:34px 24px;
-      box-shadow:0 24px 60px rgba(0,0,0,.45);
-      text-align:center;
-    }
-
-    .celebration-title{
-      font-size:44px;
-      font-weight:900;
-      color:#fde68a;
-      margin-bottom:12px;
-    }
-
-    .celebration-student{
-      font-size:20px;
-      color:#93c5fd;
-      margin-bottom:8px;
-      font-weight:bold;
-    }
-
-    .celebration-subtitle{
-      font-size:20px;
-      color:#e5e7eb;
-      margin-bottom:14px;
-    }
-
-    .celebration-score{
-      font-size:32px;
-      font-weight:bold;
-      margin-bottom:10px;
-      color:#86efac;
-    }
-
-    .celebration-detail{
-      font-size:16px;
-      color:#cbd5e1;
-      margin-bottom:20px;
-    }
-
-    .celebration-actions{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-      margin-top:16px;
-    }
-
-    @media (min-width:700px){
-      .celebration-actions{grid-template-columns:repeat(2,1fr)}
-    }
-
     .start-screen{
       position:fixed;
       inset:0;
@@ -588,23 +534,9 @@
       height:10px;
     }
 
-    .focus-mode .start-overlay-title{
-      font-size:28px;
-    }
-
-    .focus-mode .start-overlay-text{
-      font-size:16px;
-    }
-
     .panels-hidden .topbar,
     .panels-hidden .cards{
       display:none;
-    }
-
-    .fullscreen-host{
-      width:100%;
-      min-height:100vh;
-      background:linear-gradient(180deg,#0f172a 0%,#111827 100%);
     }
 
     .floating-show-panels{
@@ -715,7 +647,7 @@
     </div>
   </div>
 
-  <div class="container fullscreen-host" id="appRoot">
+  <div class="container" id="appRoot">
     <div class="topbar">
       <div>
         <div class="title" id="gameTitle"></div>
@@ -793,20 +725,6 @@
           <div class="score-box"><span data-i18n="completed">Ukończone</span><strong id="finishedCount">0</strong></div>
           <div class="score-box"><span data-i18n="total">Razem</span><strong id="totalCount">0</strong></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="celebrationOverlay">
-    <div class="celebration-box">
-      <div class="celebration-title">Brawo!</div>
-      <div class="celebration-student" id="celebrationStudent"></div>
-      <div class="celebration-subtitle" id="celebrationSubtitle">Ukończono cały zestaw.</div>
-      <div class="celebration-score" id="celebrationScore">0%</div>
-      <div class="celebration-detail" id="celebrationDetail"></div>
-      <div class="celebration-actions">
-        <button class="primary" id="openReportBtn">Pokaż raport</button>
-        <button class="success" id="celebrationRestartBtn">Zagraj od nowa</button>
       </div>
     </div>
   </div>
@@ -946,7 +864,7 @@
       settings: {
         difficulty: "medium",
         defaultClassLabel: "5A",
-        spawnRate: 900,
+        spawnRate: 950,
         timerSeconds: 45,
         maxMistakes: 5,
         randomOrder: false,
@@ -982,7 +900,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6D_CHAOS_CONTENT";
+    const REPORTS_KEY = "translation_reports_student_5_6D_FIX_MATERIAL_LOGIC";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1025,14 +943,6 @@
     const wrongCountEl = document.getElementById("wrongCount");
     const finishedCountEl = document.getElementById("finishedCount");
     const totalCountEl = document.getElementById("totalCount");
-
-    const celebrationOverlay = document.getElementById("celebrationOverlay");
-    const celebrationStudent = document.getElementById("celebrationStudent");
-    const celebrationSubtitle = document.getElementById("celebrationSubtitle");
-    const celebrationScore = document.getElementById("celebrationScore");
-    const celebrationDetail = document.getElementById("celebrationDetail");
-    const openReportBtn = document.getElementById("openReportBtn");
-    const celebrationRestartBtn = document.getElementById("celebrationRestartBtn");
 
     const reportOverlay = document.getElementById("reportOverlay");
     const reportCorrect = document.getElementById("reportCorrect");
@@ -1102,8 +1012,6 @@
       focusNextBtn.textContent = t("next_sentence");
       focusHintBtn.textContent = t("hint");
       focusPauseBtn.textContent = paused ? t("resume") : t("pause");
-      openReportBtn.textContent = "Pokaż raport";
-      celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = "Np. Jan";
       updateFocusButton();
       updatePanelsButton();
@@ -1480,28 +1388,6 @@
       return 0.8 + Math.random() * 1.2;
     }
 
-    function getSetWordPool(){
-      const pool = [];
-      if(!activeSet) return [];
-      activeSet.pairs.forEach(pair => {
-        tokenizeWords(pair.target).forEach(token => {
-          if(!isPunctuation(token)) pool.push(token);
-        });
-      });
-      return [...new Set(pool)];
-    }
-
-    function getSetLetterPool(){
-      const pool = [];
-      if(!activeSet) return [];
-      activeSet.pairs.forEach(pair => {
-        String(pair.target).split("").forEach(ch => {
-          if(ch !== " " && !isPunctuation(ch)) pool.push(ch);
-        });
-      });
-      return [...new Set(pool)];
-    }
-
     function getMaterialPoolForCurrentMode(){
       if(!activeSet) return [];
 
@@ -1528,18 +1414,50 @@
       return [...new Set(pool)];
     }
 
-    function getRandomMaterialTokens(count, requiredToken){
-      const pool = getMaterialPoolForCurrentMode().filter(token => token !== requiredToken);
-      shuffleArray(pool);
+    function resolveBatchSize(expectedToken){
+      const configuredCount = getEffectiveDistractorCount();
+      const configuredMode = getEffectiveDistractorMode();
+      const materialPool = getMaterialPoolForCurrentMode().filter(token => token !== expectedToken);
+      const extraMaterialAvailable = materialPool.length;
 
-      const result = [requiredToken];
-
-      for(let i = 0; i < pool.length && result.length < count; i++){
-        result.push(pool[i]);
+      if(configuredMode === "material"){
+        if(configuredCount <= 0){
+          return Math.max(
+            2,
+            Math.min(
+              activeSet.buildMode === "letters" ? 6 : 4,
+              extraMaterialAvailable + 1
+            )
+          );
+        }
+        return Math.max(2, Math.min(extraMaterialAvailable + 1, configuredCount + 1));
       }
 
-      shuffleArray(result);
-      return result;
+      if(configuredCount <= 0){
+        return 1;
+      }
+
+      return Math.max(2, configuredCount + 1);
+    }
+
+    function getBatchTokens(expectedToken){
+      const configuredMode = getEffectiveDistractorMode();
+      const batchSize = resolveBatchSize(expectedToken);
+
+      if(configuredMode === "material"){
+        const pool = getMaterialPoolForCurrentMode().filter(token => token !== expectedToken);
+        shuffleArray(pool);
+        const result = [expectedToken];
+
+        for(let i = 0; i < pool.length && result.length < batchSize; i++){
+          result.push(pool[i]);
+        }
+
+        shuffleArray(result);
+        return result;
+      }
+
+      return [expectedToken];
     }
 
     function getExpectedTokenSkippingNonClickable(){
@@ -1570,16 +1488,7 @@
       const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
-      let batchSize = 4;
-
-      if(activeSet.buildMode === "letters") batchSize = 6;
-      if(getEffectiveDistractorCount() === 0){
-        batchSize = activeSet.buildMode === "letters" ? 5 : 4;
-      } else {
-        batchSize = Math.max(2, getEffectiveDistractorCount() + 1);
-      }
-
-      const itemsToSpawn = getRandomMaterialTokens(batchSize, expected.value);
+      const itemsToSpawn = getBatchTokens(expected.value);
 
       const placedRects = [];
       const zones = ["left", "center", "right"];
@@ -2050,27 +1959,9 @@
       });
     }
 
-    function showCelebrationScreen(){
-      celebrationStudent.textContent = studentName
-        ? `Uczeń: ${studentName}`
-        : "";
-
-      celebrationSubtitle.textContent = "Ukończono cały zestaw.";
-      celebrationScore.textContent = `${calculateAccuracy()}%`;
-      celebrationDetail.textContent =
-        `Punkty: ${calculatePoints()}/${calculateMaxPoints()} | Poprawnie ukończone: ${getCorrectSentenceCount()} | Nieukończone / pominięte: ${getIncompleteSentenceCount()} | Błędne kliknięcia: ${wrongCount}`;
-
-      celebrationOverlay.classList.add("show");
-    }
-
-    function hideCelebrationScreen(){
-      celebrationOverlay.classList.remove("show");
-    }
-
     function showFinalReport(){
       stopLoops();
       clearTokens();
-      hideCelebrationScreen();
 
       const report = getCurrentReportObject();
       saveReportToHistory(report);
@@ -2105,7 +1996,6 @@
       stopLoops();
       clearTokens();
       hideFinalReport();
-      hideCelebrationScreen();
 
       correctCount = 0;
       wrongCount = 0;
@@ -2150,7 +2040,6 @@
       stopLoops();
       clearTokens();
       hideFinalReport();
-      hideCelebrationScreen();
       startScreen.style.display = "flex";
       gameStarted = false;
       paused = false;
@@ -2211,16 +2100,8 @@
     restartGameBtn.addEventListener("click", restartWholeGame);
     reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
 
-    openReportBtn.addEventListener("click", () => {
-      showFinalReport();
-    });
-
-    celebrationRestartBtn.addEventListener("click", restartWholeGame);
-
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
-
-    window.addEventListener("resize", () => {});
 
     async function init(){
       applyStaticTranslations();
