@@ -27,6 +27,7 @@
       "classLabel": "5A",
       "theme": "animals",
       "buildMode": "words",
+      "useOwnDistractors": true,
       "distractorCount": 4,
       "distractorMode": "material",
       "pairs": [
@@ -42,6 +43,7 @@
       "classLabel": "5A",
       "theme": "animals",
       "buildMode": "letters",
+      "useOwnDistractors": true,
       "distractorCount": 2,
       "distractorMode": "lettersOnly",
       "pairs": [
@@ -57,6 +59,7 @@
       "classLabel": "5A",
       "theme": "school",
       "buildMode": "words",
+      "useOwnDistractors": false,
       "distractorCount": 6,
       "distractorMode": "material",
       "pairs": [
@@ -71,6 +74,7 @@
       "classLabel": "5A",
       "theme": "school",
       "buildMode": "letters",
+      "useOwnDistractors": true,
       "distractorCount": 2,
       "distractorMode": "material",
       "pairs": [
@@ -85,6 +89,7 @@
       "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "words",
+      "useOwnDistractors": true,
       "distractorCount": 4,
       "distractorMode": "auto",
       "pairs": [
@@ -99,6 +104,7 @@
       "classLabel": "6A",
       "theme": "daily life",
       "buildMode": "letters",
+      "useOwnDistractors": true,
       "distractorCount": 0,
       "distractorMode": "lettersOnly",
       "pairs": [
