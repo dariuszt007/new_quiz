@@ -3,10 +3,10 @@
   "settings": {
     "difficulty": "medium",
     "defaultClassLabel": "5A",
-    "spawnRate": 1100,
+    "spawnRate": 1500,
     "timerSeconds": 45,
-    "maxMistakes": 5,
-    "randomOrder": false,
+    "maxMistakes": 0,
+    "randomOrder": true,
     "autoNextSeconds": 3,
     "soundEnabled": true,
     "studentNameMode": true,
@@ -16,147 +16,381 @@
     "showTranslationInstruction": true,
     "sourceLanguageLabel": "English",
     "targetLanguageLabel": "Polski",
-    "defaultDistractorCount": 4,
-    "defaultDistractorMode": "auto",
+    "defaultDistractorCount": 0,
+    "defaultDistractorMode": "material",
     "punctuationMode": "auto"
   },
   "sets": [
     {
-      "id": "animals_words",
-      "name": "Animals - words",
-      "classLabel": "5A",
-      "theme": "animals",
+      "id": "whowhatwherehow",
+      "name": "Who What Where How",
+      "classLabel": "5",
+      "theme": "zdania",
       "buildMode": "words",
-      "useOwnDistractors": true,
-      "distractorCount": 4,
-      "distractorMode": "material",
-      "pairs": [
-        { "source": "Cat", "target": "Kot" },
-        { "source": "Dog", "target": "Pies" },
-        { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" },
-        { "source": "Cow", "target": "Krowa" },
-        { "source": "Mouse", "target": "Mysz" }
-      ]
-    },
-    {
-      "id": "animals_letters",
-      "name": "Animals - letters",
-      "classLabel": "5A",
-      "theme": "animals",
-      "buildMode": "letters",
-      "useOwnDistractors": true,
-      "distractorCount": 2,
-      "distractorMode": "lettersOnly",
-      "pairs": [
-        { "source": "Cat", "target": "Kot" },
-        { "source": "Dog", "target": "Pies" },
-        { "source": "Bird", "target": "Ptak" },
-        { "source": "Horse", "target": "Koń" },
-        { "source": "Cow", "target": "Krowa" },
-        { "source": "Mouse", "target": "Mysz" }
-      ]
-    },
-    {
-      "id": "school_words",
-      "name": "School - words",
-      "classLabel": "5A",
-      "theme": "school",
-      "buildMode": "words",
-      "useOwnDistractors": false,
-      "distractorCount": 6,
-      "distractorMode": "material",
-      "pairs": [
-        { "source": "This is my book.", "target": "To jest moja książka." },
-        { "source": "I have a pencil.", "target": "Mam ołówek." },
-        { "source": "The teacher is here.", "target": "Nauczyciel jest tutaj." },
-        { "source": "The school bag is heavy.", "target": "Plecak szkolny jest ciężki." },
-        { "source": "My notebook is on the desk.", "target": "Mój zeszyt jest na biurku." }
-      ]
-    },
-    {
-      "id": "school_letters",
-      "name": "School - letters",
-      "classLabel": "5A",
-      "theme": "school",
-      "buildMode": "letters",
-      "useOwnDistractors": true,
-      "distractorCount": 2,
-      "distractorMode": "material",
-      "pairs": [
-        { "source": "Book", "target": "Książka" },
-        { "source": "Pen", "target": "Długopis" },
-        { "source": "Desk", "target": "Biurko" },
-        { "source": "Notebook", "target": "Zeszyt" },
-        { "source": "Teacher", "target": "Nauczyciel" }
-      ]
-    },
-    {
-      "id": "daily_words",
-      "name": "Daily life - words",
-      "classLabel": "6A",
-      "theme": "daily life",
-      "buildMode": "words",
-      "useOwnDistractors": true,
-      "distractorCount": 4,
-      "distractorMode": "auto",
-      "pairs": [
-        { "source": "I like apples.", "target": "Lubię jabłka." },
-        { "source": "She is my friend.", "target": "Ona jest moją przyjaciółką." },
-        { "source": "We go to school every day.", "target": "Chodzimy do szkoły codziennie." },
-        { "source": "I get up at seven.", "target": "Wstaję o siódmej." },
-        { "source": "They play in the garden.", "target": "Oni bawią się w ogrodzie." }
-      ]
-    },
-    {
-      "id": "daily_letters",
-      "name": "Daily life - letters",
-      "classLabel": "6A",
-      "theme": "daily life",
-      "buildMode": "letters",
       "useOwnDistractors": true,
       "distractorCount": 0,
-      "distractorMode": "lettersOnly",
-      "pairs": [
-        { "source": "Friend", "target": "Przyjaciel" },
-        { "source": "School", "target": "Szkoła" },
-        { "source": "Apple", "target": "Jabłko" },
-        { "source": "Morning", "target": "Poranek" },
-        { "source": "Garden", "target": "Ogród" }
-      ]
-    },
-    {
-      "id": "travel_words",
-      "name": "Travel - words",
-      "classLabel": "6A",
-      "theme": "travel",
-      "buildMode": "words",
-      "useOwnDistractors": true,
-      "distractorCount": 6,
       "distractorMode": "material",
       "pairs": [
-        { "source": "We are going to the station.", "target": "Idziemy na stację." },
-        { "source": "The bus is late today.", "target": "Autobus jest dziś spóźniony." },
-        { "source": "I have a ticket.", "target": "Mam bilet." },
-        { "source": "They travel by train.", "target": "Oni podróżują pociągiem." },
-        { "source": "Our hotel is near the beach.", "target": "Nasz hotel jest blisko plaży." }
-      ]
-    },
-    {
-      "id": "travel_letters",
-      "name": "Travel - letters",
-      "classLabel": "6A",
-      "theme": "travel",
-      "buildMode": "letters",
-      "useOwnDistractors": true,
-      "distractorCount": 2,
-      "distractorMode": "lettersOnly",
-      "pairs": [
-        { "source": "Train", "target": "Pociąg" },
-        { "source": "Ticket", "target": "Bilet" },
-        { "source": "Hotel", "target": "Hotel" },
-        { "source": "Beach", "target": "Plaża" },
-        { "source": "Station", "target": "Stacja" }
+        {
+          "source": "あなたの親友は誰ですか。",
+          "target": "Who is your best friend?"
+        },
+        {
+          "source": "放課後にサッカーをするのは誰ですか。",
+          "target": "Who plays football after school?"
+        },
+        {
+          "source": "あなたの隣に座っているのは誰ですか。",
+          "target": "Who is sitting next to you?"
+        },
+        {
+          "source": "数学が好きなのは誰ですか。",
+          "target": "Who likes mathematics?"
+        },
+        {
+          "source": "あなたの英語の先生は誰ですか。",
+          "target": "Who is your English teacher?"
+        },
+        {
+          "source": "誕生日パーティーに誰を招待しましたか。",
+          "target": "Whom did you invite to your birthday party?"
+        },
+        {
+          "source": "あなたは誰と話していますか。",
+          "target": "Whom are you talking to?"
+        },
+        {
+          "source": "彼女は昨日誰を手伝いましたか。",
+          "target": "Whom did she help yesterday?"
+        },
+        {
+          "source": "彼らは誰をキャプテンに選びましたか。",
+          "target": "Whom did they choose as captain?"
+        },
+        {
+          "source": "あなたの兄は毎週末誰を訪ねますか。",
+          "target": "Whom does your brother visit every weekend?"
+        },
+        {
+          "source": "これは誰のリュックですか。",
+          "target": "Whose backpack is this?"
+        },
+        {
+          "source": "机の上にあるのは誰の本ですか。",
+          "target": "Whose book is on the desk?"
+        },
+        {
+          "source": "庭で遊んでいるのは誰の犬ですか。",
+          "target": "Whose dog is playing in the garden?"
+        },
+        {
+          "source": "あなたは誰の鉛筆を借りましたか。",
+          "target": "Whose pencil did you borrow?"
+        },
+        {
+          "source": "そこに掛かっているのは誰のジャケットですか。",
+          "target": "Whose jacket is hanging there?"
+        },
+        {
+          "source": "あなたの好きな教科は何ですか。",
+          "target": "What is your favourite subject?"
+        },
+        {
+          "source": "朝食に何を食べますか。",
+          "target": "What do you eat for breakfast?"
+        },
+        {
+          "source": "テーブルの上に何がありますか。",
+          "target": "What is on the table?"
+        },
+        {
+          "source": "今何をしていますか。",
+          "target": "What are you doing now?"
+        },
+        {
+          "source": "一番好きなゲームは何ですか。",
+          "target": "What game do you like most?"
+        },
+        {
+          "source": "どの色が好きですか。",
+          "target": "Which colour do you prefer?"
+        },
+        {
+          "source": "どの本があなたのものですか。",
+          "target": "Which book is yours?"
+        },
+        {
+          "source": "どのバスが市の中心部へ行きますか。",
+          "target": "Which bus goes to the city centre?"
+        },
+        {
+          "source": "どの動物が一番好きですか。",
+          "target": "Which animal do you like best?"
+        },
+        {
+          "source": "どのケーキが欲しいですか。",
+          "target": "Which cake would you like?"
+        },
+        {
+          "source": "どこに住んでいますか。",
+          "target": "Where do you live?"
+        },
+        {
+          "source": "あなたの学校はどこにありますか。",
+          "target": "Where is your school?"
+        },
+        {
+          "source": "私の鍵はどこですか。",
+          "target": "Where are my keys?"
+        },
+        {
+          "source": "放課後どこで遊びますか。",
+          "target": "Where do you play after school?"
+        },
+        {
+          "source": "一番近い店はどこですか。",
+          "target": "Where is the nearest shop?"
+        },
+        {
+          "source": "誕生日はいつですか。",
+          "target": "When is your birthday?"
+        },
+        {
+          "source": "授業はいつ始まりますか。",
+          "target": "When do lessons start?"
+        },
+        {
+          "source": "いつ寝ますか。",
+          "target": "When do you go to bed?"
+        },
+        {
+          "source": "いつ宿題を終えますか。",
+          "target": "When will you finish your homework?"
+        },
+        {
+          "source": "電車はいつ到着しますか。",
+          "target": "When does the train arrive?"
+        },
+        {
+          "source": "今日はなぜうれしいのですか。",
+          "target": "Why are you happy today?"
+        },
+        {
+          "source": "なぜ英語を勉強するのですか。",
+          "target": "Why do you learn English?"
+        },
+        {
+          "source": "なぜドアは開いているのですか。",
+          "target": "Why is the door open?"
+        },
+        {
+          "source": "なぜ遅れて来たのですか。",
+          "target": "Why did you come late?"
+        },
+        {
+          "source": "なぜ猫はそんなによく寝るのですか。",
+          "target": "Why do cats sleep so much?"
+        },
+        {
+          "source": "今日は元気ですか。",
+          "target": "How are you today?"
+        },
+        {
+          "source": "どうやって学校に行きますか。",
+          "target": "How do you go to school?"
+        },
+        {
+          "source": "何歳ですか。",
+          "target": "How old are you?"
+        },
+        {
+          "source": "どのようにお手伝いできますか。",
+          "target": "How can I help you?"
+        },
+        {
+          "source": "授業はどのくらい続きますか。",
+          "target": "How long does the lesson last?"
+        },
+        {
+          "source": "昨日宿題を手伝ってくれたのは誰ですか。",
+          "target": "Who helped you with your homework yesterday?"
+        },
+        {
+          "source": "学校のクラブに入りたいのは誰ですか。",
+          "target": "Who wants to join the school club?"
+        },
+        {
+          "source": "この絵を描いたのは誰ですか。",
+          "target": "Who made this picture?"
+        },
+        {
+          "source": "英語を上手に話せるのは誰ですか。",
+          "target": "Who can speak English well?"
+        },
+        {
+          "source": "来週の祭りに来るのは誰ですか。",
+          "target": "Who will come to the festival next week?"
+        },
+        {
+          "source": "駅で誰に会いましたか。",
+          "target": "Whom did you meet at the station?"
+        },
+        {
+          "source": "誰を待っていますか。",
+          "target": "Whom are you waiting for?"
+        },
+        {
+          "source": "先生は誰を褒めましたか。",
+          "target": "Whom did the teacher praise?"
+        },
+        {
+          "source": "誰に助けを求めるべきですか。",
+          "target": "Whom should I ask for help?"
+        },
+        {
+          "source": "彼女が最も信頼しているのは誰ですか。",
+          "target": "Whom does she trust most?"
+        },
+        {
+          "source": "外に止めてあるのは誰の自転車ですか。",
+          "target": "Whose bicycle is parked outside?"
+        },
+        {
+          "source": "これは誰の考えでしたか。",
+          "target": "Whose idea was this?"
+        },
+        {
+          "source": "鳴っているのは誰の電話ですか。",
+          "target": "Whose phone is ringing?"
+        },
+        {
+          "source": "あなたが見つけたのは誰のノートですか。",
+          "target": "Whose notebook did you find?"
+        },
+        {
+          "source": "勝ったのは誰のチームですか。",
+          "target": "Whose team won the game?"
+        },
+        {
+          "source": "今日理科で何を学びましたか。",
+          "target": "What did you learn in science class today?"
+        },
+        {
+          "source": "今週末は何をする予定ですか。",
+          "target": "What are you planning to do this weekend?"
+        },
+        {
+          "source": "何があなたを幸せにしますか。",
+          "target": "What makes you happy?"
+        },
+        {
+          "source": "最も興味深かった部分は何でしたか。",
+          "target": "What was the most interesting part?"
+        },
+        {
+          "source": "将来何になりたいですか。",
+          "target": "What would you like to become in the future?"
+        },
+        {
+          "source": "あなたにとって最も難しい教科はどれですか。",
+          "target": "Which subject is the most difficult for you?"
+        },
+        {
+          "source": "どの電車に乗るべきですか。",
+          "target": "Which train should we take?"
+        },
+        {
+          "source": "どのチームが大会で優勝しましたか。",
+          "target": "Which team won the competition?"
+        },
+        {
+          "source": "どの映画を勧めますか。",
+          "target": "Which movie do you recommend?"
+        },
+        {
+          "source": "どの答えが正しいですか。",
+          "target": "Which answer is correct?"
+        },
+        {
+          "source": "夏休みをどこで過ごしましたか。",
+          "target": "Where did you spend your summer vacation?"
+        },
+        {
+          "source": "この本はどこで買えますか。",
+          "target": "Where can I buy this book?"
+        },
+        {
+          "source": "彼らは今どこへ行っていますか。",
+          "target": "Where are they going now?"
+        },
+        {
+          "source": "明日どこで会いましょうか。",
+          "target": "Where should we meet tomorrow?"
+        },
+        {
+          "source": "その行事はどこで開かれましたか。",
+          "target": "Where was the event held?"
+        },
+        {
+          "source": "いつ英語の勉強を始めましたか。",
+          "target": "When did you start learning English?"
+        },
+        {
+          "source": "修学旅行はいつ始まりますか。",
+          "target": "When will the school trip begin?"
+        },
+        {
+          "source": "いつ博物館を訪れることができますか。",
+          "target": "When can we visit the museum?"
+        },
+        {
+          "source": "この建物はいつ建てられましたか。",
+          "target": "When was this building built?"
+        },
+        {
+          "source": "普段いつ勉強しますか。",
+          "target": "When do you usually study?"
+        },
+        {
+          "source": "なぜこのクラブを選んだのですか。",
+          "target": "Why did you choose this club?"
+        },
+        {
+          "source": "なぜ音楽に興味があるのですか。",
+          "target": "Why are you interested in music?"
+        },
+        {
+          "source": "なぜごみをリサイクルすべきですか。",
+          "target": "Why should we recycle waste?"
+        },
+        {
+          "source": "なぜ試合は中止になったのですか。",
+          "target": "Why was the game cancelled?"
+        },
+        {
+          "source": "なぜ人々は外国語を学ぶのですか。",
+          "target": "Why do people learn foreign languages?"
+        },
+        {
+          "source": "毎日どのように英語を練習していますか。",
+          "target": "How do you practice English every day?"
+        },
+        {
+          "source": "どのようにこの問題を解決できますか。",
+          "target": "How can we solve this problem?"
+        },
+        {
+          "source": "どのくらいの頻度で本を読みますか。",
+          "target": "How often do you read books?"
+        },
+        {
+          "source": "勉強にどれくらい時間を使いますか。",
+          "target": "How much time do you spend studying?"
+        },
+        {
+          "source": "昨日どうやって学校へ行きましたか。",
+          "target": "How did you get to school yesterday?"
+        }
       ]
     }
   ]
