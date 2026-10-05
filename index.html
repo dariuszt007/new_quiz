@@ -486,16 +486,16 @@
       flex-direction:column;
       max-width:1400px;
       min-height:100vh;
-      padding-top:14px;
-      padding-bottom:14px;
+      padding-top:10px;
+      padding-bottom:10px;
     }
 
     .focus-mode .game-area{
-      height:52vh;
-      min-height:300px;
-      max-height:52vh;
+      height:48vh;
+      min-height:260px;
+      max-height:48vh;
       flex:0 0 auto;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
 
     .focus-mode .bottom{
@@ -506,44 +506,43 @@
 
     .focus-mode .bottom .card:first-child{
       display:block;
-      padding:10px 12px;
+      padding:8px 10px;
+    }
+
+    .focus-mode .bottom .card:first-child h2{
+      display:none;
     }
 
     .focus-mode .bottom .card:last-child{
       display:none;
     }
 
-    .focus-mode .bottom .card:first-child h2{
-      margin-bottom:8px;
-      font-size:16px;
-    }
-
     .focus-mode .source-box{
-      font-size:18px;
-      padding:10px 12px;
-      margin-top:6px;
+      font-size:16px;
+      padding:8px 10px;
+      margin-top:4px;
     }
 
     .focus-mode .progress{
-      font-size:18px;
-      line-height:1.9;
-      min-height:72px;
-      padding:10px 12px;
-    }
-
-    .focus-mode .small{
-      font-size:13px;
-      line-height:1.35;
-    }
-
-    .focus-mode .summary-box{
-      margin-top:8px;
+      font-size:16px;
+      line-height:1.7;
+      min-height:60px;
       padding:8px 10px;
     }
 
+    .focus-mode .small{
+      font-size:12px;
+      line-height:1.25;
+    }
+
+    .focus-mode .summary-box{
+      margin-top:6px;
+      padding:6px 8px;
+    }
+
     .focus-mode .progress-bar-wrap{
-      margin-top:8px;
-      height:14px;
+      margin-top:6px;
+      height:12px;
     }
 
     .panels-hidden .topbar,
@@ -634,11 +633,9 @@
           <button class="success" id="toggleBtn" data-i18n="pause">Pause</button>
           <button class="warning" id="hintBtn" data-i18n="hint">Hint</button>
           <button class="danger" id="solutionBtn" data-i18n="solution">Solution</button>
-          <button class="secondary" id="fullscreenBtn" data-i18n="fullscreen">Full screen</button>
           <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
           <button class="secondary" id="focusBtn" data-i18n="focus_mode">Focus mode</button>
           <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Hide top panels</button>
-          <button class="secondary" id="resetTokensBtn">Reset kafelków</button>
         </div>
       </div>
 
@@ -662,7 +659,6 @@
 
     <div class="bottom">
       <div class="card">
-        <h2 data-i18n="building_translation">Building the translation</h2>
         <div class="small" id="sourceLabel"></div>
         <div class="source-box" id="sourceSentenceBox">...</div>
 
@@ -748,8 +744,6 @@
         resume: "Resume",
         hint: "Hint",
         solution: "Solution",
-        fullscreen: "Full screen",
-        exit_fullscreen: "Exit full screen",
         back_to_sets: "Back to set choice",
         focus_mode: "Focus mode",
         normal_mode: "Normal mode",
@@ -757,7 +751,6 @@
         show_panels: "Show top panels",
         status: "Status",
         timer_mistakes: "Timer and mistakes",
-        building_translation: "Building the translation",
         score: "Score",
         correct: "Correct",
         mistakes: "Mistakes",
@@ -849,8 +842,6 @@
         resume: "Wznów",
         hint: "Podpowiedź",
         solution: "Rozwiązanie",
-        fullscreen: "Pełny ekran",
-        exit_fullscreen: "Wyjdź z pełnego ekranu",
         back_to_sets: "Powrót do wyboru zestawu",
         focus_mode: "Tryb focus",
         normal_mode: "Tryb normalny",
@@ -858,7 +849,6 @@
         show_panels: "Pokaż górne panele",
         status: "Status",
         timer_mistakes: "Timer i błędy",
-        building_translation: "Budowane tłumaczenie",
         score: "Punkty",
         correct: "Poprawne",
         mistakes: "Błędy",
@@ -950,8 +940,6 @@
         resume: "再開",
         hint: "ヒント",
         solution: "答え",
-        fullscreen: "全画面",
-        exit_fullscreen: "全画面を終了",
         back_to_sets: "セット選択に戻る",
         focus_mode: "集中モード",
         normal_mode: "通常モード",
@@ -959,7 +947,6 @@
         show_panels: "上部パネルを表示",
         status: "状態",
         timer_mistakes: "タイマーとミス",
-        building_translation: "翻訳を組み立てる",
         score: "スコア",
         correct: "正解",
         mistakes: "ミス",
@@ -1088,7 +1075,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_3";
+    const REPORTS_KEY = "translation_reports_student_5_3B";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1119,11 +1106,9 @@
     const toggleBtn = document.getElementById("toggleBtn");
     const hintBtn = document.getElementById("hintBtn");
     const solutionBtn = document.getElementById("solutionBtn");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
     const backToSetsBtn = document.getElementById("backToSetsBtn");
     const focusBtn = document.getElementById("focusBtn");
     const togglePanelsBtn = document.getElementById("togglePanelsBtn");
-    const resetTokensBtn = document.getElementById("resetTokensBtn");
     const floatingShowPanelsBtn = document.getElementById("floatingShowPanelsBtn");
     const floatingExitFocusBtn = document.getElementById("floatingExitFocusBtn");
 
@@ -1201,11 +1186,9 @@
       });
       floatingShowPanelsBtn.textContent = t("show_panels");
       floatingExitFocusBtn.textContent = t("normal_mode");
-      resetTokensBtn.textContent = currentLang === "pl" ? "Reset kafelków" : currentLang === "ja" ? "タイルをリセット" : "Reset tiles";
       openReportBtn.textContent = currentLang === "pl" ? "Pokaż raport" : currentLang === "ja" ? "レポートを見る" : "Show report";
       celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
-      updateFullscreenButton();
       updateFocusButton();
       updatePanelsButton();
     }
@@ -2220,36 +2203,9 @@
       setMessage(t("returned_to_sets"), "info");
     }
 
-    async function requestFs(el){
-      if(el.requestFullscreen) return el.requestFullscreen();
-      if(el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
-      if(el.msRequestFullscreen) return el.msRequestFullscreen();
-    }
-
-    async function exitFs(){
-      if(document.exitFullscreen) return document.exitFullscreen();
-      if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
-      if(document.msExitFullscreen) return document.msExitFullscreen();
-    }
-
-    function isFullscreenActive(){
-      return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
-    }
-
-    async function toggleFullscreen(){
-      try{
-        if(!isFullscreenActive()){
-          await requestFs(appRoot);
-        } else {
-          await exitFs();
-        }
-      }catch(error){
-        console.error(error);
-      }
-    }
-
-    function updateFullscreenButton(){
-      fullscreenBtn.textContent = isFullscreenActive() ? t("exit_fullscreen") : t("fullscreen");
+    function updateFocusButton(){
+      focusBtn.textContent = focusMode ? t("normal_mode") : t("focus_mode");
+      floatingExitFocusBtn.textContent = t("normal_mode");
     }
 
     function toggleFocusMode(forceValue = null){
@@ -2262,11 +2218,6 @@
       updateFocusButton();
       updatePanelsButton();
       setTimeout(respawnCurrentVisibleTokens, 80);
-    }
-
-    function updateFocusButton(){
-      focusBtn.textContent = focusMode ? t("normal_mode") : t("focus_mode");
-      floatingExitFocusBtn.textContent = t("normal_mode");
     }
 
     function togglePanels(forceValue = null){
@@ -2292,17 +2243,11 @@
 
     hintBtn.addEventListener("click", showHint);
     solutionBtn.addEventListener("click", showSolution);
-    fullscreenBtn.addEventListener("click", toggleFullscreen);
     backToSetsBtn.addEventListener("click", returnToSetChoice);
     focusBtn.addEventListener("click", () => toggleFocusMode());
     togglePanelsBtn.addEventListener("click", () => togglePanels());
-    resetTokensBtn.addEventListener("click", respawnCurrentVisibleTokens);
     floatingShowPanelsBtn.addEventListener("click", () => togglePanels(false));
     floatingExitFocusBtn.addEventListener("click", () => toggleFocusMode(false));
-
-    document.addEventListener("fullscreenchange", updateFullscreenButton);
-    document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
-    document.addEventListener("msfullscreenchange", updateFullscreenButton);
 
     closeReportBtn.addEventListener("click", hideFinalReport);
     restartGameBtn.addEventListener("click", restartWholeGame);
