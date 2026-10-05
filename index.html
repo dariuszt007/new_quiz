@@ -158,7 +158,7 @@
       cursor:pointer;
       user-select:none;
       box-shadow:0 10px 20px rgba(0,0,0,.28);
-      transition:transform .08s ease,left .08s ease,top .08s ease;
+      transition:transform .08s ease,left .08s ease,top .08s ease, opacity .18s ease;
       text-align:center;
       white-space:nowrap;
       border:2px solid rgba(255,255,255,.5);
@@ -175,6 +175,11 @@
       box-shadow:0 0 0 3px rgba(239,68,68,.35), 0 10px 20px rgba(0,0,0,.28);
     }
 
+    .token-correct{
+      animation:correctPop .28s ease;
+      box-shadow:0 0 0 4px rgba(34,197,94,.30), 0 10px 20px rgba(0,0,0,.28);
+    }
+
     @keyframes wrongShake{
       0%{transform:translateX(0)}
       20%{transform:translateX(-8px)}
@@ -182,6 +187,12 @@
       60%{transform:translateX(-6px)}
       80%{transform:translateX(6px)}
       100%{transform:translateX(0)}
+    }
+
+    @keyframes correctPop{
+      0%{transform:scale(1)}
+      40%{transform:scale(1.12)}
+      100%{transform:scale(1)}
     }
 
     .bottom{
@@ -363,7 +374,7 @@
     }
 
     .celebration-box{
-      width:min(760px, 100%);
+      width:min(820px, 100%);
       background:#111827;
       border:1px solid rgba(255,255,255,.1);
       border-radius:24px;
@@ -379,17 +390,30 @@
       margin-bottom:12px;
     }
 
+    .celebration-student{
+      font-size:20px;
+      color:#93c5fd;
+      margin-bottom:8px;
+      font-weight:bold;
+    }
+
     .celebration-subtitle{
       font-size:20px;
       color:#e5e7eb;
-      margin-bottom:20px;
+      margin-bottom:14px;
     }
 
     .celebration-score{
-      font-size:28px;
+      font-size:32px;
       font-weight:bold;
-      margin-bottom:20px;
+      margin-bottom:10px;
       color:#86efac;
+    }
+
+    .celebration-detail{
+      font-size:16px;
+      color:#cbd5e1;
+      margin-bottom:20px;
     }
 
     .celebration-actions{
@@ -623,8 +647,10 @@
   <div class="overlay" id="celebrationOverlay">
     <div class="celebration-box">
       <div class="celebration-title">Brawo!</div>
+      <div class="celebration-student" id="celebrationStudent"></div>
       <div class="celebration-subtitle" id="celebrationSubtitle">Ukończono cały zestaw.</div>
       <div class="celebration-score" id="celebrationScore">0%</div>
+      <div class="celebration-detail" id="celebrationDetail"></div>
       <div class="celebration-actions">
         <button class="primary" id="openReportBtn">Pokaż raport</button>
         <button class="success" id="celebrationRestartBtn">Zagraj od nowa</button>
@@ -1021,7 +1047,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5";
+    const REPORTS_KEY = "translation_reports_student_5_1";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1066,8 +1092,10 @@
     const totalCountEl = document.getElementById("totalCount");
 
     const celebrationOverlay = document.getElementById("celebrationOverlay");
+    const celebrationStudent = document.getElementById("celebrationStudent");
     const celebrationSubtitle = document.getElementById("celebrationSubtitle");
     const celebrationScore = document.getElementById("celebrationScore");
+    const celebrationDetail = document.getElementById("celebrationDetail");
     const openReportBtn = document.getElementById("openReportBtn");
     const celebrationRestartBtn = document.getElementById("celebrationRestartBtn");
 
@@ -1411,15 +1439,60 @@
       return Math.min(340, Math.max(76, String(word).length * 16 + 30));
     }
 
-    function getLanePositions(itemCount){
-      const width = gameArea.clientWidth;
-      const lanes = [];
-      const safeCount = Math.max(1, itemCount);
-      const spacing = width / (safeCount + 1);
-      for(let i = 0; i < safeCount; i++){
-        lanes.push(Math.floor((i + 1) * spacing));
+    function rangesOverlap(aStart, aEnd, bStart, bEnd, gap = 0){
+      return !(aEnd + gap < bStart || aStart > bEnd + gap);
+    }
+
+    function getChaoticSpawnPosition(tokenWidth, placedRects = []){
+      const areaWidth = gameArea.clientWidth;
+      const minX = 8;
+      const maxX = Math.max(minX, areaWidth - tokenWidth - 8);
+
+      for(let attempt = 0; attempt < 90; attempt++){
+        const x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+        const y = -55 - Math.floor(Math.random() * 140);
+
+        const tooClose = placedRects.some(rect => {
+          const overlapX = rangesOverlap(x, x + tokenWidth, rect.x, rect.x + rect.w, 18);
+          const overlapY = rangesOverlap(y, y + 58, rect.y, rect.y + rect.h, 26);
+          return overlapX && overlapY;
+        });
+
+        if(!tooClose){
+          return { x, y };
+        }
       }
-      return lanes;
+
+      return {
+        x: Math.floor(Math.random() * (maxX - minX + 1)) + minX,
+        y: -55 - Math.floor(Math.random() * 140)
+      };
+    }
+
+    function getChaoticRespawnPosition(tokenWidth, index, placedRects = []){
+      const areaWidth = gameArea.clientWidth;
+      const minX = 8;
+      const maxX = Math.max(minX, areaWidth - tokenWidth - 8);
+
+      for(let attempt = 0; attempt < 90; attempt++){
+        const x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+        const y = 14 + index * 18 + Math.floor(Math.random() * 18);
+
+        const tooClose = placedRects.some(rect => {
+          const overlapX = rangesOverlap(x, x + tokenWidth, rect.x, rect.x + rect.w, 18);
+          const overlapY = rangesOverlap(y, y + 58, rect.y, rect.y + rect.h, 18);
+          return overlapX && overlapY;
+        });
+
+        if(!tooClose){
+          return { x, y };
+        }
+      }
+
+      return {
+        x: Math.floor(Math.random() * (maxX - minX + 1)) + minX,
+        y: 14 + index * 20
+      };
     }
 
     function createTokenElement(tokenObj){
@@ -1563,19 +1636,26 @@
       }
 
       shuffleArray(itemsToSpawn);
-      const lanes = getLanePositions(itemsToSpawn.length);
 
-      itemsToSpawn.forEach((word, idx) => {
+      const placedRects = [];
+
+      itemsToSpawn.forEach((word) => {
         const tokenWidthEstimate = estimateTokenWidth(word);
-        const centerX = lanes[idx] || Math.floor(gameArea.clientWidth / 2);
-        const x = Math.max(0, Math.min(gameArea.clientWidth - tokenWidthEstimate - 8, centerX - Math.floor(tokenWidthEstimate / 2)));
+        const pos = getChaoticSpawnPosition(tokenWidthEstimate, placedRects);
         const speed = getTokenSpeed();
+
+        placedRects.push({
+          x: pos.x,
+          y: pos.y,
+          w: tokenWidthEstimate,
+          h: 58
+        });
 
         const tokenObj = {
           id: ++tokenIdCounter,
           word,
-          x,
-          y: -76 - (idx * 18),
+          x: pos.x,
+          y: pos.y,
           speed,
           colorIndex: tokenIdCounter,
           element: null
@@ -1596,19 +1676,25 @@
         return;
       }
 
-      const lanes = getLanePositions(uniqueWords.length);
+      const placedRects = [];
 
       uniqueWords.forEach((word, idx) => {
         const tokenWidthEstimate = estimateTokenWidth(word);
-        const centerX = lanes[idx] || Math.floor(gameArea.clientWidth / 2);
-        const x = Math.max(0, Math.min(gameArea.clientWidth - tokenWidthEstimate - 8, centerX - Math.floor(tokenWidthEstimate / 2)));
+        const pos = getChaoticRespawnPosition(tokenWidthEstimate, idx, placedRects);
         const speed = getTokenSpeed();
+
+        placedRects.push({
+          x: pos.x,
+          y: pos.y,
+          w: tokenWidthEstimate,
+          h: 58
+        });
 
         const tokenObj = {
           id: ++tokenIdCounter,
           word,
-          x,
-          y: 20 + idx * 16,
+          x: pos.x,
+          y: pos.y,
           speed,
           colorIndex: tokenIdCounter,
           element: null
@@ -1646,6 +1732,18 @@
       }, 320);
     }
 
+    function markCorrectTokens(value){
+      fallingTokens
+        .filter(token => token.word === value && token.element)
+        .forEach(token => token.element.classList.add("token-correct"));
+    }
+
+    function fadeOutTokens(value){
+      fallingTokens
+        .filter(token => token.word === value && token.element)
+        .forEach(token => token.element.style.opacity = "0");
+    }
+
     function handleTokenClick(id){
       if(gameFinished || paused) return;
 
@@ -1657,19 +1755,23 @@
 
       if(token.word === expected.value){
         correctCount++;
-        currentTokenIndex++;
         hintTokenIndex = -1;
-        removeAllTokensWithValue(token.word);
+        markCorrectTokens(token.word);
+        fadeOutTokens(token.word);
         updateScore();
 
-        getExpectedTokenSkippingNonClickable();
-        renderProgress();
+        setTimeout(() => {
+          currentTokenIndex++;
+          removeAllTokensWithValue(token.word);
+          getExpectedTokenSkippingNonClickable();
+          renderProgress();
 
-        if(currentTokenIndex >= currentTokens.length){
-          finishSentence(true);
-        } else {
-          setMessage(t("correct_next"), "ok");
-        }
+          if(currentTokenIndex >= currentTokens.length){
+            finishSentence(true);
+          } else {
+            setMessage(t("correct_next"), "ok");
+          }
+        }, 180);
       } else {
         wrongCount++;
         sentenceMistakes++;
@@ -1913,12 +2015,25 @@
     function showCelebrationScreen(){
       stopLoops();
       clearTokens();
+
+      celebrationStudent.textContent = studentName
+        ? (currentLang === "pl" ? `Uczeń: ${studentName}` : currentLang === "ja" ? `生徒: ${studentName}` : `Student: ${studentName}`)
+        : "";
+
       celebrationSubtitle.textContent = currentLang === "pl"
         ? "Ukończono cały zestaw."
         : currentLang === "ja"
           ? "セットを最後まで完了しました。"
           : "The whole set has been completed.";
+
       celebrationScore.textContent = `${calculateAccuracy()}%`;
+
+      celebrationDetail.textContent = currentLang === "pl"
+        ? `Poprawne: ${correctCount} | Błędy: ${wrongCount} | Ukończone: ${finishedCount}/${pairs.length}`
+        : currentLang === "ja"
+          ? `正解: ${correctCount} | ミス: ${wrongCount} | 完了: ${finishedCount}/${pairs.length}`
+          : `Correct: ${correctCount} | Mistakes: ${wrongCount} | Completed: ${finishedCount}/${pairs.length}`;
+
       celebrationOverlay.classList.add("show");
     }
 
