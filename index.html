@@ -218,6 +218,48 @@
       font-weight:bold;
     }
 
+    .hidden-source{
+      visibility:hidden;
+    }
+
+    .start-overlay-message{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:20;
+      background:rgba(2,6,23,.45);
+      text-align:center;
+      padding:24px;
+    }
+
+    .start-overlay-message.show{
+      display:flex;
+    }
+
+    .start-overlay-box{
+      background:rgba(17,24,39,.92);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;
+      padding:24px;
+      max-width:760px;
+      box-shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .start-overlay-title{
+      font-size:34px;
+      font-weight:900;
+      color:#fde68a;
+      margin-bottom:10px;
+    }
+
+    .start-overlay-text{
+      font-size:20px;
+      color:#e5e7eb;
+      line-height:1.45;
+    }
+
     .progress-bar-wrap{
       margin-top:12px;
       background:rgba(255,255,255,.08);
@@ -486,16 +528,16 @@
       flex-direction:column;
       max-width:1400px;
       min-height:100vh;
-      padding-top:10px;
-      padding-bottom:10px;
+      padding-top:8px;
+      padding-bottom:8px;
     }
 
     .focus-mode .game-area{
-      height:48vh;
-      min-height:260px;
-      max-height:48vh;
+      height:46vh;
+      min-height:240px;
+      max-height:46vh;
       flex:0 0 auto;
-      margin-bottom:8px;
+      margin-bottom:6px;
     }
 
     .focus-mode .bottom{
@@ -506,11 +548,7 @@
 
     .focus-mode .bottom .card:first-child{
       display:block;
-      padding:8px 10px;
-    }
-
-    .focus-mode .bottom .card:first-child h2{
-      display:none;
+      padding:6px 8px;
     }
 
     .focus-mode .bottom .card:last-child{
@@ -518,31 +556,39 @@
     }
 
     .focus-mode .source-box{
-      font-size:16px;
-      padding:8px 10px;
-      margin-top:4px;
+      font-size:15px;
+      padding:7px 9px;
+      margin-top:3px;
     }
 
     .focus-mode .progress{
-      font-size:16px;
-      line-height:1.7;
-      min-height:60px;
-      padding:8px 10px;
+      font-size:15px;
+      line-height:1.55;
+      min-height:52px;
+      padding:7px 9px;
     }
 
     .focus-mode .small{
-      font-size:12px;
-      line-height:1.25;
+      font-size:11px;
+      line-height:1.2;
     }
 
     .focus-mode .summary-box{
-      margin-top:6px;
-      padding:6px 8px;
+      margin-top:5px;
+      padding:5px 7px;
     }
 
     .focus-mode .progress-bar-wrap{
-      margin-top:6px;
-      height:12px;
+      margin-top:5px;
+      height:10px;
+    }
+
+    .focus-mode .start-overlay-title{
+      font-size:28px;
+    }
+
+    .focus-mode .start-overlay-text{
+      font-size:16px;
     }
 
     .panels-hidden .topbar,
@@ -628,6 +674,7 @@
       <div class="card">
         <h2 data-i18n="controls">Controls</h2>
         <div class="controls">
+          <button class="primary" id="roundStartBtn">Start</button>
           <button class="primary" id="restartBtn" data-i18n="restart_sentence">Restart sentence</button>
           <button class="secondary" id="nextBtn" data-i18n="next_sentence">Next sentence</button>
           <button class="success" id="toggleBtn" data-i18n="pause">Pause</button>
@@ -655,12 +702,21 @@
       </div>
     </div>
 
-    <div class="game-area" id="gameArea"></div>
+    <div class="game-area" id="gameArea">
+      <div class="start-overlay-message show" id="startOverlayMessage">
+        <div class="start-overlay-box">
+          <div class="start-overlay-title">Start</div>
+          <div class="start-overlay-text" id="startOverlayText">
+            Kliknij Start, aby rozpocząć cały zestaw.
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="bottom">
       <div class="card">
         <div class="small" id="sourceLabel"></div>
-        <div class="source-box" id="sourceSentenceBox">...</div>
+        <div class="source-box hidden-source" id="sourceSentenceBox">...</div>
 
         <div class="small" style="margin-top:14px;" id="targetLabel"></div>
         <div class="progress" id="progressDisplay"></div>
@@ -790,6 +846,9 @@
         medium: "medium",
         hard: "hard",
         start_game_msg: "Game started.",
+        round_ready_msg: "Press Start to begin the whole set.",
+        round_started_msg: "The whole set has started.",
+        round_wait_overlay: "Press Start to begin the whole set.",
         new_game_msg: "A new game has started.",
         game_paused: "Game paused.",
         game_resumed: "Game resumed.",
@@ -833,7 +892,7 @@
         student_name: "Imię ucznia",
         class_group: "Klasa / grupa",
         sentence_set: "Zestaw zdań",
-        start: "Rozpocznij",
+        start: "Start",
         instruction: "Instrukcja",
         controls: "Sterowanie",
         restart_sentence: "Restart zdania",
@@ -888,6 +947,9 @@
         medium: "średni",
         hard: "trudny",
         start_game_msg: "Rozpoczęto grę.",
+        round_ready_msg: "Kliknij Start, aby rozpocząć cały zestaw.",
+        round_started_msg: "Rozpoczęto cały zestaw.",
+        round_wait_overlay: "Kliknij Start, aby rozpocząć cały zestaw.",
         new_game_msg: "Rozpoczęto nową grę.",
         game_paused: "Gra zatrzymana.",
         game_resumed: "Gra wznowiona.",
@@ -986,6 +1048,9 @@
         medium: "ふつう",
         hard: "むずかしい",
         start_game_msg: "ゲームを開始しました。",
+        round_ready_msg: "開始を押してセット全体を始めてください。",
+        round_started_msg: "セット全体を開始しました。",
+        round_wait_overlay: "開始を押してセット全体を始めてください。",
         new_game_msg: "新しいゲームを開始しました。",
         game_paused: "ゲームを一時停止しました。",
         game_resumed: "ゲームを再開しました。",
@@ -1075,7 +1140,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_3B";
+    const REPORTS_KEY = "translation_reports_student_5_4B";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1088,6 +1153,8 @@
     const sourceLabel = document.getElementById("sourceLabel");
     const targetLabel = document.getElementById("targetLabel");
     const instructionText = document.getElementById("instructionText");
+    const startOverlayMessage = document.getElementById("startOverlayMessage");
+    const startOverlayText = document.getElementById("startOverlayText");
 
     const message = document.getElementById("message");
     const statusLine = document.getElementById("statusLine");
@@ -1101,6 +1168,7 @@
     const modeLine = document.getElementById("modeLine");
     const sentenceSummary = document.getElementById("sentenceSummary");
 
+    const roundStartBtn = document.getElementById("roundStartBtn");
     const restartBtn = document.getElementById("restartBtn");
     const nextBtn = document.getElementById("nextBtn");
     const toggleBtn = document.getElementById("toggleBtn");
@@ -1158,6 +1226,7 @@
     let spawnInterval = null;
     let gameFinished = false;
     let paused = false;
+    let gameStarted = false;
     let tokenIdCounter = 0;
     let sentenceMistakes = 0;
     let remainingTime = 0;
@@ -1186,6 +1255,8 @@
       });
       floatingShowPanelsBtn.textContent = t("show_panels");
       floatingExitFocusBtn.textContent = t("normal_mode");
+      roundStartBtn.textContent = t("start");
+      startOverlayText.textContent = t("round_wait_overlay");
       openReportBtn.textContent = currentLang === "pl" ? "Pokaż raport" : currentLang === "ja" ? "レポートを見る" : "Show report";
       celebrationRestartBtn.textContent = t("play_again");
       studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
@@ -1370,8 +1441,8 @@
         ` | ${t("distractors_label")}: ${getEffectiveDistractorCount()} / ${getEffectiveDistractorMode()} / ${activeSet?.useOwnDistractors ? "own" : "global"}`;
 
       difficultyLine.textContent = `${t("level")}: ${translateDifficulty(config.settings.difficulty)}`;
-      mistakesLine.textContent = `${t("mistakes")}: ${sentenceMistakes} / ${config.settings.maxMistakes === 0 ? t("no_limit") : config.settings.maxMistakes}`;
       timerLine.textContent = `${t("timer")}: ${config.settings.timerSeconds === 0 ? t("disabled") : remainingTime + " " + t("sec")}`;
+      mistakesLine.textContent = `${t("mistakes")}: ${sentenceMistakes} / ${config.settings.maxMistakes === 0 ? t("no_limit") : config.settings.maxMistakes}`;
       autoNextLine.textContent = `${t("auto_next")}: ${config.settings.autoNextSeconds === 0 ? t("disabled") : config.settings.autoNextSeconds + " " + t("sec")}`;
       modeLine.textContent = `${t("mode")}: ${activeSet?.buildMode === "letters" ? t("build_mode_line_letters") : t("build_mode_line_words")}`;
 
@@ -1547,154 +1618,8 @@
       };
     }
 
-    function getChaoticRespawnPosition(tokenWidth, index, placedRects = [], preferredZone = null){
-      const areaWidth = gameArea.clientWidth;
-      const zone = preferredZone || pickHorizontalZone();
-      const zoneBounds = getZoneBounds(areaWidth, tokenWidth, zone);
-      const fallbackBounds = { min: 8, max: Math.max(8, areaWidth - tokenWidth - 8) };
-
-      for(let attempt = 0; attempt < 100; attempt++){
-        const bounds = attempt < 65 ? zoneBounds : fallbackBounds;
-        const x = getRandomXInBounds(bounds);
-        const y = 14 + index * 18 + Math.floor(Math.random() * 14);
-
-        const tooClose = placedRects.some(rect => {
-          const overlapX = rangesOverlap(x, x + tokenWidth, rect.x, rect.x + rect.w, 18);
-          const overlapY = rangesOverlap(y, y + 58, rect.y, rect.y + rect.h, 18);
-          return overlapX && overlapY;
-        });
-
-        if(!tooClose){
-          return { x, y };
-        }
-      }
-
-      return {
-        x: getRandomXInBounds(fallbackBounds),
-        y: 14 + index * 20
-      };
-    }
-
-    function createTokenElement(tokenObj){
-      const el = document.createElement("div");
-      el.className = "word-token " + COLOR_CLASSES[tokenObj.colorIndex % COLOR_CLASSES.length];
-      el.textContent = tokenObj.word;
-      el.style.left = tokenObj.x + "px";
-      el.style.top = tokenObj.y + "px";
-      el.dataset.id = tokenObj.id;
-      el.addEventListener("click", () => handleTokenClick(tokenObj.id));
-      gameArea.appendChild(el);
-      tokenObj.element = el;
-    }
-
-    function getTokenSpeed(){
-      if(config.settings.difficulty === "easy") return 0.6 + Math.random() * 0.8;
-      if(config.settings.difficulty === "hard") return 1.1 + Math.random() * 1.6;
-      return 0.8 + Math.random() * 1.2;
-    }
-
-    function getSetWordPool(){
-      const pool = [];
-      if(!activeSet) return [];
-      activeSet.pairs.forEach(pair => {
-        tokenizeWords(pair.target).forEach(token => {
-          if(!isPunctuation(token)) pool.push(token);
-        });
-      });
-      return [...new Set(pool)];
-    }
-
-    function getSetLetterPool(){
-      const pool = [];
-      if(!activeSet) return [];
-      activeSet.pairs.forEach(pair => {
-        String(pair.target).split("").forEach(ch => {
-          if(ch !== " " && !isPunctuation(ch)) pool.push(ch);
-        });
-      });
-      return [...new Set(pool)];
-    }
-
-    function buildWordDistractorPool(){
-      const currentTarget = new Set(
-        currentTokens.filter(t => t.kind === "word").map(t => String(t.value).trim()).filter(Boolean)
-      );
-
-      const setPool = getSetWordPool().filter(word => !currentTarget.has(word));
-      const globalPool = [];
-      allSets.forEach(set => {
-        if(set.buildMode !== "words") return;
-        set.pairs.forEach(pair => {
-          tokenizeWords(pair.target).forEach(token => {
-            const clean = String(token).trim();
-            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)) globalPool.push(clean);
-          });
-        });
-      });
-
-      return { setOnly: [...new Set(setPool)], global: [...new Set(globalPool)] };
-    }
-
-    function buildLetterDistractorPool(){
-      const currentLetter = currentTokens[currentTokenIndex]?.value || "";
-      const setPool = getSetLetterPool().filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
-      const genericPool = LETTER_DISTRACTORS.filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
-      return { setOnly: [...new Set(setPool)], generic: [...new Set(genericPool)] };
-    }
-
-    function getDistractorToken(){
-      const mode = getEffectiveDistractorMode();
-
-      if(activeSet?.buildMode === "letters"){
-        const pools = buildLetterDistractorPool();
-
-        if(mode === "material"){
-          if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-          return null;
-        }
-        if(mode === "lettersOnly"){
-          if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-          return null;
-        }
-        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-        return null;
-      }
-
-      const pools = buildWordDistractorPool();
-      if(mode === "lettersOnly") return null;
-      if(mode === "material"){
-        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        return null;
-      }
-      if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-      if(pools.global.length > 0) return pools.global[Math.floor(Math.random() * pools.global.length)];
-      return null;
-    }
-
-    function getExpectedTokenSkippingNonClickable(){
-      while(currentTokenIndex < currentTokens.length){
-        const token = currentTokens[currentTokenIndex];
-
-        if(activeSet?.buildMode === "letters"){
-          if(token.kind === "space" || token.kind === "punct"){
-            currentTokenIndex++;
-            continue;
-          }
-          break;
-        } else {
-          if(token.kind === "punct"){
-            currentTokenIndex++;
-            continue;
-          }
-          break;
-        }
-      }
-      return currentTokens[currentTokenIndex];
-    }
-
     function spawnTokenBatch(){
-      if(gameFinished || paused) return;
+      if(gameFinished || paused || !gameStarted) return;
 
       const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
@@ -1725,48 +1650,6 @@
         const tokenWidthEstimate = estimateTokenWidth(word);
         const zone = zones[index % zones.length];
         const pos = getChaoticSpawnPosition(tokenWidthEstimate, placedRects, zone);
-        const speed = getTokenSpeed();
-
-        placedRects.push({
-          x: pos.x,
-          y: pos.y,
-          w: tokenWidthEstimate,
-          h: 58
-        });
-
-        const tokenObj = {
-          id: ++tokenIdCounter,
-          word,
-          x: pos.x,
-          y: pos.y,
-          speed,
-          colorIndex: tokenIdCounter,
-          element: null
-        };
-
-        fallingTokens.push(tokenObj);
-        createTokenElement(tokenObj);
-      });
-    }
-
-    function respawnCurrentVisibleTokens(){
-      if(gameFinished) return;
-      const uniqueWords = [...new Set(fallingTokens.map(t => t.word))];
-      clearTokens();
-
-      if(uniqueWords.length === 0){
-        spawnTokenBatch();
-        return;
-      }
-
-      const placedRects = [];
-      const zones = ["left", "center", "right"];
-      shuffleArray(zones);
-
-      uniqueWords.forEach((word, idx) => {
-        const tokenWidthEstimate = estimateTokenWidth(word);
-        const zone = zones[idx % zones.length];
-        const pos = getChaoticRespawnPosition(tokenWidthEstimate, idx, placedRects, zone);
         const speed = getTokenSpeed();
 
         placedRects.push({
@@ -1831,7 +1714,7 @@
     }
 
     function handleTokenClick(id){
-      if(gameFinished || paused) return;
+      if(gameFinished || paused || !gameStarted) return;
 
       const token = fallingTokens.find(t => t.id === id);
       if(!token) return;
@@ -1875,7 +1758,7 @@
     }
 
     function updateTokens(){
-      if(!paused){
+      if(!paused && gameStarted){
         const height = gameArea.clientHeight;
         for(let i = fallingTokens.length - 1; i >= 0; i--){
           const token = fallingTokens[i];
@@ -1901,14 +1784,17 @@
       if(autoNextTimeout){ clearTimeout(autoNextTimeout); autoNextTimeout = null; }
     }
 
-    function startLoops(){
-      stopLoops();
+    function startGameLoops(){
+      if(animationId){ cancelAnimationFrame(animationId); animationId = null; }
+      if(spawnInterval){ clearInterval(spawnInterval); spawnInterval = null; }
+      if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+
       animationId = requestAnimationFrame(updateTokens);
       spawnInterval = setInterval(spawnTokenBatch, config.settings.spawnRate);
 
       if(config.settings.timerSeconds > 0){
         timerInterval = setInterval(() => {
-          if(paused || gameFinished) return;
+          if(paused || gameFinished || !gameStarted) return;
           remainingTime--;
           updateTopInfo();
 
@@ -1918,6 +1804,18 @@
           }
         }, 1000);
       }
+    }
+
+    function unlockGameStart(){
+      if(gameStarted) return;
+      gameStarted = true;
+      paused = false;
+      roundStartBtn.style.display = "none";
+      startOverlayMessage.classList.remove("show");
+      sourceSentenceBox.classList.remove("hidden-source");
+      setMessage(t("round_started_msg"), "ok");
+      startGameLoops();
+      spawnTokenBatch();
     }
 
     function saveWrongSentenceIfNeeded(reason = ""){
@@ -1979,9 +1877,19 @@
 
       renderProgress();
       updateTopInfo();
-      setMessage(activeSet?.buildMode === "letters" ? t("build_letters_instruction") : t("build_words_instruction"), "info");
 
-      startLoops();
+      if(gameStarted){
+        sourceSentenceBox.classList.remove("hidden-source");
+        startOverlayMessage.classList.remove("show");
+        setMessage(t("round_started_msg"), "info");
+        startGameLoops();
+        spawnTokenBatch();
+      } else {
+        sourceSentenceBox.classList.add("hidden-source");
+        startOverlayMessage.classList.add("show");
+        setMessage(t("round_ready_msg"), "info");
+        animationId = requestAnimationFrame(updateTokens);
+      }
     }
 
     function goToNextSentence(){
@@ -1995,6 +1903,10 @@
     function showHint(){
       if(!config.settings.allowHint){
         setMessage(t("hint_disabled"), "err");
+        return;
+      }
+      if(!gameStarted){
+        setMessage(t("round_ready_msg"), "warn");
         return;
       }
       if(gameFinished){
@@ -2166,6 +2078,8 @@
       completedSentencesCount = 0;
       currentOrderIndex = 0;
       wrongSentences = [];
+      gameStarted = false;
+      roundStartBtn.style.display = "flex";
 
       chooseActiveSet();
       buildOrder();
@@ -2200,6 +2114,10 @@
       hideFinalReport();
       hideCelebrationScreen();
       startScreen.style.display = "flex";
+      gameStarted = false;
+      roundStartBtn.style.display = "flex";
+      sourceSentenceBox.classList.add("hidden-source");
+      startOverlayMessage.classList.add("show");
       setMessage(t("returned_to_sets"), "info");
     }
 
@@ -2217,14 +2135,12 @@
       }
       updateFocusButton();
       updatePanelsButton();
-      setTimeout(respawnCurrentVisibleTokens, 80);
     }
 
     function togglePanels(forceValue = null){
       panelsHidden = typeof forceValue === "boolean" ? forceValue : !panelsHidden;
       document.body.classList.toggle("panels-hidden", panelsHidden);
       updatePanelsButton();
-      setTimeout(respawnCurrentVisibleTokens, 80);
     }
 
     function updatePanelsButton(){
@@ -2232,6 +2148,7 @@
       floatingShowPanelsBtn.textContent = t("show_panels");
     }
 
+    roundStartBtn.addEventListener("click", unlockGameStart);
     restartBtn.addEventListener("click", () => loadSentenceByOrder(currentOrderIndex));
     nextBtn.addEventListener("click", goToNextSentence);
 
@@ -2263,9 +2180,7 @@
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
 
-    window.addEventListener("resize", () => {
-      respawnCurrentVisibleTokens();
-    });
+    window.addEventListener("resize", () => {});
 
     async function init(){
       applyStaticTranslations();
