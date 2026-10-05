@@ -382,7 +382,7 @@
     .overlay.show{display:flex}
 
     .report{
-      width:min(1100px, 100%);
+      width:min(1180px, 100%);
       background:#111827;
       border:1px solid rgba(255,255,255,.1);
       border-radius:22px;
@@ -424,30 +424,10 @@
     }
 
     @media (min-width:700px){
-      .report-actions{grid-template-columns:repeat(3,1fr)}
+      .report-actions{grid-template-columns:repeat(5,1fr)}
     }
 
-    .start-screen{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.94);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      padding:20px;
-    }
-
-    .start-box{
-      width:min(760px, 100%);
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:24px;
-      box-shadow:0 20px 50px rgba(0,0,0,.4);
-    }
-
-    .history-list,.wrong-list{
+    .history-list,.results-list{
       margin-top:16px;
       display:grid;
       gap:10px;
@@ -455,17 +435,22 @@
 
     .history-item{
       background:rgba(255,255,255,.04);
-      padding:10px 12px;
+      padding:12px;
       border-radius:10px;
       font-size:14px;
     }
 
-    .wrong-item{
-      background:rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.25);
-      padding:10px 12px;
+    .result-item{
+      background:rgba(255,255,255,.04);
+      padding:12px;
       border-radius:10px;
       font-size:14px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .result-item.bad{
+      background:rgba(239,68,68,.10);
+      border:1px solid rgba(239,68,68,.25);
     }
 
     .focus-mode .topbar,
@@ -598,6 +583,13 @@
       color:#04130a;
     }
 
+    .section-title{
+      margin-top:22px;
+      margin-bottom:8px;
+      font-size:20px;
+      font-weight:bold;
+    }
+
     @media (max-width:700px){
       .focus-toolbar{
         bottom:8px;
@@ -608,6 +600,47 @@
         min-height:30px;
         padding:6px 10px;
         font-size:11px;
+      }
+    }
+
+    @media print{
+      body{
+        background:#ffffff !important;
+        color:#000000 !important;
+      }
+      body *{
+        visibility:hidden !important;
+      }
+      #printReportArea, #printReportArea *{
+        visibility:visible !important;
+      }
+      #printReportArea{
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+        background:#ffffff !important;
+        color:#000000 !important;
+        padding:20px;
+      }
+      .no-print{
+        display:none !important;
+      }
+      .print-card{
+        border:1px solid #ccc;
+        border-radius:8px;
+        padding:10px;
+        margin-bottom:10px;
+      }
+      table{
+        width:100%;
+        border-collapse:collapse;
+      }
+      th, td{
+        border:1px solid #999;
+        padding:6px;
+        text-align:left;
+        font-size:12px;
       }
     }
   </style>
@@ -743,19 +776,23 @@
 
       <div class="small" id="reportDetails"></div>
 
-      <h3 style="margin-top:18px;">Wyniki zdań</h3>
-      <div class="wrong-list" id="wrongSentencesList"></div>
+      <div class="section-title">Wyniki zdań</div>
+      <div class="results-list" id="resultsList"></div>
 
-      <h3 style="margin-top:18px;" data-i18n="history_reports">Historia ostatnich raportów</h3>
+      <div class="section-title" data-i18n="history_reports">Historia ostatnich raportów</div>
       <div class="history-list" id="historyList"></div>
 
       <div class="report-actions">
+        <button class="warning" id="exportPdfBtn">Eksport PDF</button>
+        <button class="warning" id="exportCsvBtn">Eksport CSV</button>
         <button class="primary" id="closeReportBtn" data-i18n="close_report">Zamknij raport</button>
         <button class="success" id="restartGameBtn" data-i18n="play_again">Zagraj od nowa</button>
         <button class="secondary" id="reportBackToSetsBtn" data-i18n="back_to_sets">Powrót do wyboru zestawu</button>
       </div>
     </div>
   </div>
+
+  <div id="printReportArea" style="display:none;"></div>
 
   <script>
     const I18N = {
@@ -846,7 +883,11 @@
         source: "Źródło",
         correct_translation: "Poprawne tłumaczenie",
         reason: "Powód",
-        completed_with_errors: "Zdanie ukończone, ale z błędami.",
+        completed_with_errors: "Ukończone z błędami",
+        completed_clean: "Ukończone bez błędów",
+        stopped_mistakes: "Zatrzymane przez limit błędów",
+        stopped_time: "Zatrzymane przez czas",
+        stopped_manual: "Nieukończone",
         sentence_not_completed: "Nie udało się ukończyć zdania.",
         show_set_name_none: "brak",
         status_loaded_json: "Załadowano dane z sentences.json",
@@ -900,7 +941,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6D_FIX_MATERIAL_STRICT";
+    const REPORTS_KEY = "translation_reports_student_5_7_REPORT_EXPORT";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
 
@@ -950,11 +991,14 @@
     const reportAccuracy = document.getElementById("reportAccuracy");
     const reportDetails = document.getElementById("reportDetails");
     const reportTitle = document.getElementById("reportTitle");
-    const wrongSentencesList = document.getElementById("wrongSentencesList");
+    const resultsList = document.getElementById("resultsList");
     const closeReportBtn = document.getElementById("closeReportBtn");
     const restartGameBtn = document.getElementById("restartGameBtn");
     const reportBackToSetsBtn = document.getElementById("reportBackToSetsBtn");
     const historyList = document.getElementById("historyList");
+    const exportPdfBtn = document.getElementById("exportPdfBtn");
+    const exportCsvBtn = document.getElementById("exportCsvBtn");
+    const printReportArea = document.getElementById("printReportArea");
 
     const startScreen = document.getElementById("startScreen");
     const studentNameInput = document.getElementById("studentNameInput");
@@ -997,6 +1041,7 @@
     let currentSentenceHadMistake = false;
     let sentenceResults = [];
     let sentenceWrongClicks = 0;
+    let currentSentenceFailReason = "";
 
     function applyStaticTranslations(){
       document.documentElement.lang = currentLang;
@@ -1170,16 +1215,6 @@
       return tokens.filter(t => t.kind !== "punct");
     }
 
-    function getEffectiveDistractorCount(){
-      if(activeSet?.useOwnDistractors) return Number(activeSet.distractorCount ?? 0);
-      return Number(config.settings.defaultDistractorCount || 0);
-    }
-
-    function getEffectiveDistractorMode(){
-      if(activeSet?.useOwnDistractors) return activeSet.distractorMode || "auto";
-      return config.settings.defaultDistractorMode || "auto";
-    }
-
     function updateScore(){
       correctCountEl.textContent = correctCount;
       wrongCountEl.textContent = wrongCount;
@@ -1200,8 +1235,7 @@
         (loadedFromFile ? t("status_loaded_json") : t("status_fallback")) +
         (studentName ? ` | ${t("student")}: ${studentName}` : "") +
         ` | ${t("set")}: ${setName}` +
-        (activeSet?.classLabel ? ` | ${t("class_label")}: ${activeSet.classLabel}` : "") +
-        ` | ${t("distractors_label")}: ${getEffectiveDistractorCount()} / ${getEffectiveDistractorMode()} / ${activeSet?.useOwnDistractors ? "own" : "global"}`;
+        (activeSet?.classLabel ? ` | ${t("class_label")}: ${activeSet.classLabel}` : "");
 
       difficultyLine.textContent = `${t("level")}: ${translateDifficulty(config.settings.difficulty)}`;
       timerLine.textContent = `${t("timer")}: ${config.settings.timerSeconds === 0 ? t("disabled") : remainingTime + " " + t("sec")}`;
@@ -1410,40 +1444,17 @@
     }
 
     function resolveStrictBatchSize(expectedToken){
-      const configuredMode = getEffectiveDistractorMode();
-      const configuredCount = getEffectiveDistractorCount();
       const strictPool = getStrictCurrentSentenceMaterialPool().filter(token => token !== expectedToken);
-
-      if(configuredMode === "material"){
-        if(strictPool.length === 0) return 1;
-
-        if(configuredCount <= 0){
-          return Math.min(
-            strictPool.length + 1,
-            activeSet.buildMode === "letters" ? 5 : 4
-          );
-        }
-
-        return Math.min(strictPool.length + 1, configuredCount + 1);
-      }
-
-      if(configuredCount <= 0) return 1;
-      return Math.max(1, configuredCount + 1);
+      if(strictPool.length === 0) return 1;
+      return Math.min(strictPool.length + 1, activeSet.buildMode === "letters" ? 5 : 4);
     }
 
     function getStrictBatchTokens(expectedToken){
-      const configuredMode = getEffectiveDistractorMode();
-
-      if(configuredMode !== "material"){
-        return [expectedToken];
-      }
-
       const strictPool = getStrictCurrentSentenceMaterialPool().filter(token => token !== expectedToken);
       const batchSize = resolveStrictBatchSize(expectedToken);
       shuffleArray(strictPool);
 
       const result = [expectedToken];
-
       for(let i = 0; i < strictPool.length && result.length < batchSize; i++){
         result.push(strictPool[i]);
       }
@@ -1481,7 +1492,6 @@
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
       const itemsToSpawn = getStrictBatchTokens(expected.value);
-
       const placedRects = [];
       const zones = ["left", "center", "right"];
       shuffleArray(zones);
@@ -1565,6 +1575,14 @@
         .forEach(token => token.element.style.opacity = "0");
     }
 
+    function getSentenceStatusLabel(status){
+      if(status === "correct_clean") return t("completed_clean");
+      if(status === "correct_with_errors") return t("completed_with_errors");
+      if(status === "stopped_mistakes") return t("stopped_mistakes");
+      if(status === "stopped_time") return t("stopped_time");
+      return t("stopped_manual");
+    }
+
     function handleTokenClick(id){
       if(gameFinished || paused || !gameStarted) return;
 
@@ -1588,7 +1606,7 @@
           renderProgress();
 
           if(currentTokenIndex >= currentTokens.length){
-            finishSentence(true);
+            finishSentence(true, "");
           } else {
             setMessage(t("correct_next"), "ok");
           }
@@ -1605,7 +1623,7 @@
         setMessage(t("wrong_next"), "err");
 
         if(config.settings.maxMistakes > 0 && sentenceMistakes >= config.settings.maxMistakes){
-          finishSentence(false, t("too_many_mistakes"));
+          finishSentence(false, "mistakes");
         }
       }
     }
@@ -1655,7 +1673,7 @@
 
           if(remainingTime <= 0){
             currentSentenceHadMistake = true;
-            finishSentence(false, t("time_up"));
+            finishSentence(false, "time");
           }
         }, 1000);
       }
@@ -1714,18 +1732,19 @@
       }
     }
 
-    function saveSentenceResult(status){
+    function saveSentenceResult(status, reason){
       if(!currentPair) return;
 
       sentenceResults.push({
         source: currentPair.source,
         target: currentPair.target,
         status,
-        wrongClicks: sentenceWrongClicks
+        wrongClicks: sentenceWrongClicks,
+        reason: reason || ""
       });
     }
 
-    function finishSentence(success, reason = ""){
+    function finishSentence(success, failType = ""){
       gameFinished = true;
       stopLoops();
       clearTokens();
@@ -1733,8 +1752,9 @@
       if(success){
         finishedCount++;
         completedSentencesCount++;
-        saveSentenceResult("correct");
 
+        const status = currentSentenceHadMistake ? "correct_with_errors" : "correct_clean";
+        saveSentenceResult(status, "");
         if(currentSentenceHadMistake){
           saveWrongSentenceIfNeeded(t("completed_with_errors"));
         }
@@ -1743,9 +1763,23 @@
         setMessage(t("sentence_success"), "ok");
       } else {
         completedSentencesCount++;
-        saveSentenceResult("incomplete");
-        saveWrongSentenceIfNeeded(reason || t("sentence_not_completed"));
-        setMessage(reason || t("sentence_not_completed"), "err");
+
+        if(failType === "mistakes"){
+          currentSentenceFailReason = t("too_many_mistakes");
+          saveSentenceResult("stopped_mistakes", currentSentenceFailReason);
+          saveWrongSentenceIfNeeded(currentSentenceFailReason);
+          setMessage(currentSentenceFailReason, "err");
+        } else if(failType === "time"){
+          currentSentenceFailReason = t("time_up");
+          saveSentenceResult("stopped_time", currentSentenceFailReason);
+          saveWrongSentenceIfNeeded(currentSentenceFailReason);
+          setMessage(currentSentenceFailReason, "err");
+        } else {
+          currentSentenceFailReason = t("sentence_not_completed");
+          saveSentenceResult("stopped_manual", currentSentenceFailReason);
+          saveWrongSentenceIfNeeded(currentSentenceFailReason);
+          setMessage(currentSentenceFailReason, "err");
+        }
       }
 
       if(completedSentencesCount >= pairs.length){
@@ -1773,6 +1807,7 @@
       hintTokenIndex = -1;
       currentSentenceHadMistake = false;
       sentenceWrongClicks = 0;
+      currentSentenceFailReason = "";
 
       getExpectedTokenSkippingNonClickable();
 
@@ -1844,11 +1879,7 @@
     }
 
     function getCorrectSentenceCount(){
-      return sentenceResults.filter(item => item.status === "correct").length;
-    }
-
-    function getIncompleteSentenceCount(){
-      return sentenceResults.filter(item => item.status !== "correct").length;
+      return sentenceResults.filter(item => item.status === "correct_clean" || item.status === "correct_with_errors").length;
     }
 
     function calculatePoints(){
@@ -1875,24 +1906,20 @@
         classLabel: activeSet ? activeSet.classLabel : "",
         buildMode: activeSet?.buildMode || "words",
         studentName: studentName || t("show_set_name_none"),
-        correctCount,
         wrongCount,
-        finishedCount,
         totalSentences: pairs.length,
         accuracy: calculateAccuracy(),
         points: calculatePoints(),
         maxPoints: calculateMaxPoints(),
         correctSentences: getCorrectSentenceCount(),
-        incompleteSentences: getIncompleteSentenceCount(),
-        sentenceResults: sentenceResults.slice(),
-        wrongSentences: wrongSentences.slice()
+        sentenceResults: sentenceResults.slice()
       };
     }
 
     function saveReportToHistory(report){
       const existing = loadReportHistory();
       existing.unshift(report);
-      localStorage.setItem(REPORTS_KEY, JSON.stringify(existing.slice(0, 15)));
+      localStorage.setItem(REPORTS_KEY, JSON.stringify(existing));
     }
 
     function loadReportHistory(){
@@ -1907,29 +1934,27 @@
     }
 
     function renderSentenceResults(){
-      wrongSentencesList.innerHTML = "";
+      resultsList.innerHTML = "";
 
       if(sentenceResults.length === 0){
-        wrongSentencesList.innerHTML = `<div class="wrong-item">Brak danych o zdaniach.</div>`;
+        resultsList.innerHTML = `<div class="result-item">Brak danych o zdaniach.</div>`;
         return;
       }
 
       sentenceResults.forEach((item, index) => {
         const div = document.createElement("div");
-        const statusLabel = item.status === "correct"
-          ? "Poprawnie ukończone"
-          : "Nieukończone / pominięte";
-
-        div.className = item.status === "correct" ? "history-item" : "wrong-item";
+        const isBad = item.status !== "correct_clean" && item.status !== "correct_with_errors";
+        div.className = "result-item" + (isBad ? " bad" : "");
 
         div.innerHTML = `
-          <strong>Zdanie ${index + 1}:</strong> ${escapeHtml(item.source)}<br>
-          <strong>Status:</strong> ${statusLabel}<br>
-          <strong>Poprawne tłumaczenie:</strong> ${escapeHtml(item.target)}<br>
-          <strong>Błędne kliknięcia:</strong> ${item.wrongClicks}
-        `;
+          <strong>Zdanie ${index + 1}</strong><br>
+          <strong>${t("source")}:</strong> ${escapeHtml(item.source)}<br>
+          <strong>${t("correct_translation")}:</strong> ${escapeHtml(item.target)}<br>
+          <strong>Status:</strong> ${escapeHtml(getSentenceStatusLabel(item.status))}<br>
+          <strong>Błędne kliknięcia:</strong> ${item.wrongClicks}` +
+          (item.reason ? `<br><strong>${t("reason")}:</strong> ${escapeHtml(item.reason)}` : "");
 
-        wrongSentencesList.appendChild(div);
+        resultsList.appendChild(div);
       });
     }
 
@@ -1942,11 +1967,21 @@
         return;
       }
 
-      items.forEach(item => {
+      items.forEach((item, index) => {
         const div = document.createElement("div");
         div.className = "history-item";
-        div.textContent =
-          `${item.date} | ${item.studentName} | ${item.setName} | ${item.buildMode === "letters" ? t("letters_mode") : t("words_mode")} | Punkty: ${item.points}/${item.maxPoints} | ${item.accuracy}%`;
+        div.innerHTML = `
+          <strong>Raport ${index + 1}</strong><br>
+          <strong>${t("date")}:</strong> ${escapeHtml(item.date)}<br>
+          <strong>${t("student")}:</strong> ${escapeHtml(item.studentName)}<br>
+          <strong>${t("class_label")}:</strong> ${escapeHtml(item.classLabel || "")}<br>
+          <strong>${t("set")}:</strong> ${escapeHtml(item.setName)}<br>
+          <strong>${t("build_mode")}:</strong> ${item.buildMode === "letters" ? t("letters_mode") : t("words_mode")}<br>
+          <strong>Punkty:</strong> ${item.points}/${item.maxPoints}<br>
+          <strong>${t("accuracy")}:</strong> ${item.accuracy}%<br>
+          <strong>${t("mistakes")}:</strong> ${item.wrongCount}<br>
+          <strong>${t("correct")} zdania:</strong> ${item.correctSentences}/${item.totalSentences}
+        `;
         historyList.appendChild(div);
       });
     }
@@ -1971,9 +2006,8 @@
         ` | ${t("build_mode")}: ${report.buildMode === "letters" ? t("letters_mode") : t("words_mode")}` +
         ` | ${t("date")}: ${report.date}` +
         ` | Punkty: ${report.points}/${report.maxPoints}` +
-        ` | Poprawnie ukończone: ${report.correctSentences}` +
-        ` | Nieukończone / pominięte: ${report.incompleteSentences}` +
-        ` | Błędne kliknięcia: ${report.wrongCount}`;
+        ` | ${t("correct")} zdania: ${report.correctSentences}/${report.totalSentences}` +
+        ` | ${t("mistakes")}: ${report.wrongCount}`;
 
       renderSentenceResults();
       renderReportHistory();
@@ -2069,6 +2103,133 @@
       floatingShowPanelsBtn.textContent = t("show_panels");
     }
 
+    function csvEscape(value){
+      const text = String(value ?? "");
+      if(text.includes('"') || text.includes(';') || text.includes('\n')){
+        return `"${text.replace(/"/g, '""')}"`;
+      }
+      return text;
+    }
+
+    function exportCsv(){
+      const report = getCurrentReportObject();
+      const rows = [];
+
+      rows.push([
+        "Data",
+        "Uczeń",
+        "Klasa",
+        "Zestaw",
+        "Tryb",
+        "Punkty",
+        "Max punktów",
+        "Skuteczność",
+        "Błędy",
+        "Poprawne zdania",
+        "Wszystkie zdania"
+      ]);
+
+      rows.push([
+        report.date,
+        report.studentName,
+        report.classLabel,
+        report.setName,
+        report.buildMode === "letters" ? "litery" : "wyrazy",
+        report.points,
+        report.maxPoints,
+        report.accuracy + "%",
+        report.wrongCount,
+        report.correctSentences,
+        report.totalSentences
+      ]);
+
+      rows.push([]);
+      rows.push(["Wyniki zdań"]);
+      rows.push(["Nr", "Źródło", "Poprawne tłumaczenie", "Status", "Błędne kliknięcia", "Powód"]);
+
+      report.sentenceResults.forEach((item, index) => {
+        rows.push([
+          index + 1,
+          item.source,
+          item.target,
+          getSentenceStatusLabel(item.status),
+          item.wrongClicks,
+          item.reason || ""
+        ]);
+      });
+
+      const csvContent = rows
+        .map(row => row.map(csvEscape).join(";"))
+        .join("\n");
+
+      const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `raport_${(report.studentName || "uczen").replace(/\s+/g, "_")}_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function buildPrintReportHtml(){
+      const report = getCurrentReportObject();
+
+      const rowsHtml = report.sentenceResults.map((item, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeHtml(item.source)}</td>
+          <td>${escapeHtml(item.target)}</td>
+          <td>${escapeHtml(getSentenceStatusLabel(item.status))}</td>
+          <td>${item.wrongClicks}</td>
+          <td>${escapeHtml(item.reason || "")}</td>
+        </tr>
+      `).join("");
+
+      return `
+        <div>
+          <h1>Raport końcowy</h1>
+          <div class="print-card"><strong>Uczeń:</strong> ${escapeHtml(report.studentName)}</div>
+          <div class="print-card"><strong>Klasa:</strong> ${escapeHtml(report.classLabel || "")}</div>
+          <div class="print-card"><strong>Zestaw:</strong> ${escapeHtml(report.setName)}</div>
+          <div class="print-card"><strong>Tryb:</strong> ${report.buildMode === "letters" ? "litery" : "wyrazy"}</div>
+          <div class="print-card"><strong>Data:</strong> ${escapeHtml(report.date)}</div>
+          <div class="print-card"><strong>Punkty:</strong> ${report.points}/${report.maxPoints}</div>
+          <div class="print-card"><strong>Skuteczność:</strong> ${report.accuracy}%</div>
+          <div class="print-card"><strong>Błędy:</strong> ${report.wrongCount}</div>
+          <div class="print-card"><strong>Poprawne zdania:</strong> ${report.correctSentences}/${report.totalSentences}</div>
+
+          <h2>Wyniki zdań</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Nr</th>
+                <th>Źródło</th>
+                <th>Poprawne tłumaczenie</th>
+                <th>Status</th>
+                <th>Błędne kliknięcia</th>
+                <th>Powód</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function exportPdf(){
+      printReportArea.innerHTML = buildPrintReportHtml();
+      printReportArea.style.display = "block";
+      window.print();
+      setTimeout(() => {
+        printReportArea.style.display = "none";
+        printReportArea.innerHTML = "";
+      }, 300);
+    }
+
     roundStartBtn.addEventListener("click", unlockGameStart);
     nextBtn.addEventListener("click", goToNextSentence);
     hintBtn.addEventListener("click", showHint);
@@ -2091,6 +2252,8 @@
     closeReportBtn.addEventListener("click", hideFinalReport);
     restartGameBtn.addEventListener("click", restartWholeGame);
     reportBackToSetsBtn.addEventListener("click", returnToSetChoice);
+    exportCsvBtn.addEventListener("click", exportCsv);
+    exportPdfBtn.addEventListener("click", exportPdf);
 
     classSelect.addEventListener("change", fillDatasetSelectByClass);
     startGameBtn.addEventListener("click", startGame);
