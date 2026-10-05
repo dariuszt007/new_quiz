@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Translation Game</title>
+  <title>Gra tłumaczeniowa</title>
   <style>
     :root{
       --bg:#0f172a;
@@ -319,6 +319,7 @@
       font-size:16px;
       font-weight:bold;
     }
+
     .ok{color:var(--success)}
     .err{color:var(--danger)}
     .info{color:var(--accent)}
@@ -690,21 +691,21 @@
 
   <div class="start-screen" id="startScreen" style="display:none;">
     <div class="start-box">
-      <h2 data-i18n="start_game">Start game</h2>
-      <div class="small" data-i18n="start_subtitle">Enter the student's name, choose the class / group, then select a set.</div>
+      <h2 data-i18n="start_game">Start gry</h2>
+      <div class="small" data-i18n="start_subtitle">Wpisz imię ucznia, wybierz klasę / grupę, a potem zestaw.</div>
 
       <div style="margin-top:12px;">
-        <label for="studentNameInput" data-i18n="student_name">Student name</label>
+        <label for="studentNameInput" data-i18n="student_name">Imię ucznia</label>
         <input type="text" id="studentNameInput" />
       </div>
 
       <div style="margin-top:12px;">
-        <label for="classSelect" data-i18n="class_group">Class / group</label>
+        <label for="classSelect" data-i18n="class_group">Klasa / grupa</label>
         <select id="classSelect"></select>
       </div>
 
       <div style="margin-top:12px;">
-        <label for="datasetSelect" data-i18n="sentence_set">Sentence set</label>
+        <label for="datasetSelect" data-i18n="sentence_set">Zestaw zdań</label>
         <select id="datasetSelect"></select>
       </div>
 
@@ -725,20 +726,20 @@
 
     <div class="cards" id="topCards">
       <div class="card">
-        <h2 data-i18n="instruction">Instruction</h2>
+        <h2 data-i18n="instruction">Instrukcja</h2>
         <div class="small" id="instructionText"></div>
       </div>
 
       <div class="card">
-        <h2 data-i18n="controls">Controls</h2>
+        <h2 data-i18n="controls">Sterowanie</h2>
         <div class="controls">
           <button class="primary" id="roundStartBtn">Start</button>
-          <button class="secondary" id="nextBtn" data-i18n="next_sentence">Next sentence</button>
-          <button class="success" id="toggleBtn" data-i18n="pause">Pause</button>
-          <button class="warning" id="hintBtn" data-i18n="hint">Hint</button>
-          <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
-          <button class="secondary" id="focusBtn" data-i18n="focus_mode">Focus mode</button>
-          <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Hide top panels</button>
+          <button class="secondary" id="nextBtn" data-i18n="next_sentence">Następne zdanie</button>
+          <button class="success" id="toggleBtn" data-i18n="pause">Pauza</button>
+          <button class="warning" id="hintBtn" data-i18n="hint">Podpowiedź</button>
+          <button class="secondary" id="backToSetsBtn" data-i18n="back_to_sets">Powrót do wyboru zestawu</button>
+          <button class="secondary" id="focusBtn" data-i18n="focus_mode">Tryb focus</button>
+          <button class="secondary" id="togglePanelsBtn" data-i18n="hide_panels">Ukryj górne panele</button>
         </div>
       </div>
 
@@ -749,7 +750,7 @@
       </div>
 
       <div class="card">
-        <h2 data-i18n="timer_mistakes">Timer and mistakes</h2>
+        <h2 data-i18n="timer_mistakes">Timer i błędy</h2>
         <div class="small" id="timerLine"></div>
         <div class="small" id="mistakesLine"></div>
         <div class="small" id="difficultyLine"></div>
@@ -785,12 +786,12 @@
       </div>
 
       <div class="card">
-        <h2 data-i18n="score">Score</h2>
+        <h2 data-i18n="score">Punkty</h2>
         <div class="score">
-          <div class="score-box"><span data-i18n="correct">Correct</span><strong id="correctCount">0</strong></div>
-          <div class="score-box"><span data-i18n="mistakes">Mistakes</span><strong id="wrongCount">0</strong></div>
-          <div class="score-box"><span data-i18n="completed">Completed</span><strong id="finishedCount">0</strong></div>
-          <div class="score-box"><span data-i18n="total">Total</span><strong id="totalCount">0</strong></div>
+          <div class="score-box"><span data-i18n="correct">Poprawne</span><strong id="correctCount">0</strong></div>
+          <div class="score-box"><span data-i18n="mistakes">Błędy</span><strong id="wrongCount">0</strong></div>
+          <div class="score-box"><span data-i18n="completed">Ukończone</span><strong id="finishedCount">0</strong></div>
+          <div class="score-box"><span data-i18n="total">Razem</span><strong id="totalCount">0</strong></div>
         </div>
       </div>
     </div>
@@ -812,14 +813,14 @@
 
   <div class="overlay" id="reportOverlay">
     <div class="report">
-      <h2 data-i18n="final_report">Final report</h2>
+      <h2 data-i18n="final_report">Raport końcowy</h2>
       <div class="small" id="reportTitle"></div>
 
       <div class="report-grid">
-        <div class="report-box"><span data-i18n="correct">Correct</span><strong id="reportCorrect">0</strong></div>
-        <div class="report-box"><span data-i18n="mistakes">Mistakes</span><strong id="reportWrong">0</strong></div>
-        <div class="report-box"><span data-i18n="completed">Completed</span><strong id="reportFinished">0</strong></div>
-        <div class="report-box"><span data-i18n="accuracy">Accuracy</span><strong id="reportAccuracy">0%</strong></div>
+        <div class="report-box"><span data-i18n="correct">Poprawne</span><strong id="reportCorrect">0</strong></div>
+        <div class="report-box"><span data-i18n="mistakes">Błędy</span><strong id="reportWrong">0</strong></div>
+        <div class="report-box"><span data-i18n="completed">Ukończone</span><strong id="reportFinished">0</strong></div>
+        <div class="report-box"><span data-i18n="accuracy">Skuteczność</span><strong id="reportAccuracy">0%</strong></div>
       </div>
 
       <div class="small" id="reportDetails"></div>
@@ -827,114 +828,19 @@
       <h3 style="margin-top:18px;">Wyniki zdań</h3>
       <div class="wrong-list" id="wrongSentencesList"></div>
 
-      <h3 style="margin-top:18px;" data-i18n="history_reports">History of recent reports</h3>
+      <h3 style="margin-top:18px;" data-i18n="history_reports">Historia ostatnich raportów</h3>
       <div class="history-list" id="historyList"></div>
 
       <div class="report-actions">
-        <button class="primary" id="closeReportBtn" data-i18n="close_report">Close report</button>
-        <button class="success" id="restartGameBtn" data-i18n="play_again">Play again</button>
-        <button class="secondary" id="reportBackToSetsBtn" data-i18n="back_to_sets">Back to set choice</button>
+        <button class="primary" id="closeReportBtn" data-i18n="close_report">Zamknij raport</button>
+        <button class="success" id="restartGameBtn" data-i18n="play_again">Zagraj od nowa</button>
+        <button class="secondary" id="reportBackToSetsBtn" data-i18n="back_to_sets">Powrót do wyboru zestawu</button>
       </div>
     </div>
   </div>
 
   <script>
     const I18N = {
-      en: {
-        page_title: "Translation Game",
-        start_game: "Start game",
-        start_subtitle: "Enter the student's name, choose the class / group, then select a set.",
-        student_name: "Student name",
-        class_group: "Class / group",
-        sentence_set: "Sentence set",
-        start: "Start",
-        instruction: "Instruction",
-        controls: "Controls",
-        next_sentence: "Next sentence",
-        pause: "Pause",
-        resume: "Resume",
-        hint: "Hint",
-        back_to_sets: "Back to set choice",
-        focus_mode: "Focus mode",
-        normal_mode: "Normal mode",
-        hide_panels: "Hide top panels",
-        show_panels: "Show top panels",
-        status: "Status",
-        timer_mistakes: "Timer and mistakes",
-        score: "Score",
-        correct: "Correct",
-        mistakes: "Mistakes",
-        completed: "Completed",
-        total: "Total",
-        final_report: "Final report",
-        accuracy: "Accuracy",
-        history_reports: "History of recent reports",
-        close_report: "Close report",
-        play_again: "Play again",
-        loading_settings: "Loading settings...",
-        loading_sentences: "Loading sentences...",
-        progress: "Progress",
-        sentence: "Sentence",
-        of: "of",
-        source_sentence_lang: "Source sentence",
-        translation_lang: "Translation",
-        waiting_start: "Waiting for the game to start...",
-        mode: "Mode",
-        letters_mode: "letters",
-        words_mode: "words",
-        build_letters_instruction: "Read the source sentence and build the translation from letters.",
-        build_words_instruction: "Read the source sentence and build the translation from words.",
-        elements_to_build: "Elements to build",
-        built: "Built",
-        remaining: "Remaining",
-        timer: "Timer",
-        disabled: "disabled",
-        no_limit: "no limit",
-        level: "Level",
-        auto_next: "Auto next",
-        build_mode_line_letters: "building from letters",
-        build_mode_line_words: "building from words",
-        sec: "s",
-        easy: "easy",
-        medium: "medium",
-        hard: "hard",
-        start_game_msg: "Game started.",
-        round_ready_msg: "Press Start to begin the whole set.",
-        round_started_msg: "The whole set has started.",
-        round_wait_overlay: "Press Start to begin the whole set.",
-        new_game_msg: "A new game has started.",
-        game_paused: "Game paused.",
-        game_resumed: "Game resumed.",
-        hint_disabled: "Hints are disabled.",
-        sentence_finished_already: "This sentence has already ended.",
-        everything_done: "All elements are already placed.",
-        hint_msg: "The hint shows the next correct element.",
-        correct_next: "Good! The next correct element was selected.",
-        wrong_next: "Wrong! This is not the next correct element.",
-        sentence_success: "Great! The whole translation has been completed.",
-        too_many_mistakes: "Mistake limit reached.",
-        time_up: "Time is up.",
-        report_shown: "The final report is displayed.",
-        enter_student_name: "Enter the student's name to start the game.",
-        current_data_loaded: "Data from sentences.json loaded.",
-        current_data_failed: "Could not load sentences.json. Fallback data used.",
-        no_report_history: "No saved reports.",
-        student: "Student",
-        set: "Set",
-        class_label: "Class",
-        build_mode: "Mode",
-        date: "Date",
-        source: "Source",
-        correct_translation: "Correct translation",
-        reason: "Reason",
-        completed_with_errors: "Sentence completed, but with mistakes.",
-        sentence_not_completed: "The sentence could not be completed.",
-        show_set_name_none: "none",
-        status_loaded_json: "Loaded from sentences.json",
-        status_fallback: "Fallback data used",
-        distractors_label: "Distractors",
-        returned_to_sets: "Returned to set choice."
-      },
       pl: {
         page_title: "Gra tłumaczeniowa",
         start_game: "Start gry",
@@ -1027,123 +933,20 @@
         show_set_name_none: "brak",
         status_loaded_json: "Załadowano dane z sentences.json",
         status_fallback: "Użyto danych awaryjnych",
-        distractors_label: "Distractors",
+        distractors_label: "Mylące",
         returned_to_sets: "Wrócono do wyboru zestawu."
-      },
-      ja: {
-        page_title: "翻訳ゲーム",
-        start_game: "ゲーム開始",
-        start_subtitle: "生徒名を入力し、クラス / グループを選び、そのあとセットを選んでください。",
-        student_name: "生徒名",
-        class_group: "クラス / グループ",
-        sentence_set: "文セット",
-        start: "開始",
-        instruction: "説明",
-        controls: "操作",
-        next_sentence: "次の文",
-        pause: "一時停止",
-        resume: "再開",
-        hint: "ヒント",
-        back_to_sets: "セット選択に戻る",
-        focus_mode: "集中モード",
-        normal_mode: "通常モード",
-        hide_panels: "上部パネルを隠す",
-        show_panels: "上部パネルを表示",
-        status: "状態",
-        timer_mistakes: "タイマーとミス",
-        score: "スコア",
-        correct: "正解",
-        mistakes: "ミス",
-        completed: "完了",
-        total: "合計",
-        final_report: "最終レポート",
-        accuracy: "正確さ",
-        history_reports: "最近のレポート履歴",
-        close_report: "レポートを閉じる",
-        play_again: "もう一度遊ぶ",
-        loading_settings: "設定を読み込み中...",
-        loading_sentences: "文を読み込み中...",
-        progress: "進行",
-        sentence: "文",
-        of: "/",
-        source_sentence_lang: "元の文",
-        translation_lang: "翻訳",
-        waiting_start: "ゲーム開始を待っています...",
-        mode: "モード",
-        letters_mode: "文字",
-        words_mode: "単語",
-        build_letters_instruction: "元の文を読み、文字を並べて翻訳を作ってください。",
-        build_words_instruction: "元の文を読み、単語を並べて翻訳を作ってください。",
-        elements_to_build: "組み立てる要素数",
-        built: "完成済み",
-        remaining: "残り",
-        timer: "タイマー",
-        disabled: "無効",
-        no_limit: "制限なし",
-        level: "レベル",
-        auto_next: "自動で次へ",
-        build_mode_line_letters: "文字で組み立て",
-        build_mode_line_words: "単語で組み立て",
-        sec: "秒",
-        easy: "やさしい",
-        medium: "ふつう",
-        hard: "むずかしい",
-        start_game_msg: "ゲームを開始しました。",
-        round_ready_msg: "開始を押してセット全体を始めてください。",
-        round_started_msg: "セット全体を開始しました。",
-        round_wait_overlay: "開始を押してセット全体を始めてください。",
-        new_game_msg: "新しいゲームを開始しました。",
-        game_paused: "ゲームを一時停止しました。",
-        game_resumed: "ゲームを再開しました。",
-        hint_disabled: "ヒントは無効です。",
-        sentence_finished_already: "この文はすでに終了しています。",
-        everything_done: "すべての要素がすでに配置されています。",
-        hint_msg: "ヒントは次の正しい要素を示します。",
-        correct_next: "正解です。次の正しい要素が選ばれました。",
-        wrong_next: "不正解です。これは次の正しい要素ではありません。",
-        sentence_success: "すばらしいです。翻訳全体を完成できました。",
-        too_many_mistakes: "ミスの上限に達しました。",
-        time_up: "時間切れです。",
-        report_shown: "最終レポートを表示しました。",
-        enter_student_name: "ゲームを始めるには生徒名を入力してください。",
-        current_data_loaded: "sentences.json からデータを読み込みました。",
-        current_data_failed: "sentences.json を読み込めなかったため、予備データを使用しました。",
-        no_report_history: "保存されたレポートはありません。",
-        student: "生徒",
-        set: "セット",
-        class_label: "クラス",
-        build_mode: "モード",
-        date: "日付",
-        source: "元文",
-        correct_translation: "正しい翻訳",
-        reason: "理由",
-        completed_with_errors: "文は完成しましたが、ミスがありました。",
-        sentence_not_completed: "文を完成できませんでした。",
-        show_set_name_none: "なし",
-        status_loaded_json: "sentences.json から読み込み",
-        status_fallback: "予備データを使用",
-        distractors_label: "Distractors",
-        returned_to_sets: "セット選択に戻りました。"
       }
     };
 
-    function detectLanguage(){
-      const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
-      if(lang.startsWith("pl")) return "pl";
-      if(lang.startsWith("ja")) return "ja";
-      if(lang.startsWith("en")) return "en";
-      return "en";
-    }
-
-    let currentLang = detectLanguage();
-    function t(key){ return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key; }
+    let currentLang = "pl";
+    function t(key){ return I18N[currentLang]?.[key] ?? key; }
 
     const fallbackData = {
-      title: "Translation Game",
+      title: "Gra tłumaczeniowa",
       settings: {
         difficulty: "medium",
         defaultClassLabel: "5A",
-        spawnRate: 1100,
+        spawnRate: 900,
         timerSeconds: 45,
         maxMistakes: 5,
         randomOrder: false,
@@ -1171,14 +974,15 @@
           distractorCount: 0,
           distractorMode: "material",
           pairs: [
-            { source: "Cat", target: "Kot" },
-            { source: "Dog", target: "Pies" }
+            { source: "The cat is sleeping.", target: "Kot śpi." },
+            { source: "The dog is running.", target: "Pies biegnie." },
+            { source: "The bird can fly.", target: "Ptak umie latać." }
           ]
         }
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6C_FINAL_STABLE";
+    const REPORTS_KEY = "translation_reports_student_5_6D_CHAOS_CONTENT";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -1298,9 +1102,9 @@
       focusNextBtn.textContent = t("next_sentence");
       focusHintBtn.textContent = t("hint");
       focusPauseBtn.textContent = paused ? t("resume") : t("pause");
-      openReportBtn.textContent = currentLang === "pl" ? "Pokaż raport" : currentLang === "ja" ? "レポートを見る" : "Show report";
+      openReportBtn.textContent = "Pokaż raport";
       celebrationRestartBtn.textContent = t("play_again");
-      studentNameInput.placeholder = currentLang === "pl" ? "Np. Jan" : currentLang === "ja" ? "例: Jan" : "e.g. Jan";
+      studentNameInput.placeholder = "Np. Jan";
       updateFocusButton();
       updatePanelsButton();
     }
@@ -1368,7 +1172,7 @@
     function getUniqueClassLabels(){
       const labels = allSets.map(set => set.classLabel || "").filter(Boolean);
       const unique = [...new Set(labels)];
-      unique.sort((a, b) => a.localeCompare(b, currentLang === "ja" ? "ja" : currentLang === "pl" ? "pl" : "en"));
+      unique.sort((a, b) => a.localeCompare(b, "pl"));
       return unique;
     }
 
@@ -1379,7 +1183,7 @@
       if(classLabels.length === 0){
         const option = document.createElement("option");
         option.value = "";
-        option.textContent = currentLang === "pl" ? "Brak klasy" : currentLang === "ja" ? "クラスなし" : "No class";
+        option.textContent = "Brak klasy";
         classSelect.appendChild(option);
         return;
       }
@@ -1698,61 +1502,44 @@
       return [...new Set(pool)];
     }
 
-    function buildWordDistractorPool(){
-      const currentTarget = new Set(
-        currentTokens.filter(t => t.kind === "word").map(t => String(t.value).trim()).filter(Boolean)
-      );
+    function getMaterialPoolForCurrentMode(){
+      if(!activeSet) return [];
 
-      const setPool = getSetWordPool().filter(word => !currentTarget.has(word));
-      const globalPool = [];
-      allSets.forEach(set => {
-        if(set.buildMode !== "words") return;
-        set.pairs.forEach(pair => {
-          tokenizeWords(pair.target).forEach(token => {
-            const clean = String(token).trim();
-            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)) globalPool.push(clean);
+      if(activeSet.buildMode === "letters"){
+        const pool = [];
+        activeSet.pairs.forEach(pair => {
+          String(pair.target).split("").forEach(ch => {
+            if(ch !== " " && !isPunctuation(ch)){
+              pool.push(ch);
+            }
           });
         });
+        return [...new Set(pool)];
+      }
+
+      const pool = [];
+      activeSet.pairs.forEach(pair => {
+        tokenizeWords(pair.target).forEach(token => {
+          if(!isPunctuation(token)){
+            pool.push(token);
+          }
+        });
       });
-
-      return { setOnly: [...new Set(setPool)], global: [...new Set(globalPool)] };
+      return [...new Set(pool)];
     }
 
-    function buildLetterDistractorPool(){
-      const currentLetter = currentTokens[currentTokenIndex]?.value || "";
-      const setPool = getSetLetterPool().filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
-      const genericPool = LETTER_DISTRACTORS.filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
-      return { setOnly: [...new Set(setPool)], generic: [...new Set(genericPool)] };
-    }
+    function getRandomMaterialTokens(count, requiredToken){
+      const pool = getMaterialPoolForCurrentMode().filter(token => token !== requiredToken);
+      shuffleArray(pool);
 
-    function getDistractorToken(){
-      const mode = getEffectiveDistractorMode();
+      const result = [requiredToken];
 
-      if(activeSet?.buildMode === "letters"){
-        const pools = buildLetterDistractorPool();
-
-        if(mode === "material"){
-          if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-          return null;
-        }
-        if(mode === "lettersOnly"){
-          if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-          return null;
-        }
-        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        if(pools.generic.length > 0) return pools.generic[Math.floor(Math.random() * pools.generic.length)];
-        return null;
+      for(let i = 0; i < pool.length && result.length < count; i++){
+        result.push(pool[i]);
       }
 
-      const pools = buildWordDistractorPool();
-      if(mode === "lettersOnly") return null;
-      if(mode === "material"){
-        if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-        return null;
-      }
-      if(pools.setOnly.length > 0) return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
-      if(pools.global.length > 0) return pools.global[Math.floor(Math.random() * pools.global.length)];
-      return null;
+      shuffleArray(result);
+      return result;
     }
 
     function getExpectedTokenSkippingNonClickable(){
@@ -1783,23 +1570,16 @@
       const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
-      const itemsToSpawn = [expected.value];
-      const distractorCount = getEffectiveDistractorCount();
+      let batchSize = 4;
 
-      if(distractorCount > 0){
-        let guard = 0;
-        while(itemsToSpawn.length < distractorCount + 1 && guard < 80){
-          const distractor = getDistractorToken();
-          if(distractor && !itemsToSpawn.includes(distractor)){
-            itemsToSpawn.push(distractor);
-          } else if(!distractor){
-            break;
-          }
-          guard++;
-        }
+      if(activeSet.buildMode === "letters") batchSize = 6;
+      if(getEffectiveDistractorCount() === 0){
+        batchSize = activeSet.buildMode === "letters" ? 5 : 4;
+      } else {
+        batchSize = Math.max(2, getEffectiveDistractorCount() + 1);
       }
 
-      shuffleArray(itemsToSpawn);
+      const itemsToSpawn = getRandomMaterialTokens(batchSize, expected.value);
 
       const placedRects = [];
       const zones = ["left", "center", "right"];
@@ -1809,7 +1589,7 @@
         const tokenWidthEstimate = estimateTokenWidth(word);
         const zone = zones[index % zones.length];
         const pos = getChaoticSpawnPosition(tokenWidthEstimate, placedRects, zone);
-        const speed = getTokenSpeed();
+        const speed = getTokenSpeed() + (Math.random() * 0.35 - 0.15);
 
         placedRects.push({
           x: pos.x,
@@ -1823,7 +1603,7 @@
           word,
           x: pos.x,
           y: pos.y,
-          speed,
+          speed: Math.max(0.45, speed),
           colorIndex: tokenIdCounter,
           element: null
         };
@@ -2188,7 +1968,7 @@
 
     function getCurrentReportObject(){
       return {
-        date: new Date().toLocaleString(currentLang === "ja" ? "ja-JP" : currentLang === "pl" ? "pl-PL" : "en-US"),
+        date: new Date().toLocaleString("pl-PL"),
         title: config.title,
         setName: activeSet ? activeSet.name : t("show_set_name_none"),
         classLabel: activeSet ? activeSet.classLabel : "",
@@ -2272,22 +2052,13 @@
 
     function showCelebrationScreen(){
       celebrationStudent.textContent = studentName
-        ? (currentLang === "pl" ? `Uczeń: ${studentName}` : currentLang === "ja" ? `生徒: ${studentName}` : `Student: ${studentName}`)
+        ? `Uczeń: ${studentName}`
         : "";
 
-      celebrationSubtitle.textContent = currentLang === "pl"
-        ? "Ukończono cały zestaw."
-        : currentLang === "ja"
-          ? "セットを最後まで完了しました。"
-          : "The whole set has been completed.";
-
+      celebrationSubtitle.textContent = "Ukończono cały zestaw.";
       celebrationScore.textContent = `${calculateAccuracy()}%`;
-
-      celebrationDetail.textContent = currentLang === "pl"
-        ? `Punkty: ${calculatePoints()}/${calculateMaxPoints()} | Poprawnie ukończone: ${getCorrectSentenceCount()} | Nieukończone / pominięte: ${getIncompleteSentenceCount()} | Błędne kliknięcia: ${wrongCount}`
-        : currentLang === "ja"
-          ? `得点: ${calculatePoints()}/${calculateMaxPoints()} | 正しく完了: ${getCorrectSentenceCount()} | 未完了 / スキップ: ${getIncompleteSentenceCount()} | 誤クリック: ${wrongCount}`
-          : `Points: ${calculatePoints()}/${calculateMaxPoints()} | Correctly completed: ${getCorrectSentenceCount()} | Incomplete / skipped: ${getIncompleteSentenceCount()} | Wrong clicks: ${wrongCount}`;
+      celebrationDetail.textContent =
+        `Punkty: ${calculatePoints()}/${calculateMaxPoints()} | Poprawnie ukończone: ${getCorrectSentenceCount()} | Nieukończone / pominięte: ${getIncompleteSentenceCount()} | Błędne kliknięcia: ${wrongCount}`;
 
       celebrationOverlay.classList.add("show");
     }
