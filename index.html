@@ -485,6 +485,7 @@
         sourceLanguageLabel: "English",
         targetLanguageLabel: "Polski",
         distractorCount: 4,
+        distractorMode: "auto",
         punctuationMode: "auto"
       },
       sets: [
@@ -498,22 +499,11 @@
             { source: "Cat", target: "Kot" },
             { source: "Dog", target: "Pies" }
           ]
-        },
-        {
-          id: "animals_letters",
-          name: "Animals - litery",
-          classLabel: "5A",
-          theme: "animals",
-          buildMode: "letters",
-          pairs: [
-            { source: "Cat", target: "Kot" },
-            { source: "Dog", target: "Pies" }
-          ]
         }
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_stable_final";
+    const REPORTS_KEY = "translation_reports_stable_final_v2";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
@@ -643,6 +633,7 @@
             sourceLanguageLabel: data.settings?.sourceLanguageLabel || fallbackData.settings.sourceLanguageLabel,
             targetLanguageLabel: data.settings?.targetLanguageLabel || fallbackData.settings.targetLanguageLabel,
             distractorCount: Number(data.settings?.distractorCount ?? fallbackData.settings.distractorCount),
+            distractorMode: data.settings?.distractorMode || fallbackData.settings.distractorMode,
             punctuationMode: data.settings?.punctuationMode || fallbackData.settings.punctuationMode
           },
           sets: cleanedSets
@@ -883,24 +874,40 @@
       return 0.8 + Math.random() * 1.2;
     }
 
+    function getSetWordPool(){
+      const pool = [];
+      if(!activeSet) return [];
+      activeSet.pairs.forEach(pair => {
+        tokenizeWords(pair.target).forEach(token => {
+          if(!isPunctuation(token)){
+            pool.push(token);
+          }
+        });
+      });
+      return [...new Set(pool)];
+    }
+
+    function getSetLetterPool(){
+      const pool = [];
+      if(!activeSet) return [];
+      activeSet.pairs.forEach(pair => {
+        String(pair.target).split("").forEach(ch => {
+          if(ch !== " " && !isPunctuation(ch)){
+            pool.push(ch);
+          }
+        });
+      });
+      return [...new Set(pool)];
+    }
+
     function buildWordDistractorPool(){
-      const localPool = [];
-      const globalPool = [];
       const currentTarget = new Set(
         currentTokens.filter(t => t.kind === "word").map(t => String(t.value).trim()).filter(Boolean)
       );
 
-      if(activeSet){
-        activeSet.pairs.forEach(pair => {
-          tokenizeWords(pair.target).forEach(token => {
-            const clean = String(token).trim();
-            if(clean && !isPunctuation(clean) && !currentTarget.has(clean)){
-              localPool.push(clean);
-            }
-          });
-        });
-      }
+      const setPool = getSetWordPool().filter(word => !currentTarget.has(word));
 
+      const globalPool = [];
       allSets.forEach(set => {
         if(set.buildMode !== "words") return;
         set.pairs.forEach(pair => {
@@ -914,27 +921,71 @@
       });
 
       return {
-        local: [...new Set(localPool)],
+        setOnly: [...new Set(setPool)],
         global: [...new Set(globalPool)]
       };
     }
 
+    function buildLetterDistractorPool(){
+      const currentLetter = currentTokens[currentTokenIndex]?.value || "";
+      const setPool = getSetLetterPool().filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
+      const genericPool = LETTER_DISTRACTORS.filter(ch => String(ch).toLowerCase() !== String(currentLetter).toLowerCase());
+
+      return {
+        setOnly: [...new Set(setPool)],
+        generic: [...new Set(genericPool)]
+      };
+    }
+
     function getDistractorToken(){
+      const mode = config.settings.distractorMode || "auto";
+
       if(activeSet?.buildMode === "letters"){
-        const currentLetter = currentTokens[currentTokenIndex]?.value || "";
-        const pool = LETTER_DISTRACTORS.filter(ch => ch.toLowerCase() !== String(currentLetter).toLowerCase());
-        if(pool.length === 0) return "x";
-        return pool[Math.floor(Math.random() * pool.length)];
+        const pools = buildLetterDistractorPool();
+
+        if(mode === "material"){
+          if(pools.setOnly.length > 0){
+            return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+          }
+          return null;
+        }
+
+        if(mode === "lettersOnly"){
+          if(pools.generic.length > 0){
+            return pools.generic[Math.floor(Math.random() * pools.generic.length)];
+          }
+          return null;
+        }
+
+        if(pools.setOnly.length > 0){
+          return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+        }
+        if(pools.generic.length > 0){
+          return pools.generic[Math.floor(Math.random() * pools.generic.length)];
+        }
+        return null;
       }
 
       const pools = buildWordDistractorPool();
-      if(pools.local.length > 0){
-        return pools.local[Math.floor(Math.random() * pools.local.length)];
+
+      if(mode === "lettersOnly"){
+        return null;
+      }
+
+      if(mode === "material"){
+        if(pools.setOnly.length > 0){
+          return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
+        }
+        return null;
+      }
+
+      if(pools.setOnly.length > 0){
+        return pools.setOnly[Math.floor(Math.random() * pools.setOnly.length)];
       }
       if(pools.global.length > 0){
         return pools.global[Math.floor(Math.random() * pools.global.length)];
       }
-      return "test";
+      return null;
     }
 
     function getExpectedTokenSkippingNonClickable(){
@@ -966,15 +1017,19 @@
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
       const itemsToSpawn = [expected.value];
-      const distractorTarget = Math.max(1, config.settings.distractorCount);
+      const distractorCount = Number(config.settings.distractorCount || 0);
 
-      let guard = 0;
-      while(itemsToSpawn.length < distractorTarget + 1 && guard < 50){
-        const distractor = getDistractorToken();
-        if(!itemsToSpawn.includes(distractor)){
-          itemsToSpawn.push(distractor);
+      if(distractorCount > 0){
+        let guard = 0;
+        while(itemsToSpawn.length < distractorCount + 1 && guard < 80){
+          const distractor = getDistractorToken();
+          if(distractor && !itemsToSpawn.includes(distractor)){
+            itemsToSpawn.push(distractor);
+          } else if(!distractor){
+            break;
+          }
+          guard++;
         }
-        guard++;
       }
 
       shuffleArray(itemsToSpawn);
