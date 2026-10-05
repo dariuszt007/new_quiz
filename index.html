@@ -1027,7 +1027,7 @@
         show_set_name_none: "brak",
         status_loaded_json: "Załadowano dane z sentences.json",
         status_fallback: "Użyto danych awaryjnych",
-        distractors_label: "Mylące",
+        distractors_label: "Distractors",
         returned_to_sets: "Wrócono do wyboru zestawu."
       },
       ja: {
@@ -1122,7 +1122,7 @@
         show_set_name_none: "なし",
         status_loaded_json: "sentences.json から読み込み",
         status_fallback: "予備データを使用",
-        distractors_label: "ダミー",
+        distractors_label: "Distractors",
         returned_to_sets: "セット選択に戻りました。"
       }
     };
@@ -1156,8 +1156,8 @@
         showTranslationInstruction: true,
         sourceLanguageLabel: "English",
         targetLanguageLabel: "Polski",
-        defaultDistractorCount: 4,
-        defaultDistractorMode: "auto",
+        defaultDistractorCount: 0,
+        defaultDistractorMode: "material",
         punctuationMode: "auto"
       },
       sets: [
@@ -1168,7 +1168,7 @@
           theme: "animals",
           buildMode: "words",
           useOwnDistractors: true,
-          distractorCount: 4,
+          distractorCount: 0,
           distractorMode: "material",
           pairs: [
             { source: "Cat", target: "Kot" },
@@ -1178,7 +1178,7 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6B_FIX";
+    const REPORTS_KEY = "translation_reports_student_5_6C_FINAL_STABLE";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
     const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
