@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,39 +24,12 @@
       color:var(--text);
       min-height:100vh;
     }
-    .container{
-      max-width:1800px;
-      margin:0 auto;
-      padding:20px;
-    }
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-    .title{
-      font-size:30px;
-      font-weight:bold;
-    }
-    .topbar a{
-      text-decoration:none;
-      color:white;
-      background:var(--accent);
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:bold;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:16px;
-    }
-    @media (min-width:1150px){
-      .grid{ grid-template-columns:1fr 1fr; }
-    }
+    .container{max-width:1800px;margin:0 auto;padding:20px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .title{font-size:30px;font-weight:bold}
+    .topbar a{text-decoration:none;color:white;background:var(--accent);padding:10px 14px;border-radius:10px;font-weight:bold}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width:1150px){.grid{grid-template-columns:1fr 1fr}}
     .card{
       background:rgba(17,24,39,.94);
       border:1px solid var(--border);
@@ -65,11 +38,7 @@
       box-shadow:0 8px 20px rgba(0,0,0,.24);
     }
     h2{margin-top:0}
-    label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:bold;
-    }
+    label{display:block;margin-bottom:8px;font-weight:bold}
     input, textarea, select{
       width:100%;
       border-radius:12px;
@@ -79,178 +48,64 @@
       padding:12px;
       font-size:15px;
     }
-    select:disabled, input:disabled, textarea:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-    }
-    textarea{
-      min-height:160px;
-      resize:vertical;
-      line-height:1.5;
-    }
-    .row{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (min-width:760px){
-      .row{ grid-template-columns:1fr 1fr; }
-    }
-    .row-3{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (min-width:980px){
-      .row-3{ grid-template-columns:1fr 1fr 1fr; }
-    }
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:14px;
-    }
+    select:disabled, input:disabled, textarea:disabled{opacity:.55;cursor:not-allowed}
+    textarea{min-height:160px;resize:vertical;line-height:1.5}
+    .row,.row-3{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    @media (min-width:760px){.row{grid-template-columns:1fr 1fr}}
+    @media (min-width:980px){.row-3{grid-template-columns:1fr 1fr 1fr}}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
     button{
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      font-size:14px;
-      font-weight:bold;
-      cursor:pointer;
+      border:none;border-radius:10px;padding:10px 14px;
+      font-size:14px;font-weight:bold;cursor:pointer
     }
-    .primary{background:var(--accent); color:#08111f;}
-    .success{background:var(--success); color:#04130a;}
-    .danger{background:var(--danger); color:white;}
-    .secondary{background:#334155; color:white;}
-    .warning{background:var(--warning); color:#111827;}
-    .message{
-      margin-top:14px;
-      min-height:24px;
-      font-weight:bold;
+    .primary{background:var(--accent);color:#08111f}
+    .success{background:var(--success);color:#04130a}
+    .danger{background:var(--danger);color:white}
+    .secondary{background:#334155;color:white}
+    .warning{background:var(--warning);color:#111827}
+    .message{margin-top:14px;min-height:24px;font-weight:bold}
+    .ok{color:var(--success)} .err{color:var(--danger)} .info{color:var(--accent)}
+    .small{color:var(--muted);font-size:14px;line-height:1.6}
+    .help-box,.note-box,.warn-box{
+      margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6
     }
-    .ok{color:var(--success)}
-    .err{color:var(--danger)}
-    .info{color:var(--accent)}
-    .small{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.6;
-    }
-    .help-box{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:10px;
-      background:rgba(56,189,248,.08);
-      border:1px solid rgba(56,189,248,.18);
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .note-box{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:10px;
-      background:rgba(34,197,94,.08);
-      border:1px solid rgba(34,197,94,.18);
-      color:#dcfce7;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .warn-box{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:10px;
-      background:rgba(245,158,11,.10);
-      border:1px solid rgba(245,158,11,.22);
-      color:#fde68a;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .json-output{
-      min-height:340px;
-      font-family:Consolas, monospace;
-    }
-    .set-list{
-      display:grid;
-      gap:10px;
-      max-height:760px;
-      overflow:auto;
-      margin-top:10px;
-    }
+    .help-box{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.18);color:#cbd5e1}
+    .note-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:#dcfce7}
+    .warn-box{background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.22);color:#fde68a}
+    .json-output{min-height:340px;font-family:Consolas, monospace}
+    .set-list{display:grid;gap:10px;max-height:760px;overflow:auto;margin-top:10px}
     .set-item{
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
-      border-radius:12px;
-      padding:12px;
+      border-radius:12px;padding:12px
     }
     .set-header{
       display:grid;
       grid-template-columns:1fr 1fr 1fr 1fr 170px 190px 140px 190px auto;
-      gap:8px;
-      margin-bottom:10px;
+      gap:8px;margin-bottom:10px
     }
-    @media (max-width:1600px){
-      .set-header{ grid-template-columns:1fr; }
-    }
+    @media (max-width:1600px){.set-header{grid-template-columns:1fr}}
     .pair-box{
       background:rgba(255,255,255,.03);
-      border-radius:10px;
-      padding:10px;
-      margin-top:10px;
-      overflow:auto;
+      border-radius:10px;padding:10px;margin-top:10px;overflow:auto
     }
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:8px;
-    }
-    th, td{
-      border-bottom:1px solid rgba(255,255,255,.08);
-      padding:8px;
-      vertical-align:top;
-    }
-    th{
-      text-align:left;
-      color:#cbd5e1;
-      font-size:14px;
-    }
-    .pair-input{ min-width:220px; }
-    .filter-bar{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (max-width:900px){
-      .filter-bar{ grid-template-columns:1fr; }
-    }
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th, td{border-bottom:1px solid rgba(255,255,255,.08);padding:8px;vertical-align:top}
+    th{text-align:left;color:#cbd5e1;font-size:14px}
+    .pair-input{min-width:220px}
+    .filter-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+    @media (max-width:900px){.filter-bar{grid-template-columns:1fr}}
     .login-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.96);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      padding:20px;
+      position:fixed;inset:0;background:rgba(2,6,23,.96);
+      display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px
     }
     .login-box{
       width:min(460px, 100%);
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:24px;
-      box-shadow:0 20px 50px rgba(0,0,0,.45);
+      background:#111827;border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.45)
     }
-    .login-error{
-      margin-top:12px;
-      min-height:22px;
-      color:#fca5a5;
-      font-weight:bold;
-    }
-    #teacherPanel{ display:none; }
+    .login-error{margin-top:12px;min-height:22px;color:#fca5a5;font-weight:bold}
+    #teacherPanel{display:none}
   </style>
 </head>
 <body>
@@ -276,7 +131,7 @@
     <div class="container">
       <div class="topbar">
         <div>
-          <div class="title" data-i18n="panel_title">Teacher Panel D</div>
+          <div class="title" data-i18n="panel_title">Teacher Panel</div>
           <div class="small" data-i18n="panel_subtitle">The "Letters only" option is available only for sets in Letters mode.</div>
         </div>
         <a href="index.html" data-i18n="open_student_game">Open student game</a>
@@ -289,7 +144,7 @@
           <div class="row">
             <div>
               <label for="gameTitle" data-i18n="game_title">Game title</label>
-              <input id="gameTitle" type="text" value="Tłumaczenie zdań EN-PL" />
+              <input id="gameTitle" type="text" value="Translation Game" />
             </div>
             <div>
               <label for="difficulty" data-i18n="difficulty">Difficulty</label>
@@ -455,7 +310,7 @@
           <div class="row">
             <div>
               <label for="newSetId" data-i18n="set_id">Set ID</label>
-              <input id="newSetId" type="text" placeholder="class5a" />
+              <input id="newSetId" type="text" />
             </div>
             <div>
               <label for="newSetName" data-i18n="set_name">Set name</label>
@@ -466,11 +321,11 @@
           <div class="row">
             <div>
               <label for="newSetClassLabel" data-i18n="class_group">Class / group</label>
-              <input id="newSetClassLabel" type="text" placeholder="5A" />
+              <input id="newSetClassLabel" type="text" />
             </div>
             <div>
               <label for="newSetTheme" data-i18n="theme">Theme</label>
-              <input id="newSetTheme" type="text" placeholder="animals" />
+              <input id="newSetTheme" type="text" />
             </div>
           </div>
 
@@ -532,11 +387,11 @@
         <div class="filter-bar">
           <div>
             <label for="filterClassLabel" data-i18n="filter_class">Filter by class / group</label>
-            <input id="filterClassLabel" type="text" placeholder="5A" />
+            <input id="filterClassLabel" type="text" />
           </div>
           <div>
             <label for="filterTheme" data-i18n="filter_theme">Filter by theme</label>
-            <input id="filterTheme" type="text" placeholder="animals" />
+            <input id="filterTheme" type="text" />
           </div>
           <div>
             <label>&nbsp;</label>
@@ -547,7 +402,6 @@
 
       <div class="card" style="margin-top:16px;">
         <h2 data-i18n="section4_title">4. Translation sets</h2>
-
         <div class="actions">
           <button class="success" id="addEmptySetBtn" data-i18n="add_empty_set">Add empty set</button>
           <button class="secondary" id="sortSetsBtn" data-i18n="sort_sets">Sort sets A-Z</button>
@@ -583,10 +437,9 @@
         enter: "Enter",
         back_to_game: "Back to game",
         login_error: "Incorrect password.",
-        panel_title: "Teacher Panel D",
+        panel_title: "Teacher Panel",
         panel_subtitle: "The \"Letters only\" option is available only for sets in Letters mode.",
         open_student_game: "Open student game",
-
         section1_title: "1. Global settings (default)",
         game_title: "Game title",
         difficulty: "Difficulty",
@@ -634,7 +487,6 @@
         show_solution: "Show solution",
         translation_instruction: "Translation instruction",
         sound: "Sound",
-
         section2_title: "2. New set",
         set_id: "Set ID",
         set_name: "Set name",
@@ -651,23 +503,19 @@
         sentence_pairs: "Sentence pairs",
         add_set: "Add set",
         clear_fields: "Clear fields",
-
         section3_title: "3. Set filters",
         filter_class: "Filter by class / group",
         filter_theme: "Filter by theme",
         clear_filters: "Clear filters",
-
         section4_title: "4. Translation sets",
         add_empty_set: "Add empty set",
         sort_sets: "Sort sets A-Z",
         remove_all_sets: "Remove all sets",
-
         section5_title: "5. JSON preview",
         refresh_json: "Refresh JSON",
         download_json: "Download sentences.json",
         copy_json: "Copy JSON",
         import_json: "Import existing JSON",
-
         remove: "Remove",
         duplicate: "Duplicate",
         swap_languages: "Swap languages",
@@ -680,7 +528,6 @@
         no_pairs: "No sentence pairs.",
         no_matching_sets: "No sets match the filters.",
         set_count: "Number of sets",
-
         global_info:
           "<strong>How global settings work:</strong><br>" +
           "- If a set uses <strong>Inherit global</strong>, it will use these settings.<br>" +
@@ -691,7 +538,6 @@
           "<br>&nbsp;&nbsp;• <strong>Only from material</strong> - distractors come only from the set material.",
         global_warn:
           "For sets in <strong>Words</strong> mode, the <strong>Letters only</strong> option is not used as that set's own setting.",
-
         newset_inherit_info:
           "<strong>This set inherits global settings.</strong><br>" +
           "The game will use the global distractor count and the global distractor type from the default settings section.",
@@ -702,14 +548,12 @@
           "In <strong>Words</strong> mode, the <strong>Letters only</strong> option is blocked because it does not match word-based building.",
         newset_letters_mode_info:
           "In <strong>Letters</strong> mode, the <strong>Letters only</strong> option is available and is usually a good choice.",
-
         set_own_info: "This set uses its own settings.",
         set_inherit_info: "This set inherits global settings.",
         uses_global_count: "Uses global distractor count",
         uses_global_type: "Uses global distractor type",
         set_mode_words_info: "This set uses <strong>Words</strong> mode, so <strong>Letters only</strong> is blocked.",
         set_mode_letters_info: "This set uses <strong>Letters</strong> mode, so <strong>Letters only</strong> is available.",
-
         loaded_json_ok: "Current data loaded from sentences.json.",
         loaded_json_fallback: "Could not load sentences.json. Sample data loaded.",
         enter_set_id_and_name: "Provide the set ID and set name.",
@@ -727,7 +571,6 @@
         json_import_error: "Could not load JSON file.",
         add_one_valid_set: "Add at least one valid set."
       },
-
       pl: {
         page_title: "Panel nauczyciela",
         login_title: "Wejście do panelu nauczyciela",
@@ -736,10 +579,9 @@
         enter: "Wejdź",
         back_to_game: "Wróć do gry",
         login_error: "Niepoprawne hasło.",
-        panel_title: "Panel nauczyciela D",
+        panel_title: "Panel nauczyciela",
         panel_subtitle: "Opcja „Tylko litery” jest dostępna wyłącznie dla zestawów w trybie Litery.",
         open_student_game: "Otwórz grę ucznia",
-
         section1_title: "1. Ustawienia globalne (domyślne)",
         game_title: "Tytuł gry",
         difficulty: "Poziom trudności",
@@ -787,7 +629,6 @@
         show_solution: "Pokaż rozwiązanie",
         translation_instruction: "Instrukcja tłumaczenia",
         sound: "Dźwięki",
-
         section2_title: "2. Nowy zestaw",
         set_id: "ID zestawu",
         set_name: "Nazwa zestawu",
@@ -804,23 +645,19 @@
         sentence_pairs: "Pary zdań",
         add_set: "Dodaj zestaw",
         clear_fields: "Wyczyść pola",
-
         section3_title: "3. Filtry zestawów",
         filter_class: "Filtr klasy / grupy",
         filter_theme: "Filtr tematu",
         clear_filters: "Wyczyść filtry",
-
         section4_title: "4. Zestawy tłumaczeń",
         add_empty_set: "Dodaj pusty zestaw",
         sort_sets: "Sortuj zestawy A-Z",
         remove_all_sets: "Usuń wszystkie zestawy",
-
         section5_title: "5. Podgląd pliku JSON",
         refresh_json: "Odśwież JSON",
         download_json: "Pobierz sentences.json",
         copy_json: "Kopiuj JSON",
         import_json: "Wczytaj istniejący JSON",
-
         remove: "Usuń",
         duplicate: "Duplikuj",
         swap_languages: "Zamień języki",
@@ -833,7 +670,6 @@
         no_pairs: "Brak par zdań.",
         no_matching_sets: "Brak zestawów pasujących do filtrów.",
         set_count: "Liczba zestawów",
-
         global_info:
           "<strong>Jak działają ustawienia globalne:</strong><br>" +
           "- Jeśli zestaw ma wybrane <strong>Dziedzicz globalne</strong>, użyje tych ustawień.<br>" +
@@ -844,7 +680,6 @@
           "<br>&nbsp;&nbsp;• <strong>Tylko z materiału</strong> - mylące kafelki pochodzą wyłącznie z materiału danego zestawu.",
         global_warn:
           "Dla zestawów w trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> nie jest używana jako ustawienie własne zestawu.",
-
         newset_inherit_info:
           "<strong>Ten zestaw dziedziczy ustawienia globalne.</strong><br>" +
           "Gra użyje globalnej liczby mylących kafelków oraz globalnego rodzaju mylących kafelków z sekcji ustawień domyślnych.",
@@ -855,14 +690,12 @@
           "W trybie <strong>Wyrazy</strong> opcja <strong>Tylko litery</strong> jest zablokowana, ponieważ nie pasuje do układania z wyrazów.",
         newset_letters_mode_info:
           "W trybie <strong>Litery</strong> opcja <strong>Tylko litery</strong> jest dostępna i zwykle jest dobrym wyborem.",
-
         set_own_info: "Ten zestaw używa własnych ustawień.",
         set_inherit_info: "Ten zestaw dziedziczy ustawienia globalne.",
         uses_global_count: "Użyje globalnej liczby mylących kafelków",
         uses_global_type: "Użyje globalnego rodzaju mylących kafelków",
         set_mode_words_info: "Tryb tego zestawu to <strong>Wyrazy</strong>, więc opcja <strong>Tylko litery</strong> jest zablokowana.",
         set_mode_letters_info: "Tryb tego zestawu to <strong>Litery</strong>, więc opcja <strong>Tylko litery</strong> jest dostępna.",
-
         loaded_json_ok: "Wczytano aktualne dane z pliku sentences.json.",
         loaded_json_fallback: "Nie udało się wczytać sentences.json. Załadowano dane przykładowe.",
         enter_set_id_and_name: "Podaj ID i nazwę zestawu.",
@@ -880,7 +713,6 @@
         json_import_error: "Nie udało się wczytać pliku JSON.",
         add_one_valid_set: "Dodaj przynajmniej jeden poprawny zestaw."
       },
-
       ja: {
         page_title: "教師パネル",
         login_title: "教師パネルへアクセス",
@@ -889,10 +721,9 @@
         enter: "入る",
         back_to_game: "ゲームに戻る",
         login_error: "パスワードが正しくありません。",
-        panel_title: "教師パネル D",
+        panel_title: "教師パネル",
         panel_subtitle: "「文字のみ」オプションは文字モードのセットでのみ利用できます。",
         open_student_game: "生徒用ゲームを開く",
-
         section1_title: "1. 全体設定（デフォルト）",
         game_title: "ゲームタイトル",
         difficulty: "難易度",
@@ -940,7 +771,6 @@
         show_solution: "答えを表示",
         translation_instruction: "翻訳指示",
         sound: "音",
-
         section2_title: "2. 新しいセット",
         set_id: "セットID",
         set_name: "セット名",
@@ -957,23 +787,19 @@
         sentence_pairs: "文ペア",
         add_set: "セットを追加",
         clear_fields: "入力をクリア",
-
         section3_title: "3. セットのフィルター",
         filter_class: "クラス / グループで絞り込み",
         filter_theme: "テーマで絞り込み",
         clear_filters: "フィルターをクリア",
-
         section4_title: "4. 翻訳セット",
         add_empty_set: "空のセットを追加",
         sort_sets: "セットを A-Z で並べ替え",
         remove_all_sets: "すべてのセットを削除",
-
         section5_title: "5. JSON プレビュー",
         refresh_json: "JSON を更新",
         download_json: "sentences.json をダウンロード",
         copy_json: "JSON をコピー",
         import_json: "既存の JSON を読み込む",
-
         remove: "削除",
         duplicate: "複製",
         swap_languages: "言語を入れ替え",
@@ -986,7 +812,6 @@
         no_pairs: "文ペアがありません。",
         no_matching_sets: "フィルターに一致するセットがありません。",
         set_count: "セット数",
-
         global_info:
           "<strong>全体設定の動作:</strong><br>" +
           "- セットで <strong>全体設定を継承</strong> を選ぶと、ここでの設定が使われます。<br>" +
@@ -997,7 +822,6 @@
           "<br>&nbsp;&nbsp;• <strong>教材内のみ</strong> - ダミータイルはそのセットの教材からのみ取られます。",
         global_warn:
           "<strong>単語</strong>モードのセットでは、<strong>文字のみ</strong> はそのセット独自設定としては使われません。",
-
         newset_inherit_info:
           "<strong>このセットは全体設定を継承します。</strong><br>" +
           "ゲームはデフォルト設定セクションのダミータイル数とダミータイル種類を使います。",
@@ -1008,14 +832,12 @@
           "<strong>単語</strong>モードでは、<strong>文字のみ</strong> は単語組み立てに合わないため無効です。",
         newset_letters_mode_info:
           "<strong>文字</strong>モードでは、<strong>文字のみ</strong> が使え、通常はよい選択です。",
-
         set_own_info: "このセットは独自設定を使います。",
         set_inherit_info: "このセットは全体設定を継承します。",
         uses_global_count: "全体設定のダミータイル数を使用",
         uses_global_type: "全体設定のダミータイル種類を使用",
         set_mode_words_info: "このセットは<strong>単語</strong>モードなので、<strong>文字のみ</strong> は無効です。",
         set_mode_letters_info: "このセットは<strong>文字</strong>モードなので、<strong>文字のみ</strong> が利用できます。",
-
         loaded_json_ok: "sentences.json から現在のデータを読み込みました。",
         loaded_json_fallback: "sentences.json を読み込めなかったため、サンプルデータを読み込みました。",
         enter_set_id_and_name: "セットIDとセット名を入力してください。",
@@ -1044,43 +866,7 @@
     }
 
     let currentLang = detectLanguage();
-
-    function t(key){
-      return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key;
-    }
-
-    function applyStaticTranslations(){
-      document.documentElement.lang = currentLang;
-      document.title = t("page_title");
-
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.dataset.i18n;
-        if(el.tagName === "INPUT" && el.type !== "button" && el.type !== "submit" && el.type !== "password"){
-          el.placeholder = t(key);
-        } else {
-          el.innerHTML = t(key);
-        }
-      });
-
-      teacherPassword.placeholder = t("password");
-      newSetId.placeholder = "class5a";
-      newSetClassLabel.placeholder = "5A";
-      newSetTheme.placeholder = "animals";
-      filterClassLabel.placeholder = "5A";
-      filterTheme.placeholder = "animals";
-      newSetPairs.placeholder =
-        currentLang === "pl"
-          ? "Każda linia:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
-          : currentLang === "ja"
-            ? "各行に入力:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
-            : "Each line:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?";
-
-      document.getElementById("globalInfoBox").innerHTML = t("global_info");
-      document.getElementById("globalWarnBox").innerHTML = t("global_warn");
-      updateNewSetOwnFieldsState();
-      renderSets();
-      updateStatsLabel();
-    }
+    function t(key){ return I18N[currentLang]?.[key] ?? I18N.en[key] ?? key; }
 
     const TEACHER_PASSWORD = "1111";
 
@@ -1089,58 +875,6 @@
     const teacherPassword = document.getElementById("teacherPassword");
     const loginBtn = document.getElementById("loginBtn");
     const loginError = document.getElementById("loginError");
-
-    function unlockTeacherPanel(){
-      loginOverlay.style.display = "none";
-      teacherPanel.style.display = "block";
-      teacherPassword.value = "";
-      loginError.textContent = "";
-    }
-
-    function tryLogin(){
-      if(teacherPassword.value === TEACHER_PASSWORD){
-        unlockTeacherPanel();
-      } else {
-        loginError.textContent = t("login_error");
-        teacherPassword.select();
-      }
-    }
-
-    loginBtn.addEventListener("click", tryLogin);
-    teacherPassword.addEventListener("keydown", (e) => {
-      if(e.key === "Enter") tryLogin();
-    });
-
-    const demoSets = [
-      {
-        id: "animals_words",
-        name: "Animals - words",
-        classLabel: "5A",
-        theme: "animals",
-        buildMode: "words",
-        useOwnDistractors: true,
-        distractorCount: 4,
-        distractorMode: "material",
-        pairs: [
-          { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" }
-        ]
-      },
-      {
-        id: "animals_letters",
-        name: "Animals - letters",
-        classLabel: "5A",
-        theme: "animals",
-        buildMode: "letters",
-        useOwnDistractors: true,
-        distractorCount: 2,
-        distractorMode: "lettersOnly",
-        pairs: [
-          { source: "Cat", target: "Kot" },
-          { source: "Dog", target: "Pies" }
-        ]
-      }
-    ];
 
     const gameTitle = document.getElementById("gameTitle");
     const difficulty = document.getElementById("difficulty");
@@ -1176,7 +910,6 @@
 
     const addSetBtn = document.getElementById("addSetBtn");
     const clearNewSetBtn = document.getElementById("clearNewSetBtn");
-
     const addEmptySetBtn = document.getElementById("addEmptySetBtn");
     const sortSetsBtn = document.getElementById("sortSetsBtn");
     const clearSetsBtn = document.getElementById("clearSetsBtn");
@@ -1198,6 +931,35 @@
 
     let sets = [];
 
+    function applyStaticTranslations(){
+      document.documentElement.lang = currentLang;
+      document.title = t("page_title");
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        el.innerHTML = t(key);
+      });
+
+      teacherPassword.placeholder = t("password");
+      newSetId.placeholder = "class5a";
+      newSetClassLabel.placeholder = "5A";
+      newSetTheme.placeholder = "animals";
+      filterClassLabel.placeholder = "5A";
+      filterTheme.placeholder = "animals";
+      newSetPairs.placeholder =
+        currentLang === "pl"
+          ? "Każda linia:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
+          : currentLang === "ja"
+            ? "各行に入力:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?"
+            : "Each line:\nI like apples. = Lubię jabłka.\nHow are you? = Jak się masz?";
+
+      document.getElementById("globalInfoBox").innerHTML = t("global_info");
+      document.getElementById("globalWarnBox").innerHTML = t("global_warn");
+      updateNewSetOwnFieldsState();
+      renderSets();
+      updateStatsLabel();
+    }
+
     function setMessage(text, type = "info"){
       message.textContent = text;
       message.className = "message " + type;
@@ -1207,9 +969,7 @@
       return String(value).trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_-]/g, "");
     }
 
-    function cleanText(text){
-      return String(text).trim();
-    }
+    function cleanText(text){ return String(text).trim(); }
 
     function parsePairsFromTextarea(text){
       return text.split("\n")
@@ -1218,20 +978,15 @@
         .map(line => {
           const parts = line.split("=");
           if(parts.length < 2) return null;
-          return {
-            source: cleanText(parts[0]),
-            target: cleanText(parts.slice(1).join("="))
-          };
+          return { source: cleanText(parts[0]), target: cleanText(parts.slice(1).join("=")) };
         })
         .filter(item => item && item.source && item.target);
     }
 
     function escapeHtmlAttr(text){
       return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function filteredSets(){
@@ -1247,12 +1002,9 @@
     function setModeOptionsForSelect(selectEl, buildMode){
       const lettersOption = selectEl.querySelector('option[value="lettersOnly"]');
       if(!lettersOption) return;
-
       if(buildMode === "words"){
         lettersOption.disabled = true;
-        if(selectEl.value === "lettersOnly"){
-          selectEl.value = "auto";
-        }
+        if(selectEl.value === "lettersOnly") selectEl.value = "auto";
       } else {
         lettersOption.disabled = false;
       }
@@ -1263,7 +1015,6 @@
       const buildMode = newSetBuildMode.value;
 
       setModeOptionsForSelect(newSetDistractorMode, buildMode);
-
       newSetDistractorCount.disabled = !useOwn;
       newSetDistractorMode.disabled = !useOwn;
 
@@ -1284,9 +1035,14 @@
       }
     }
 
+    function translateDistractorMode(mode){
+      if(mode === "lettersOnly") return t("letters_only");
+      if(mode === "material") return t("from_material");
+      return t("auto");
+    }
+
     function getSetBehaviorInfoHtml(set){
       const useOwn = !!set.useOwnDistractors;
-
       if(useOwn){
         return `
           <div class="note-box">
@@ -1296,7 +1052,6 @@
           </div>
         `;
       }
-
       return `
         <div class="help-box">
           <strong>${t("set_inherit_info")}</strong><br>
@@ -1313,15 +1068,30 @@
       return `<div class="note-box">${t("set_mode_letters_info")}</div>`;
     }
 
-    function translateDistractorMode(mode){
-      if(mode === "lettersOnly") return t("letters_only");
-      if(mode === "material") return t("from_material");
-      return t("auto");
-    }
-
     function updateStatsLabel(){
       stats.textContent = `${t("set_count")}: ${filteredSets().length} / ${sets.length}`;
     }
+
+    function unlockTeacherPanel(){
+      loginOverlay.style.display = "none";
+      teacherPanel.style.display = "block";
+      teacherPassword.value = "";
+      loginError.textContent = "";
+    }
+
+    function tryLogin(){
+      if(teacherPassword.value === TEACHER_PASSWORD){
+        unlockTeacherPanel();
+      } else {
+        loginError.textContent = t("login_error");
+        teacherPassword.select();
+      }
+    }
+
+    loginBtn.addEventListener("click", tryLogin);
+    teacherPassword.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") tryLogin();
+    });
 
     function swapLanguageLabels(){
       const oldSource = sourceLanguageLabel.value;
@@ -1331,10 +1101,7 @@
 
     function swapLanguagesInSet(index){
       if(!sets[index] || !Array.isArray(sets[index].pairs)) return;
-      sets[index].pairs = sets[index].pairs.map(pair => ({
-        source: pair.target,
-        target: pair.source
-      }));
+      sets[index].pairs = sets[index].pairs.map(pair => ({ source: pair.target, target: pair.source }));
       renderSets();
       updateJsonPreview();
       setMessage(t("languages_swapped_set"), "ok");
@@ -1343,10 +1110,7 @@
     function swapLanguagesInAllSets(){
       sets = sets.map(set => ({
         ...set,
-        pairs: (set.pairs || []).map(pair => ({
-          source: pair.target,
-          target: pair.source
-        }))
+        pairs: (set.pairs || []).map(pair => ({ source: pair.target, target: pair.source }))
       }));
       swapLanguageLabels();
       renderSets();
@@ -1364,7 +1128,6 @@
 
       visibleSets.forEach(set => {
         const realIndex = sets.findIndex(s => s.id === set.id && s.name === set.name);
-
         const rowsHtml = (set.pairs || []).map((pair, pairIndex) => `
           <tr>
             <td><input class="pair-input" type="text" value="${escapeHtmlAttr(pair.source)}" data-pair-field="source" data-set-index="${realIndex}" data-pair-index="${pairIndex}"></td>
@@ -1446,15 +1209,9 @@
           const field = e.target.dataset.field;
           let value = e.target.value;
 
-          if(field === "id"){
-            value = sanitizeId(value);
-          }
-          if(field === "distractorCount"){
-            value = Number(value);
-          }
-          if(field === "useOwnDistractors"){
-            value = value === "true";
-          }
+          if(field === "id") value = sanitizeId(value);
+          if(field === "distractorCount") value = Number(value);
+          if(field === "useOwnDistractors") value = value === "true";
 
           if(field === "buildMode"){
             sets[i][field] = value;
@@ -1526,10 +1283,7 @@
           distractorCount: Number(set.distractorCount ?? 4),
           distractorMode: set.distractorMode || "auto",
           pairs: (set.pairs || [])
-            .map(pair => ({
-              source: cleanText(pair.source),
-              target: cleanText(pair.target)
-            }))
+            .map(pair => ({ source: cleanText(pair.source), target: cleanText(pair.target) }))
             .filter(pair => pair.source && pair.target)
         }))
         .filter(set => set.id && set.name && set.pairs.length > 0);
@@ -1540,7 +1294,7 @@
       }
 
       return {
-        title: cleanText(gameTitle.value) || "Translation game",
+        title: cleanText(gameTitle.value) || "Translation Game",
         settings: {
           difficulty: difficulty.value,
           defaultClassLabel: cleanText(defaultClassLabel.value) || "",
@@ -1598,7 +1352,7 @@
     }
 
     function applyData(data){
-      gameTitle.value = data.title || "Translation game";
+      gameTitle.value = data.title || "Translation Game";
 
       const s = data.settings || {};
       difficulty.value = s.difficulty || "medium";
@@ -1626,7 +1380,6 @@
         if(buildMode === "words" && distractorMode === "lettersOnly"){
           distractorMode = "auto";
         }
-
         return {
           id: sanitizeId(set.id || ""),
           name: cleanText(set.name || ""),
@@ -1666,7 +1419,6 @@
     async function copyJson(){
       if(!jsonOutput.value.trim()) updateJsonPreview();
       if(!jsonOutput.value.trim()) return;
-
       try{
         await navigator.clipboard.writeText(jsonOutput.value);
         setMessage(t("json_copied"), "ok");
@@ -1681,16 +1433,14 @@
       try{
         const response = await fetch("sentences.json", { cache: "no-store" });
         if(!response.ok) throw new Error("No file");
-
         const data = await response.json();
         if(!data || !Array.isArray(data.sets)) throw new Error("Invalid JSON");
-
         applyData(data);
         setMessage(t("loaded_json_ok"), "ok");
       } catch(error){
         console.error(error);
         applyData({
-          title: "Translation game",
+          title: "Translation Game",
           settings: {
             difficulty: "medium",
             defaultClassLabel: "5A",
@@ -1711,7 +1461,22 @@
             defaultDistractorMode: "auto",
             punctuationMode: "auto"
           },
-          sets: demoSets
+          sets: [
+            {
+              id: "animals_words",
+              name: "Animals - words",
+              classLabel: "5A",
+              theme: "animals",
+              buildMode: "words",
+              useOwnDistractors: true,
+              distractorCount: 4,
+              distractorMode: "material",
+              pairs: [
+                { source: "Cat", target: "Kot" },
+                { source: "Dog", target: "Pies" }
+              ]
+            }
+          ]
         });
         setMessage(t("loaded_json_fallback"), "err");
       }
@@ -1728,15 +1493,12 @@
       let distractorMode = newSetDistractorMode.value;
       const pairs = parsePairsFromTextarea(newSetPairs.value);
 
-      if(buildMode === "words" && distractorMode === "lettersOnly"){
-        distractorMode = "auto";
-      }
+      if(buildMode === "words" && distractorMode === "lettersOnly") distractorMode = "auto";
 
       if(!sanitizeId(id) || !cleanText(name)){
         setMessage(t("enter_set_id_and_name"), "err");
         return;
       }
-
       if(pairs.length === 0){
         setMessage(t("add_at_least_one_pair"), "err");
         return;
