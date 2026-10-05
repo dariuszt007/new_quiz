@@ -900,10 +900,9 @@
       ]
     };
 
-    const REPORTS_KEY = "translation_reports_student_5_6D_FIX_MATERIAL_LOGIC";
+    const REPORTS_KEY = "translation_reports_student_5_6D_FIX_MATERIAL_STRICT";
     const COLOR_CLASSES = ["token-c1", "token-c2", "token-c3", "token-c4"];
     const PUNCTUATION = [".", ",", "!", "?", ";", ":"];
-    const LETTER_DISTRACTORS = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż".split("");
 
     const gameArea = document.getElementById("gameArea");
     const progressDisplay = document.getElementById("progressDisplay");
@@ -1388,76 +1387,69 @@
       return 0.8 + Math.random() * 1.2;
     }
 
-    function getMaterialPoolForCurrentMode(){
-      if(!activeSet) return [];
+    function getStrictCurrentSentenceMaterialPool(){
+      if(!currentPair) return [];
 
       if(activeSet.buildMode === "letters"){
-        const pool = [];
-        activeSet.pairs.forEach(pair => {
-          String(pair.target).split("").forEach(ch => {
-            if(ch !== " " && !isPunctuation(ch)){
-              pool.push(ch);
-            }
-          });
-        });
-        return [...new Set(pool)];
-      }
-
-      const pool = [];
-      activeSet.pairs.forEach(pair => {
-        tokenizeWords(pair.target).forEach(token => {
-          if(!isPunctuation(token)){
-            pool.push(token);
+        const letters = [];
+        String(currentPair.target).split("").forEach(ch => {
+          if(ch !== " " && !isPunctuation(ch)){
+            letters.push(ch);
           }
         });
+        return [...new Set(letters)];
+      }
+
+      const words = [];
+      tokenizeWords(currentPair.target).forEach(token => {
+        if(!isPunctuation(token)){
+          words.push(token);
+        }
       });
-      return [...new Set(pool)];
+      return [...new Set(words)];
     }
 
-    function resolveBatchSize(expectedToken){
-      const configuredCount = getEffectiveDistractorCount();
+    function resolveStrictBatchSize(expectedToken){
       const configuredMode = getEffectiveDistractorMode();
-      const materialPool = getMaterialPoolForCurrentMode().filter(token => token !== expectedToken);
-      const extraMaterialAvailable = materialPool.length;
+      const configuredCount = getEffectiveDistractorCount();
+      const strictPool = getStrictCurrentSentenceMaterialPool().filter(token => token !== expectedToken);
 
       if(configuredMode === "material"){
+        if(strictPool.length === 0) return 1;
+
         if(configuredCount <= 0){
-          return Math.max(
-            2,
-            Math.min(
-              activeSet.buildMode === "letters" ? 6 : 4,
-              extraMaterialAvailable + 1
-            )
+          return Math.min(
+            strictPool.length + 1,
+            activeSet.buildMode === "letters" ? 5 : 4
           );
         }
-        return Math.max(2, Math.min(extraMaterialAvailable + 1, configuredCount + 1));
+
+        return Math.min(strictPool.length + 1, configuredCount + 1);
       }
 
-      if(configuredCount <= 0){
-        return 1;
-      }
-
-      return Math.max(2, configuredCount + 1);
+      if(configuredCount <= 0) return 1;
+      return Math.max(1, configuredCount + 1);
     }
 
-    function getBatchTokens(expectedToken){
+    function getStrictBatchTokens(expectedToken){
       const configuredMode = getEffectiveDistractorMode();
-      const batchSize = resolveBatchSize(expectedToken);
 
-      if(configuredMode === "material"){
-        const pool = getMaterialPoolForCurrentMode().filter(token => token !== expectedToken);
-        shuffleArray(pool);
-        const result = [expectedToken];
-
-        for(let i = 0; i < pool.length && result.length < batchSize; i++){
-          result.push(pool[i]);
-        }
-
-        shuffleArray(result);
-        return result;
+      if(configuredMode !== "material"){
+        return [expectedToken];
       }
 
-      return [expectedToken];
+      const strictPool = getStrictCurrentSentenceMaterialPool().filter(token => token !== expectedToken);
+      const batchSize = resolveStrictBatchSize(expectedToken);
+      shuffleArray(strictPool);
+
+      const result = [expectedToken];
+
+      for(let i = 0; i < strictPool.length && result.length < batchSize; i++){
+        result.push(strictPool[i]);
+      }
+
+      shuffleArray(result);
+      return result;
     }
 
     function getExpectedTokenSkippingNonClickable(){
@@ -1488,7 +1480,7 @@
       const expected = getExpectedTokenSkippingNonClickable();
       if(currentTokenIndex >= currentTokens.length || !expected) return;
 
-      const itemsToSpawn = getBatchTokens(expected.value);
+      const itemsToSpawn = getStrictBatchTokens(expected.value);
 
       const placedRects = [];
       const zones = ["left", "center", "right"];
